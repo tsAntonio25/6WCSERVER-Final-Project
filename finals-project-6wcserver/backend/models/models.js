@@ -59,6 +59,8 @@ const leaderboardSchema = new mongoose.Schema({
     }
 );
 
+export const Leaderboard = mongoose.model("Leaderboard", leaderboardSchema);
+
 //---------------------------------
 
 
