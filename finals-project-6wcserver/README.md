@@ -18,6 +18,9 @@ Backend
 Others
   -  wait
 
+## API used:
+  - wait
+
 ## Project Setup
 
 ```sh
