@@ -1,14 +1,22 @@
 # finals-project-6wcserver
 
-This template should help get you started developing with Vue 3 in Vite.
+Main folder of the repository
 
-## Recommended IDE Setup
+## Frameworks/Modules Used:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Frontend
+  - Vue.js
+  - Tailwind
+  - Vue Router
 
-## Customize configuration
+Backend
+  - Node.js
+  - Express.js
+  - Cors
+  - Mongoose
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+Others
+  -  wait
 
 ## Project Setup
 
