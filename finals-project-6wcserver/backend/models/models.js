@@ -29,7 +29,7 @@ export const User = mongoose.model("User", userSchema);
 const expenseSchema = new mongoose.Schema({
     user_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
     type: {type: String, required: true},
-    expense: {type: Number, required: true},
+    expense: {type: Number, enum: ["food","transportation","leisure","others"], required: true},
     date: {type: Date, default: Date.now}
 });
 
