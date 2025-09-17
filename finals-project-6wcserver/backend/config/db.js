@@ -1,16 +1,15 @@
-import mongoose from "mongoose";
+// import
+import mongoose from 'mongoose';
 
-const dbURI = process.env.MONGO_URI;
-
-const connectDB = () => {
-    mongoose.connect(dbURI)
-    .then(() => {
-        console.log("Successfully connected to iponlyDB")
-    })
-    .catch(err => {
-        console.error("Error connecting to iponlyDB: ", err)
-        process.exit(1);
-    });
-}
+// async for database connection
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log("Successfully connected to MongoDB");
+  } catch (err) {
+    console.error("Error connecting to iponlyDB:", err.message);
+    process.exit(1); 
+  }
+};
 
 export default connectDB;
