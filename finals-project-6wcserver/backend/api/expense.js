@@ -13,8 +13,8 @@ router.post("/", async (req,res) => {
 });
 
 // Read expense
-router.get("/:userId", async (req,res) => {
-    const expenses = await Expense.find({ user_id: req.params.userId });
+router.get("/:id", async (req,res) => {
+    const expenses = await Expense.find({user_id: req.params.id});
     res.json(expenses);
 });
 

@@ -12,8 +12,8 @@ router.post('/', async (req,res) => {
 });
 
 //Read budget
-router.get('/:userId', async (req,res) => {
-    const budgets = await Budget.find({ user_id: req.params.userId });
+router.get('/:id', async (req,res) => {
+    const budgets = await Budget.find({user_id: req.params.id});
     res.json(budgets);
 });
 
