@@ -30,6 +30,11 @@ app.use("/budget", budget);
 app.use("/user", user);
 app.use("/leaderboard", leaderboard);
 
+// error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack)
+    res.status(404).json({error: err.message})
+})
 
 // listen
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
