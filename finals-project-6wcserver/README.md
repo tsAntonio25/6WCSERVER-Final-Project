@@ -15,6 +15,7 @@ Backend
   - Cors
   - Mongoose
   - Body Parser
+  - Express-Async-Handler
 
 Others
   -  wait
