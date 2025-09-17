@@ -21,16 +21,43 @@ Others
 ## API used:
   - wait
 
-## Project Setup
+## Project Setup For Frontend
 
+TailwindCSS
 ```sh
-npm install
+npm install tailwindcss @tailwindcss/vite
 ```
 
-### Compile and Hot-Reload for Development
+Vue Router
+```sh
+npm install vue-router
+```
 
+Run the project
 ```sh
 npm run dev
+```
+
+## Project Setup for Backend
+
+Express.js
+```sh
+npm install express
+```
+
+Cors
+```sh
+npm install cors
+```
+
+Mongoose
+```sh
+npm install mongoose
+```
+
+Run the server
+```sh
+node server.js
 ```
 
 ### Compile and Minify for Production
