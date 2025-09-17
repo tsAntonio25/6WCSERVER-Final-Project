@@ -14,6 +14,7 @@ Backend
   - Express.js
   - Cors
   - Mongoose
+  - Body Parser
 
 Others
   -  wait
@@ -53,6 +54,11 @@ npm install cors
 Mongoose
 ```sh
 npm install mongoose
+```
+
+Body parser
+```sh
+npm install body-parser
 ```
 
 Run the server
