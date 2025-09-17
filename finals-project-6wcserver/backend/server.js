@@ -1,11 +1,18 @@
 // imports
 import dotenv from 'dotenv';
-import express from "express";
+import express from 'express';
 import cors from 'cors';
 import connectDB from "./config/db.js";
 
+// import api operations
+import expense from './api/expense.js';
+import budget from './api/budget.js';
+import user from './api/user.js';
+import leaderboard from './api/leaderboard.js'
+
+
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // middleware
 app.use(cors())
@@ -18,10 +25,10 @@ console.log("MONGO_URI from .env:", process.env.MONGO_URI);
 connectDB();
 
 // API routes
-// test route kung gumagana db connection
-app.get("/", (req, res) => {
-  res.send("API is working and DB connection attempted!");
-});
+app.use("/expense", expense);
+app.use("/budget", budget);
+app.use("/user", user);
+app.use("/leaderboard", leaderboard);
 
 
 // listen
