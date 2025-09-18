@@ -20,7 +20,6 @@ app.use(express.json());
 
 // database connection
 dotenv.config();
-console.log("MONGO_URI from .env:", process.env.MONGO_URI);
 
 connectDB();
 
