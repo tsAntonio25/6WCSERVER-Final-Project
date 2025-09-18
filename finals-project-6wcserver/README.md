@@ -16,6 +16,7 @@ Backend
   - Mongoose
   - Body Parser
   - Express-Async-Handler
+  - Bcrypt
 
 Others
   -  wait
