@@ -5,10 +5,10 @@ import cors from 'cors';
 import connectDB from "./config/db.js";
 
 // import api operations
-import expense from './api/expense.js';
-import budget from './api/budget.js';
-import user from './api/user.js';
-import leaderboard from './api/leaderboard.js'
+import expense from './route/expense.js';
+import budget from './route/budget.js';
+import user from './route/user.js';
+import leaderboard from './route/leaderboard.js'
 
 
 const app = express();
