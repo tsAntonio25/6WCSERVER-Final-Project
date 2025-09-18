@@ -7,7 +7,7 @@ import { User } from '../models/models.js';
 const router = express.Router();
 
 // Create Account
-router.post('/', asyncHandler(async (req, res) => {
+router.post('/signup', asyncHandler(async (req, res) => {
     // is_admin not included
     const { first_name, last_name, username, email, password, confirmPassword } = req.body;
 
@@ -15,7 +15,7 @@ router.post('/', asyncHandler(async (req, res) => {
     if (password !== confirmPassword) throw new Error("Passwords do not match") 
 
     // check if user already exists
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({email});
     if (existing) throw new Error("Email already registered")
 
     // password encryption
@@ -28,3 +28,5 @@ router.post('/', asyncHandler(async (req, res) => {
 
     res.json({message: "Sign Up successful", userId: user._id, username: user.username});
 }));
+
+export default router;

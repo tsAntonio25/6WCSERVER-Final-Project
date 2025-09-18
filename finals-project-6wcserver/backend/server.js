@@ -8,7 +8,10 @@ import connectDB from "./config/db.js";
 import expense from './route/expense.js';
 import budget from './route/budget.js';
 import user from './route/user.js';
-import leaderboard from './route/leaderboard.js'
+import leaderboard from './route/leaderboard.js';
+import signup from "./route/signup.js";
+import login from "./route/login.js";
+
 
 
 const app = express();
@@ -24,6 +27,8 @@ dotenv.config();
 connectDB();
 
 // API routes
+app.use("/signup", signup);
+app.use("/login", login); 
 app.use("/expense", expense);
 app.use("/budget", budget);
 app.use("/user", user);
