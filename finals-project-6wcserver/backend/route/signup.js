@@ -1,9 +1,8 @@
 // imports
 import express from 'express';
-import asyncHandler from 'express-async-handler'
+import asyncHandler from 'express-async-handler';
+import bcrypt from 'bcrypt';
 import { User } from '../models/models.js';
-
-// import bcrypt for password hashing?? 
 
 const router = express.Router();
 
@@ -13,16 +12,19 @@ router.post('/', asyncHandler(async (req, res) => {
     const { first_name, last_name, username, email, password, confirmPassword } = req.body;
 
     // throw error
-    if (password !== confirmPassword) throw new Error("User not found") 
+    if (password !== confirmPassword) throw new Error("Passwords do not match") 
 
     // check if user already exists
     const existing = await User.findOne({ email });
     if (existing) throw new Error("Email already registered")
 
     // password encryption
-    // here
-    
-    const user = new User({first_name, last_name, username, email, password});
-    if (!user) throw new Error("Unable to create account") 
-    res.json(user);
+    const salt = await bcrypt.genSalt(10);
+    const hashed = await bcrypt.hash(password, salt);
+
+    const user = new User({first_name, last_name, username, email, password: hashed});
+    if (!user) throw new Error("Unable to create account")
+    await user.save();
+
+    res.json({message: "Sign Up successful", userId: user._id, username: user.username});
 }));
