@@ -20,7 +20,7 @@ router.post('/login', asyncHandler(async (req,res) => {
     if (!match) throw new Error("Invalid email or password");
 
     // generate token
-    const token = generateToken({ id: user._id, username: user.username })
+    const token = generateToken({ id: user._id, username: user.username, is_admin: user.is_admin })
     
     res.json({ message: "Login successful", userId: user._id, username: user.username, token });
 }));
