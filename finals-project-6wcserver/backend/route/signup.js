@@ -9,7 +9,7 @@ const router = express.Router();
 // Create Account
 router.post('/signup', asyncHandler(async (req, res) => {
     // is_admin not included
-    const { first_name, last_name, username, email, password, confirmPassword } = req.body;
+    const {username, email, password, confirmPassword } = req.body;
 
     // throw error
     if (password !== confirmPassword) throw new Error("Passwords do not match") 
@@ -22,7 +22,7 @@ router.post('/signup', asyncHandler(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashed = await bcrypt.hash(password, salt);
 
-    const user = new User({first_name, last_name, username, email, password: hashed});
+    const user = new User({username, email, password: hashed});
     if (!user) throw new Error("Unable to create account")
     await user.save();
 
