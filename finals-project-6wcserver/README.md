@@ -17,6 +17,7 @@ Backend
   - Body Parser
   - Express-Async-Handler
   - Bcrypt
+  - JWT (Json Web Token)
 
 Others
   -  wait
@@ -26,14 +27,9 @@ Others
 
 ## Project Setup For Frontend
 
-TailwindCSS
+Install Dependencies
 ```sh
-npm install tailwindcss @tailwindcss/vite
-```
-
-Vue Router
-```sh
-npm install vue-router
+npm install tailwindcss @tailwindcss/vite vue-router
 ```
 
 Run the project
@@ -43,24 +39,9 @@ npm run dev
 
 ## Project Setup for Backend
 
-Express.js
+Install Dependencies
 ```sh
-npm install express
-```
-
-Cors
-```sh
-npm install cors
-```
-
-Mongoose
-```sh
-npm install mongoose
-```
-
-Body parser
-```sh
-npm install body-parser
+npm install express cors mongoose body-parser express-async-handler bcrypt jsonwebtoken
 ```
 
 Run the server
