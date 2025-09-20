@@ -26,6 +26,7 @@
         Your wallet’s waiting — let’s turn today into another win.
       </p>
 
+      <!--FORM -->
       <form class="mt-6 space-y-4">
         <input
           type="email"
@@ -44,8 +45,12 @@
         >
           Sign In
         </router-link>
+
+        <!-- NOTE: replace router-link to input submit button -->
       </form>
 
+
+      <!-- route to register  -->
       <div class="text-center mt-4">
         <a href="#" class="text-sm text-gray-700 hover:underline">Create new account</a>
       </div>

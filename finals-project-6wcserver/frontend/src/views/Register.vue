@@ -23,6 +23,7 @@
         Be part of the community where saving is a game and progress is the prize.
       </p>
 
+      <!-- FORM HERE -->
       <form class="mt-6 space-y-4">
         <input
           type="email"
@@ -45,6 +46,7 @@
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
 
+        <!-- SUBMIT -->
         <button
           type="submit"
           class="w-full bg-sky-800 text-white py-2 rounded hover:bg-sky-900 transition"
@@ -53,6 +55,7 @@
         </button>
       </form>
 
+      <!-- Go back to login -->
       <div class="text-center mt-4">
         <a href="/login" class="text-sm text-gray-700 hover:underline">Already have an account</a>
       </div>
