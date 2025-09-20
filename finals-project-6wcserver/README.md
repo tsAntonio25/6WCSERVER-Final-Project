@@ -14,6 +14,10 @@ Backend
   - Express.js
   - Cors
   - Mongoose
+  - Body Parser
+  - Express-Async-Handler
+  - Bcrypt
+  - JWT (Json Web Token)
 
 Others
   -  wait
@@ -21,16 +25,28 @@ Others
 ## API used:
   - wait
 
-## Project Setup
+## Project Setup For Frontend
 
+Install Dependencies
 ```sh
-npm install
+npm install tailwindcss @tailwindcss/vite vue-router
 ```
 
-### Compile and Hot-Reload for Development
-
+Run the project
 ```sh
 npm run dev
+```
+
+## Project Setup for Backend
+
+Install Dependencies
+```sh
+npm install express cors mongoose body-parser express-async-handler bcrypt jsonwebtoken
+```
+
+Run the server
+```sh
+node server.js
 ```
 
 ### Compile and Minify for Production

@@ -1,17 +1,17 @@
+// import
 import mongoose from 'mongoose';
 
 // ---------------------------------
 // User Model
 const userSchema = new mongoose.Schema({
-        first_name: {type: String, required: true},
-        last_name: {type: String, required: true},
         username: {type: String, required: true, unique: true},
         password: {type: String, required: true},
         email: {type: String, required: true, unique: true},
         exp: {type: Number, default: 0},
         streak: {type: Number, default: 0},
         level: {type: Number, default: 1},
-        allowance_type: {type: String, enum:["daily","weekly","monthly"], required: true}
+        allowance_type: {type: String, enum:["daily","weekly","monthly"], required: true},
+        is_admin: {type: Boolean, default: false}
     },
     // to record created and updateddate automatically
     {
@@ -27,20 +27,30 @@ export const User = mongoose.model("User", userSchema);
 // Finance Model
 // 1. expense model
 const expenseSchema = new mongoose.Schema({
-    user_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
-    type: {type: String, required: true},
-    expense: {type: Number, enum: ["food","transportation","leisure","others"], required: true},
-    date: {type: Date, default: Date.now}
-});
+        user_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
+        finance_type: {type: String, default: "expense"},
+        type: {type: String, enum: ["food","transportation","leisure","others"], required: true},
+        expense: {type: Number, required: true},
+        date: {type: Date, default: Date.now}
+    },
+    {
+        collection: "finance"
+    }
+);
 
 export const Expense = mongoose.model("Expense", expenseSchema);
 
 // 2. budget model
 const budgetSchema = new mongoose.Schema({
-    user_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
-    amount: {type: Number, required: true},
-    createdAt: {type: Date, default: Date.now}
-});
+        user_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
+        finance_type: {type: String, default: "budget"},
+        amount: {type: Number, required: true},
+        createdAt: {type: Date, default: Date.now}
+    },
+    {
+        collection: "finance"
+    }
+);
 
 export const Budget = mongoose.model("Budget", budgetSchema);
 
