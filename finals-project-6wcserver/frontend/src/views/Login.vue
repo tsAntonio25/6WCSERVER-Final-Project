@@ -45,7 +45,7 @@
       </form>
 
       <!-- error -->
-      <p v-if="error" class="text-red-500 text-sm mt-2 text-center"> Invalid inputs</p>
+      <p v-if="error" class="text-red-500 text-sm mt-2 text-center">{{ error }}</p>
 
 
       <!-- route to register  -->

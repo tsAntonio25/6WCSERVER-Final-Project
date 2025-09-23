@@ -7,7 +7,7 @@ import { User } from '../models/models.js';
 const router = express.Router();
 
 // Create Account
-router.post('/signup', asyncHandler(async (req, res) => {
+router.post('/api/signup', asyncHandler(async (req, res) => {
     // is_admin not included
     const {username, email, password, confirmPassword } = req.body;
 
@@ -26,6 +26,7 @@ router.post('/signup', asyncHandler(async (req, res) => {
     if (!user) throw new Error("Unable to create account")
     await user.save();
 
+    // modify 
     res.json({message: "Sign Up successful", userId: user._id, username: user.username});
 }));
 

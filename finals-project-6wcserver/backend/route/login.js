@@ -8,7 +8,7 @@ import { generateToken } from '../modules/auth.js';
 const router = express.Router();
 
 // Read Account
-router.post('/login', asyncHandler(async (req,res) => {
+router.post('/api/login', asyncHandler(async (req,res) => {
     const {email, password} = req.body;
 
     // check if user exists

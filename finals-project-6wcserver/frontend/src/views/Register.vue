@@ -24,23 +24,27 @@
       </p>
 
       <!-- FORM HERE -->
-      <form class="mt-6 space-y-4">
+      <form class="mt-6 space-y-4" @submit.prevent="submitRegForm" enctype="multipart/form-data">>
         <input
+          v-model="email"
           type="email"
           placeholder="Email"
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
         <input
+          v-model ="username"
           type="text"
           placeholder="Username"
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
         <input
+          v-model="pass"
           type="password"
           placeholder="Password"
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
         <input
+          v-model="confpass"
           type="password"
           placeholder="Confirm Password"
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
@@ -55,6 +59,9 @@
         </button>
       </form>
 
+      <!-- If there is error in inputted data -->
+       <p v-if="error" class="text-red-500 text-sm mt-2 text-center" >{{ error }}</p>
+
       <!-- route to login -->
       <div class="text-center mt-4">
         <router-link to="/login" class="text-sm text-gray-700 hover:underline">Already have an account</router-link>
@@ -63,9 +70,50 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Register',
-};
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from "vue-router";
+
+// initialize
+const router = useRouter()
+const username = ref("")
+const email= ref("")
+const pass = ref("")
+const confpass = ref("")
+const error = ref("")
+
+// process in submitting registration
+const submitRegForm = async () => {
+  try {
+    // response
+    const res = await fetch('/api/signup', { // modify url
+      method: "POST",
+      headers: "",
+      body: JSON.stringify({
+        username: username.value,
+        email: email.value,
+        password: pass.value,
+        confirmPassword: confpass.value
+      })
+    })
+
+    // get response from backend
+    const data = await res.json()
+
+    // if there is error from backend
+    if (!res.ok) {
+      error.value = data.message || 'Sign up failed. Please try again.'
+      return;
+    }
+
+    // route to log in 
+    router.push("/login")
+  }
+  catch (err) {
+    // catch error
+    error.value = "Something went wrong. Please try again."
+    console.error(err)
+  }
+}
 
 </script>

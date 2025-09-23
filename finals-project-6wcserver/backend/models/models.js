@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
         allowance_type: {type: String, enum:["daily","weekly","monthly"], required: true},
         is_admin: {type: Boolean, default: false}
     },
-    // to record created and updateddate automatically
+    // to record created and updated date automatically
     {
         timestamps: true
     }
