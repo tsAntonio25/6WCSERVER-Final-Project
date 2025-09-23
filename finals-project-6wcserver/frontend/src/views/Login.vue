@@ -27,40 +27,70 @@
       </p>
 
       <!--FORM -->
-      <form class="mt-6 space-y-4">
+      <form class="mt-6 space-y-4" @submit.prevent="">
         <input
+          v-model="email"
           type="email"
           placeholder="Email"
           class="block w-full border px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
         <input
+          v-model="password"
           type="password"
           placeholder="Password"
           class="block w-full border px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
         <!-- Dapat pag nasubmit machecheck sa database then once na andun account then it would proceed to next page which is dashboard -->
-        <router-link 
-          to="/dashboard"
-          class="block w-full text-center bg-sky-900 text-white py-2 rounded hover:bg-blue-800 transition"
-        >
-          Sign In
-        </router-link>
-
-        <!-- NOTE: replace router-link to input submit button -->
+        <button type="submit" class="block w-full text-center bg-sky-900 text-white py-2 rounded hover:bg-blue-800 transition">Sign In</button>
       </form>
+
+      <!-- error -->
+      <p v-if="error" class="text-red-500 text-sm mt-2 text-center"> Invalid inputs</p>
 
 
       <!-- route to register  -->
       <div class="text-center mt-4">
-        <a href="#" class="text-sm text-gray-700 hover:underline">Create new account</a>
+        <router-link to="/register" class="text-sm text-gray-700 hover:underline">Create new account</router-link>
+
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Login',
-};
+<script setup>
+// wait
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+const email = ref("");
+const password = ref("");
+const error = ref("");
+
+// Handle login
+const handleLogin = async () => {
+  try {
+    const res = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email.value, password: password.value }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      error.value = data.message || "Login failed";
+      return;
+    }
+
+    // Save token to localStorage
+    localStorage.setItem("token", data.token);
+
+    // Redirect to dashboard
+    router.push("/dashboard");
+  } catch (err) {
+    error.value = "Something went wrong. Please try again.";
+    console.error(err);
+  }
+};
 </script>

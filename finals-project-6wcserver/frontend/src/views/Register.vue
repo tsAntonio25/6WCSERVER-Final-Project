@@ -55,9 +55,9 @@
         </button>
       </form>
 
-      <!-- Go back to login -->
+      <!-- route to login -->
       <div class="text-center mt-4">
-        <a href="/login" class="text-sm text-gray-700 hover:underline">Already have an account</a>
+        <router-link to="/login" class="text-sm text-gray-700 hover:underline">Already have an account</router-link>
       </div>
     </div>
   </div>
