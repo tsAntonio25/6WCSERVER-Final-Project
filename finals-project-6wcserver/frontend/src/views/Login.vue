@@ -27,7 +27,7 @@
       </p>
 
       <!--FORM -->
-      <form class="mt-6 space-y-4" @submit.prevent="">
+      <form class="mt-6 space-y-4" @submit.prevent="checkLogin">
         <input
           v-model="email"
           type="email"
@@ -62,32 +62,36 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+// initialize vars
 const router = useRouter();
 const email = ref("");
 const password = ref("");
 const error = ref("");
 
-// Handle login
-const handleLogin = async () => {
+// check login
+const checkLogin = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/login", {
+    const res = await fetch("http://localhost:3000/api/login", { // modify pa url
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email.value, password: password.value }),
+      body: JSON.stringify({ email: email.value, password: password.value }), // modify
     });
 
     const data = await res.json();
 
+    // modify to
     if (!res.ok) {
       error.value = data.message || "Login failed";
       return;
     }
 
-    // Save token to localStorage
+    // save token
     localStorage.setItem("token", data.token);
 
-    // Redirect to dashboard
+    // go to dashboard if okay
     router.push("/dashboard");
+
+    // catch error
   } catch (err) {
     error.value = "Something went wrong. Please try again.";
     console.error(err);
