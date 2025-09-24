@@ -4,9 +4,10 @@ import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import Dashboard from '@/views/Dashboard.vue';
-
-// Components
-import Header from '@/components/Header.vue';
+import Finance from '@/views/Finance.vue';
+import Leaderboard from '@/views/Leaderboard.vue';
+import Profile from '@/views/Profile.vue';
+import Password from '@/views/Password.vue';
 
 const routes = [
   { 
@@ -27,14 +28,28 @@ const routes = [
    {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard
+    component: Dashboard // Dashboard page
    },
-   //Components route
    {
-    path: '/header',
-    name: 'Header',
-    component: Header
-   }
+    path: '/finance',
+    name: 'Finance',
+    component: Finance // Finance page (add, expenses)
+   },
+   {
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    component: Leaderboard // Leaderboard page
+   },
+   {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile // Profile page
+   },
+   {
+    path: '/password',
+    name: 'Password',
+    component: Password // Change Password page
+   },
 ];
 
 const router = createRouter({
