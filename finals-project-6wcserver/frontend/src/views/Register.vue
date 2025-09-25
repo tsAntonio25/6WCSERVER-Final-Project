@@ -24,7 +24,7 @@
       </p>
 
       <!-- FORM HERE -->
-      <form class="mt-6 space-y-4">
+      <form @submit.prevent="submit" class="mt-6 space-y-4">
         <input
           v-model="email"
           type="email"
@@ -59,6 +59,9 @@
         </button>
       </form>
 
+      <!-- error -->
+      <p v-if="error" class="text-red-500 text-sm mt-2 text-center">{{ error }}</p>
+
       <!-- Go back to login -->
       <div class="text-center mt-4">
         <a href="/login" class="text-sm text-gray-700 hover:underline">Already have an account</a>
@@ -67,42 +70,48 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script setup>
+// imports
+import axios from 'axios'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-export default {
-  name: 'Register',
-  data() {
-    return {
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: ''
-    };
-  },
-  methods: {
-    async submit(){
-      if (this.password !== this.confirm){
-        // sabi mo wag alert ikaw nlng magpalit tnx
-        alert("Passwords do not match");
-        return;
-      }
+// initializes
+const email = ref("")
+const username = ref("")
+const password = ref("")
+const confirmPassword = ref("")
+const error = ref("")
+const router = useRouter()
 
-      try {
-        const response = await axios.post('http://localhost:300/signup', {
-          username: this.username,
-          email: this.email,
-          password: this.password,
-          confirmPassword: this.confirmPassword
-        });
+// method
+const submit = async () => {
 
-        console.log('Signup successful:', response.data);
-        this.$router.push('/login');
-      } catch (error) {
-        console.error('Signup failed:', error.response ? error.response.data : error);
-        alert(error.response?.data?.message || "An error occurred");
-      }
-    }
+  // check if password match with confirm password
+  if (password.value !== confirmPassword.value) {
+    error.value = "Passwords do not match."
+    return
   }
-};
+
+  // add credentials to db
+  try {
+    const response = await axios.post('http://localhost:3000/signup', {
+      username: username.value,
+      email: email.value,
+      password: password.value,
+    });
+
+    // testing
+    console.log('Signup successful:', response.data)
+
+    // route to login
+    router.push('/login')
+
+    // if error
+  } catch (err) {
+    console.error('Signup failed:', err.response ? err.response.data : error);
+    error.value = err.response.data.message || "An error occured."
+    
+  }
+}
 </script>

@@ -53,7 +53,7 @@
       <!-- error -->
       <p v-if="error" class="text-red-500 text-sm mt-2 text-center">{{ error }}</p>
 
-      <!-- pinalitan kong router link??  -->
+      <!-- route to dashboard -->
       <div class="text-center mt-4">
           <router-link to="/register" class="text-sm text-gray-700 hover:underline"> Create new account </router-link>
       </div>
@@ -89,9 +89,10 @@ const login = async () => {
 
     // route to dashboard
     router.push('/dashboard');
-    
+
+    // error
   } catch (err) {
-    if (err.res) {
+    if (error.res) {
       error.value = err.response.data.message || "Login Failed."
     } else {
       error.value = "Something went wrong. Please try again."
