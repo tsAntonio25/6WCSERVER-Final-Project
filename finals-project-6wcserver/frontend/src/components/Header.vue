@@ -3,7 +3,9 @@
     <div class="flex items-center justify-between">
       <!-- Left: Logo + Greeting -->
       <div class="flex items-center space-x-4 w-1/3">
-        <img src="@/assets/logo.png" alt="Logo" class="h-8 w-auto hidden sm:block" />
+        <router-link to="/dashboard">
+            <img src="@/assets/logo.png" alt="Logo" class="h-8 w-auto hidden sm:block cursor-pointer" />
+        </router-link>
         <span class="text-lg sm:text-xl font-semibold">Hi, User!</span>
       </div>
 
