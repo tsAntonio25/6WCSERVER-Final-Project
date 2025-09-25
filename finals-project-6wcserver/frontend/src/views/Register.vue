@@ -26,21 +26,25 @@
       <!-- FORM HERE -->
       <form class="mt-6 space-y-4">
         <input
+          v-model="email"
           type="email"
           placeholder="Email"
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
         <input
+          v-model="username"
           type="text"
           placeholder="Username"
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
         <input
+          v-model="password"
           type="password"
           placeholder="Password"
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
         <input
+          v-model="confirmPassword"
           type="password"
           placeholder="Confirm Password"
           class="block w-full border bg-blue-50 px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
@@ -64,8 +68,41 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Register',
-};
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    };
+  },
+  methods: {
+    async submit(){
+      if (this.password !== this.confirm){
+        // sabi mo wag alert ikaw nlng magpalit tnx
+        alert("Passwords do not match");
+        return;
+      }
 
+      try {
+        const response = await axios.post('http://localhost:300/signup', {
+          username: this.username,
+          email: this.email,
+          password: this.password,
+          confirmPassword: this.confirmPassword
+        });
+
+        console.log('Signup successful:', response.data);
+        this.$router.push('/login');
+      } catch (error) {
+        console.error('Signup failed:', error.response ? error.response.data : error);
+        alert(error.response?.data?.message || "An error occurred");
+      }
+    }
+  }
+};
 </script>

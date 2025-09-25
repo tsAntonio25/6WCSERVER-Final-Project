@@ -7,7 +7,7 @@ import { User } from '../models/models.js';
 const router = express.Router();
 
 // Create Account
-router.post('/signup', asyncHandler(async (req, res) => {
+router.post('/', asyncHandler(async (req, res) => {
     // is_admin not included
     const {username, email, password, confirmPassword } = req.body;
 
