@@ -62,40 +62,6 @@
 </template>
 
 <script setup>
-// wala pa to di pa gumagana??
-// joke bat gumana bigla
-
-/*
-import axios from 'axios';
-
-export default {
-  name: 'Login',
-  data () {
-    return {
-      email: '',
-      password: ''
-    };
-  },
-  methods: {
-   async login() {
-      try {
-        const response = await axios.post('http://localhost:3000/login', {
-          email: this.email,
-          password: this.password,
-        });
-        console.log('Login successful:', response.data);
-
-        localStorage.setItem('token', response.data.token);
-        this.$router.push('/dashboard');
-      } catch (error) {
-        console.error('Login failed:', error.response ? error.response.data : error);
-        alert(error.response?.data?.error || 'An error occurred. Please try again.');
-      }
-    },
-  }
-};
-*/
-
 // imports
 import axios from 'axios'
 import { ref } from 'vue'
