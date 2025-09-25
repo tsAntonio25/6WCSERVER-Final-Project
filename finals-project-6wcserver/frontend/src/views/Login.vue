@@ -27,40 +27,67 @@
       </p>
 
       <!--FORM -->
-      <form class="mt-6 space-y-4">
+      <!-- added axios (v-model)-->
+      <form class="mt-6 space-y-4" @submit.prevent="login">
         <input
+          v-model="email"
           type="email"
           placeholder="Email"
           class="block w-full border px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
+          required
         />
         <input
+          v-model="password"
           type="password"
           placeholder="Password"
           class="block w-full border px-4 py-2 rounded focus:outline-none focus:ring focus:ring-indigo-300"
         />
-        <!-- Dapat pag nasubmit machecheck sa database then once na andun account then it would proceed to next page which is dashboard -->
-        <router-link 
-          to="/dashboard"
-          class="block w-full text-center bg-sky-900 text-white py-2 rounded hover:bg-blue-800 transition"
-        >
-          Sign In
-        </router-link>
-
-        <!-- NOTE: replace router-link to input submit button -->
+        <!-- ito na bago pacheck po  -->
+        <button 
+        type="submit" 
+        class="block w-full text-center bg-sky-900 text-white py-2 rounded hover:bg-blue-800 transition"
+        > Sign In 
+        </button>
       </form>
 
-
-      <!-- route to register  -->
+      <!-- pinalitan kong router link??  -->
       <div class="text-center mt-4">
-        <a href="#" class="text-sm text-gray-700 hover:underline">Create new account</a>
+          <router-link to="/register" class="text-sm text-gray-700 hover:underline"> Create new account </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+// wala pa to di pa gumagana?? 
+// joke bat gumana bigla
+import axios from 'axios';
+
 export default {
   name: 'Login',
+  data () {
+    return {
+      email: '',
+      password: ''
+    };
+  },
+  methods: {
+   async login() {
+      try {
+        const response = await axios.post('http://localhost:3000/login', {
+          email: this.email,
+          password: this.password,
+        });
+        console.log('Login successful:', response.data);
+
+        localStorage.setItem('token', response.data.token);
+        this.$router.push('/dashboard');
+      } catch (error) {
+        console.error('Login failed:', error.response ? error.response.data : error);
+        alert(error.response?.data?.error || 'An error occurred. Please try again.');
+      }
+    },
+  }
 };
 
 </script>
