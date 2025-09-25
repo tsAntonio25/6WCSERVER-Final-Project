@@ -19,13 +19,13 @@ router.post('/', asyncHandler(async (req,res) => {
     if (!user) throw new Error("Invalid email or password");
 
     // check if password is the same as the stored hashed password
-    // const match = await bcrypt.compare(password, user.password);
-    // if (!match) throw new Error("Invalid email or password");
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) throw new Error("Invalid email or password");
 
     // no hash password test
-    if (password !== user.password) {
-        throw new Error("Invalid email or password");
-    }
+    // if (password !== user.password) {
+    //     throw new Error("Invalid email or password");
+    // }
 
     // generate token
     const token = generateToken({ id: user._id, username: user.username, is_admin: user.is_admin })
