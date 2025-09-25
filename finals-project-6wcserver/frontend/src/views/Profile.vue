@@ -6,7 +6,7 @@
     </div>
 
     <!-- Main content -->
-    <div class="flex-grow px-4 sm:px-8 py-6 space-y-6">
+    <div class="flex-grow px-4 sm:px-8 py-6 space-y-6 pb-24">
       <h1 class="text-2xl font-bold text-center text-gray-800">Profile</h1>
 
       <div class="max-w-md mx-auto bg-white rounded-lg shadow p-6 space-y-4">
