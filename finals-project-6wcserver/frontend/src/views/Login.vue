@@ -50,6 +50,9 @@
         </button>
       </form>
 
+      <!-- error -->
+      <p v-if="error" class="text-red-500 text-sm mt-2 text-center">{{ error }}</p>
+
       <!-- pinalitan kong router link??  -->
       <div class="text-center mt-4">
           <router-link to="/register" class="text-sm text-gray-700 hover:underline"> Create new account </router-link>
@@ -58,9 +61,11 @@
   </div>
 </template>
 
-<script>
-// wala pa to di pa gumagana?? 
+<script setup>
+// wala pa to di pa gumagana??
 // joke bat gumana bigla
+
+/*
 import axios from 'axios';
 
 export default {
@@ -89,5 +94,44 @@ export default {
     },
   }
 };
+*/
+
+// imports
+import axios from 'axios'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+// initializes
+const email = ref("")
+const password = ref("")
+const error = ref("")
+const router = useRouter()
+
+// method
+const login = async () => {
+  try {
+    const res = await axios.post('http://localhost:3000/login', {
+          email: email.value,
+          password: password.value,
+    });
+
+    // testing
+    console.log('Login successful:', res.data);
+
+    // store token
+    localStorage.setItem('token', res.data.token);
+
+    // route to dashboard
+    router.push('/dashboard');
+    
+  } catch (err) {
+    if (err.res) {
+      error.value = err.response.data.message || "Login Failed."
+    } else {
+      error.value = "Something went wrong. Please try again."
+    }
+  }
+}
+
 
 </script>
