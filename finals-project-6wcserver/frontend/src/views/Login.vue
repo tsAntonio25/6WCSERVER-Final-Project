@@ -97,7 +97,7 @@ const login = async () => {
 
     // error
   } catch (err) {
-    // err talaga yan kasi catch err
+    // err talaga yan kasi catch err || yes alam ko salamats
     if (err.res) {
       error.value = err.response.data.message || "Login Failed."
     } else {
