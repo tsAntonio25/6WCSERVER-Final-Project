@@ -166,6 +166,9 @@
 </template>
 
 <script>
+
+// rewrite into script setup 
+
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import api from '@/api/axios.js'
@@ -215,7 +218,7 @@ export default {
 
         // validate the expense
         if (this.expenseAmount > totalSavings) {
-          // papalit nito ayaw mo alert e
+          // papalit nito ayaw mo alert e || TALAGA LOOK SINO BA NAMAN GUMAGAMIT NG ALERT THIS 2025?!
           alert('Expense cannot exceed current savings.');
           return;
         }

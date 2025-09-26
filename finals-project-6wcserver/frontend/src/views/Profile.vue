@@ -63,10 +63,13 @@
 </template>
 
 <script>
+
+// rewrite into script setup 
+
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import api from "@/api/axios";
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"; // what??? diman nagamit??????????? or wrong var?? 
 
 export default {
   name: 'Profile',
@@ -87,7 +90,7 @@ export default {
         console.log("UserId from localStorage:", userId);
 
         if (!userId) {
-          this.$router.push("/login");
+          this.$router.push("/login"); // wrong var amp
           return;
         }
 
@@ -99,13 +102,13 @@ export default {
       } catch (err) {
         console.error("Fetch user error:", err.response ? err.response.data : err.message);
         alert("Fetch user failed: " + (err.response?.data?.message || err.message));
-        this.$router.push("/login"); 
+        this.$router.push("/login"); // gumana??
     }
     },
     logout() {
       // after logging out, tokens, username, userid stored will be cleared
       localStorage.clear();
-      this.$router.push("/").then(() => {
+      this.$router.push("/").then(() => { // kahit maling var??? 
         location.reload;
       });
     },

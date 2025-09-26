@@ -57,6 +57,10 @@
 </template>
 
 <script>
+
+// hii sana mapansin. PLEASE COMPOSITION API NA GAMITIN WAG NA YANG MAKALUMA NA YAN ANSAKIT SA MATA PAG TINITIGNAN 
+// SA MOBILE PLEASEEE MAAWA KA SA EYES KO ANG COMPLICATED TIGNAN
+
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import api from '@/api/axios.js';

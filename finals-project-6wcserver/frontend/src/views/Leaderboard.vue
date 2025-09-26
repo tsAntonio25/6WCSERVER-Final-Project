@@ -81,6 +81,9 @@
 </template>
 
 <script>
+
+// please nagmamakaawa ako, composition api na gamitin pleaseee
+
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 

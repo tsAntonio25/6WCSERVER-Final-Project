@@ -158,6 +158,9 @@
 </template>
 
 <script>
+
+// rewrite into script setup 
+
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import api from '../api/axios.js';
