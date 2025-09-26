@@ -195,7 +195,7 @@ export default {
           return;
         }
 
-        await api.put(`/users/${userId}`, {
+        await api.put(`/user/${userId}`, {
           currentPassword: this.currentPassword,
           newPassword: this.newPassword,
           anon_username: this.isAnonymous ? this.generatedUsername : null
