@@ -46,6 +46,7 @@
         <!-- Log Out Button -->
         <div class="mt-6">
         <button
+            @click="logout"
             class="w-full py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition"
         >
             Log Out
@@ -102,10 +103,11 @@ export default {
     }
     },
     logout() {
-      localStorage.removeItem("token");
-      localStorage.removeItem("username");
-      localStorage.removeItem("userId");
-      this.$router.push("/login");
+      // after logging out, tokens, username, userid stored will be cleared
+      localStorage.clear();
+      this.$router.push("/").then(() => {
+        location.reload;
+      });
     },
   }
 };

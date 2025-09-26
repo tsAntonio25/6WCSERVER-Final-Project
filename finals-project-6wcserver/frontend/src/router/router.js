@@ -13,7 +13,7 @@ const routes = [
   { 
     path: '/',
     name: 'Home',
-    component: Home // your home page
+    component: Home // home page
    },      
   { 
     path: '/login',
@@ -28,33 +28,58 @@ const routes = [
    {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard // Dashboard page
+    component: Dashboard, // Dashboard page
+    meta: { requiresAuth: true }
    },
    {
     path: '/finance',
     name: 'Finance',
-    component: Finance // Finance page (add, expenses)
+    component: Finance, // Finance page (add, expenses)
+    meta: { requiresAuth: true }
    },
    {
     path: '/leaderboard',
     name: 'Leaderboard',
-    component: Leaderboard // Leaderboard page
+    component: Leaderboard, // Leaderboard page
+    meta: { requiresAuth: true }
    },
    {
     path: '/profile',
     name: 'Profile',
-    component: Profile // Profile page
+    component: Profile, // Profile page
+    meta: { requiresAuth: true }
+
    },
    {
     path: '/password',
     name: 'Password',
-    component: Password // Change Password page
+    component: Password, // Change Password page
+    meta: { requiresAuth: true }
    },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("token");
+
+  const publicPages = ["/", "/login", "/register"];
+
+  // if user not authenticated, redirect to login
+  if (!publicPages.includes(to.path) && !token) {
+    return next("/login"); 
+  }
+
+  // if user is logged in, cannot access login or register unless they log out
+  if (token && (to.path === "/login" || to.path === "/register")) {
+    return next("/dashboard");
+  }
+
+  next();
+
 });
 
 export default router;
