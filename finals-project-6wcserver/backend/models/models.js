@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema({
         exp: {type: Number, default: 0},
         streak: {type: Number, default: 0},
         level: {type: Number, default: 1},
-        allowance_type: {type: String, enum:["daily","weekly","monthly"]},
         is_admin: {type: Boolean, default: false},
         anon_username: {type: String, unique: true}
     },
@@ -46,6 +45,7 @@ const budgetSchema = new mongoose.Schema({
         user_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
         finance_type: {type: String, default: "budget"},
         amount: {type: Number, required: true},
+        allowance_type: {type: String, enum:["daily","weekly","monthly"]},
         createdAt: {type: Date, default: Date.now}
     },
     {

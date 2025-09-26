@@ -7,14 +7,21 @@ const router = express.Router();
 
 // Create budget
 router.post('/', asyncHandler(async (req,res) => {
-    const budget = new Budget(req.body);
+    const { userId, allowance_type, amount } = req.body;
+    const budget = new Budget({
+        user_id: userId,
+        finance_type: "budget",
+        amount,
+        allowance_type,
+    });
+
     await budget.save();
     res.json(budget);
 }));
 
 //Read budget
-router.get('/:id', asyncHandler(async (req,res) => {
-    const budgets = await Budget.find({ user_id: req.params.id });
+router.get('/:userId', asyncHandler(async (req,res) => {
+    const budgets = await Budget.find({ user_id: req.params.userId });
     res.json(budgets);
 }));
 

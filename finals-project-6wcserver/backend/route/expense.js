@@ -8,14 +8,22 @@ const router = express.Router();
 // relative routes only;
 // Create expense
 router.post("/", asyncHandler(async (req, res) => {
-    const expense = new Expense(req.body);
-    await expense.save;
-    res.json(expense);
+    const { userId, type, expense } = req.body;
+
+    const newExpense = new Expense({
+        user_id: userId,
+        finance_type: "expense",
+        type,
+        expense,
+    });
+
+    await newExpense.save();
+    res.json(newExpense);
 }));
 
 // Read expense
-router.get("/:id", asyncHandler(async (req,res) => {
-    const expenses = await Expense.find({ user_id: req.params.id });
+router.get("/:userId", asyncHandler(async (req,res) => {
+    const expenses = await Expense.find({ user_id: req.params.userId });
     res.json(expenses);
 }));
 

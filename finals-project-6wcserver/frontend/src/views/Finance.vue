@@ -92,7 +92,8 @@
         <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">Amount</label>
           <input
-            type="text"
+            v-model.number="budgetAmount"
+            type="number"
             placeholder="₱ 0.00"
             class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
           />
@@ -100,18 +101,18 @@
 
         <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">Timeline</label>
-          <select class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-400">
-            <option>Weekly</option>
-            <option>Monthly</option>
-            <option>Yearly</option>
+          <select v-model="budgetTimeline" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-400">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
           </select>
         </div>
 
         <div class="flex justify-between pt-4">
-          <button @click="showBudgetPopup = false" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+          <button @click="resetBudget" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
             Reset
           </button>
-          <button @click="showBudgetPopup = false" class="px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
+          <button @click="addBudget" class="px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
             Confirm
           </button>
         </div>
@@ -133,28 +134,29 @@
 
         <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">Type</label>
-          <select class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-400">
-            <option>Food</option>
-            <option>Transportation</option>
-            <option>Leisure</option>
-            <option>Others</option>
+          <select v-model="expenseType" class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-400">
+            <option value="food">Food</option>
+            <option value="transportation">Transportation</option>
+            <option value="leisure">Leisure</option>
+            <option value="others">Others</option>
           </select>
         </div>
 
         <div class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">Amount</label>
           <input
-            type="text"
+            v-model.number="expenseAmount"
+            type="number"
             placeholder="₱ 0.00"
             class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-sky-400"
           />
         </div>
 
         <div class="flex justify-between pt-4">
-          <button @click="showExpensePopup = false" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+          <button @click="resetExpense" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
             Reset
           </button>
-          <button @click="showExpensePopup = false" class="px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
+          <button @click="addExpense" class="px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
             Confirm
           </button>
         </div>
@@ -166,19 +168,70 @@
 <script>
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
+import api from '@/api/axios.js'
 
 export default {
   name: 'Finance',
-  components: {
-    Header,
-    Footer
-  },
+  components: { Header, Footer },
   data() {
     return {
       showBudgetPopup: false,
       showExpensePopup: false,
-      xpFill: 0
+      xpFill: 0,
+      // form data
+      budgetAmount: null,
+      budgetTimeline: 'monthly',
+      expenseType: 'food',
+      expenseAmount: null
     };
-  }
+  },
+   methods: {
+    async addBudget() {
+      try {
+        const userId = localStorage.getItem('userId');
+
+        const res = await api.post('/budget', {
+          userId,
+          allowance_type: this.budgetTimeline,
+          amount: this.budgetAmount
+        });
+
+        // verify budget
+        console.log('Budget added:', res.data);
+
+        this.resetBudget();
+        this.showBudgetPopup = false;
+      } catch (err) {
+        console.error('Add budget error:', err.response?.data || err.message);
+      }
+    },
+    async addExpense() {
+      try {
+        const userId = localStorage.getItem('userId');
+
+        const res = await api.post('/expense', {
+          userId,
+          type: this.expenseType,
+          expense: this.expenseAmount
+        });
+
+        // verify expense
+        console.log('Expense added:', res.data);
+
+        this.resetExpense();
+        this.showExpensePopup = false;
+      } catch (err) {
+        console.error('Add expense error:', err.response?.data || err.message);
+      }
+    },
+    resetBudget() {
+      this.budgetAmount = null;
+      this.budgetTimeline = 'monthly';
+    },
+    resetExpense() {
+      this.expenseAmount = null;
+      this.expenseType = 'food';
+    }
+   }
 };
 </script>
