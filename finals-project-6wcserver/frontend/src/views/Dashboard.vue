@@ -9,7 +9,7 @@
     <div class="flex-grow px-4 sm:px-8 py-6 space-y-8">
       <!-- Total Savings -->
       <section class="bg-indigo-950 text-white rounded-lg p-4 sm:p-6 shadow-md">
-        <h2 class="text-lg sm:text-xl font-semibold">Total Savings:</h2>
+        <h2 class="text-lg sm:text-xl font-semibold">Total Savings: {{ totalSavings ? ' ₱' + totalSavings : '₱ 0.00' }}</h2>
       </section>
 
       <!-- Graph Placeholder with Background Card -->
@@ -59,12 +59,37 @@
 <script>
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
+import api from '@/api/axios.js';
+
 
 export default {
   name: 'Dashboard',
   components: {
     Header,
     Footer
+  },
+  data() {
+    return {
+      totalSavings: null,
+      totalBudget: null,
+      totalExpenses: null,
+    };
+  },
+  created() {
+    this.fetchTotalSavings();
+  },
+  methods: {
+    async fetchTotalSavings() {
+      const userId = localStorage.getItem('userId');
+      try {
+        const response = await api.get(`/compute/${userId}`);
+        this.totalBudget = response.data.totalBudgetAmount;
+        this.totalExpenses = response.data.totalExpenseAmount;
+        this.totalSavings = response.data.totalSavings;
+      } catch (error) {
+        console.error('Error fetching total savings:', error.response?.data || error.message);
+      }
+    }
   }
 };
 </script>

@@ -209,6 +209,18 @@ export default {
       try {
         const userId = localStorage.getItem('userId');
 
+        // fetch total savings
+        const savingsRes = await api.get(`/compute/${userId}`);
+        const totalSavings = savingsRes.data.totalSavings;
+
+        // validate the expense
+        if (this.expenseAmount > totalSavings) {
+          // papalit nito ayaw mo alert e
+          alert('Expense cannot exceed current savings.');
+          return;
+        }
+
+        // add expense
         const res = await api.post('/expense', {
           userId,
           type: this.expenseType,
