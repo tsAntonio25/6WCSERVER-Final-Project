@@ -8,6 +8,7 @@ Frontend
   - Vue.js
   - Tailwind
   - Vue Router
+  - Axios
 
 Backend
   - Node.js
@@ -29,7 +30,7 @@ Others
 
 Install Dependencies
 ```sh
-npm install tailwindcss @tailwindcss/vite vue-router
+npm i tailwindcss @tailwindcss/vite vue-router axios
 ```
 
 Run the project
@@ -41,7 +42,7 @@ npm run dev
 
 Install Dependencies
 ```sh
-npm install express cors mongoose body-parser express-async-handler bcrypt jsonwebtoken
+npm i express cors mongoose body-parser express-async-handler bcrypt jsonwebtoken
 ```
 
 Run the server
