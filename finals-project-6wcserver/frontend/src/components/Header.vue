@@ -6,7 +6,7 @@
         <router-link to="/dashboard">
             <img src="@/assets/logo.png" alt="Logo" class="h-8 w-auto hidden sm:block cursor-pointer" />
         </router-link>
-        <span class="text-lg sm:text-xl font-semibold">Hi, User!</span>
+        <span class="text-lg sm:text-xl font-semibold">Hi, {{ username || 'User' }}!</span>
       </div>
 
       <!-- Center: Streak + XP -->
@@ -65,6 +65,15 @@
 
 <script>
 export default {
-  name: 'Header'
+  name: 'Header',
+  data() {
+    return {
+      username: "",
+    };
+  },
+  created() {
+    // get the username
+    this.username = localStorage.getItem("username");
+  },
 };
 </script>
