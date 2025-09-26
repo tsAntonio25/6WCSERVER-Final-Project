@@ -160,13 +160,11 @@
 <script>
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
+import api from '../api/axios.js';
 
 export default {
   name: 'Password',
-  components: {
-    Header,
-    Footer
-  },
+  components: { Header, Footer },
   data() {
     return {
       currentPassword: '',
@@ -186,10 +184,31 @@ export default {
       this.currentPassword = '';
       this.newPassword = '';
       this.showNewPassword = false;
+      this.isAnonymous = false;
+      this.generatedUsername = '';
     },
-    updatePassword() {
-      console.log('Password update triggered');
-      this.showSuccess = true;
+    async updatePassword() {
+      try {
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+          this.showError = true;
+          return;
+        }
+
+        await api.put(`/users/${userId}`, {
+          currentPassword: this.currentPassword,
+          newPassword: this.newPassword,
+          anon_username: this.isAnonymous ? this.generatedUsername : null
+        });
+
+        this.showSuccess = true;
+        this.showError = false;
+        this.resetFields();
+      } catch (err) {
+        console.error(err);
+        this.showError = true;
+        this.showSuccess = false;
+      }
     },
     handleAnonymousToggle() {
       this.isAnonymous = !this.isAnonymous;

@@ -63,7 +63,7 @@
 
 <script setup>
 // imports
-import axios from 'axios'
+import api from "@/api/axios";  
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -76,7 +76,7 @@ const router = useRouter()
 // method
 const login = async () => {
   try {
-    const res = await axios.post('http://localhost:3000/login', {
+    const res = await api.post('/login', {
           email: email.value,
           password: password.value,
     });
@@ -84,15 +84,21 @@ const login = async () => {
     // testing
     console.log('Login successful:', res.data);
 
-    // store token
+    // store token, username, and userId
     localStorage.setItem('token', res.data.token);
+    localStorage.setItem('username', res.data.username);
+    localStorage.setItem('userId', res.data.userId);
+
+    // verify if userId is stored in localstorage
+    console.log("userId in localStorage:", localStorage.getItem("userId"));
 
     // route to dashboard
     router.push('/dashboard');
 
     // error
   } catch (err) {
-    if (error.res) {
+    // err talaga yan kasi catch err
+    if (err.res) {
       error.value = err.response.data.message || "Login Failed."
     } else {
       error.value = "Something went wrong. Please try again."

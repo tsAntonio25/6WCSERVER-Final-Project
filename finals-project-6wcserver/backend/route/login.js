@@ -22,15 +22,20 @@ router.post('/', asyncHandler(async (req,res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) throw new Error("Invalid email or password");
 
-    // no hash password test
-    // if (password !== user.password) {
-    //     throw new Error("Invalid email or password");
-    // }
 
     // generate token
     const token = generateToken({ id: user._id, username: user.username, is_admin: user.is_admin })
     
-    res.json({ message: "Login successful", userId: user._id, username: user.username, token });
+    const responseData = { 
+        message: "Login successful", 
+        userId: user._id, 
+        username: user.username, 
+        token 
+    };
+
+    // verify data
+    console.log("Login response:", responseData); 
+    res.json(responseData);
 }));
 
 export default router;

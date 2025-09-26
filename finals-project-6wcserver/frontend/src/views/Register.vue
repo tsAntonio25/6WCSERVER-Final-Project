@@ -72,7 +72,7 @@
 
 <script setup>
 // imports
-import axios from 'axios'
+import api from "@/api/axios";  
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -95,7 +95,7 @@ const submit = async () => {
 
   // add credentials to db
   try {
-    const response = await axios.post('http://localhost:3000/signup', {
+    const response = await api.post('/signup', {
       username: username.value,
       email: email.value,
       password: password.value,

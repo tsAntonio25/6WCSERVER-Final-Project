@@ -1,6 +1,7 @@
 // imports
 import express from 'express';
-import asyncHandler from 'express-async-handler'
+import asyncHandler from 'express-async-handler';
+import bcrypt from 'bcrypt'
 import { User } from '../models/models.js';
 import { verifyToken } from '../modules/auth.js';
 
@@ -34,13 +35,39 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 
 //-------------------------------
-// Update user
-router.put('/:id', asyncHandler(async (req, res) => {
-    const updated = await User.findByIdAndUpdate(req.params.id, req.body, {new: true,});
+// Update profile (password and anon username)
+router.put('/:id', verifyToken, asyncHandler(async (req, res) => {
+    const target = req.params.id;
 
-    // throw error
-    if (!updated) throw new Error("User not found") 
-    res.json(updated);
+    if (req.user.id !== target && !req.user.is_admin) {
+        throw new Error("Not authorized to update this account");
+    }
+
+    const { currentPassword, newPassword, anon_username } = req.body;
+
+    const user = await User.findById(target);
+    if (!user) throw new Error("User not found");
+
+    // check new password
+    if (newPassword) {
+        const validPassword = await bcrypt.compare(currentPassword, user.password);
+        if (!validPassword) {
+            return res.status(400).json({ message: "Current password is incorrect" });
+        }
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    // check anonymous username
+    if (anon_username) {
+        user.anon_username = anon_username;
+    } else {
+        user.anon_username = user.username;
+    }
+
+    await user.save();
+    
+    res.json({ message: "Profile updated successfully" });
 }));
 
 

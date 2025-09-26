@@ -43,22 +43,6 @@
           <span class="text-sm text-gray-800">{{ email }}</span>
         </div>
 
-        <!-- Password -->
-        <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-        <div class="relative">
-            <span class="block text-sm text-gray-800 pr-16">
-            {{ showPassword ? actualPassword : maskedPassword }}
-            </span>
-            <button
-            @click="togglePassword"
-            class="absolute right-0 top-0 text-sm text-sky-600 hover:underline focus:outline-none"
-            >
-            {{ showPassword ? 'Hide' : 'Show' }}
-            </button>
-        </div>
-        </div>
-
         <!-- Log Out Button -->
         <div class="mt-6">
         <button
@@ -80,30 +64,49 @@
 <script>
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
+import api from "@/api/axios";
+import { useRouter } from "vue-router";
 
 export default {
   name: 'Profile',
-  components: {
-    Header,
-    Footer
-  },
+  components: { Header, Footer },
   data() {
     return {
-      username: 'danielakatsaye',
-      email: 'ahanmeli16@gmail.com',
-      actualPassword: 'mySecretPass123',
-      showPassword: false
+      username: '',
+      email: '',
     };
   },
-  computed: {
-    maskedPassword() {
-      return '*'.repeat(this.actualPassword.length);
-    }
+  created() {
+    this.fetchUser();
   },
   methods: {
-    togglePassword() {
-      this.showPassword = !this.showPassword;
+    async fetchUser() {
+      try {
+        const userId = localStorage.getItem("userId");
+        console.log("UserId from localStorage:", userId);
+
+        if (!userId) {
+          this.$router.push("/login");
+          return;
+        }
+
+        const res = await api.get(`/user/${userId}`);
+        console.log("Fetched user:", res.data);
+
+        this.username = res.data.username || res.data.anon_username;
+        this.email = res.data.email;
+      } catch (err) {
+        console.error("Fetch user error:", err.response ? err.response.data : err.message);
+        alert("Fetch user failed: " + (err.response?.data?.message || err.message));
+        this.$router.push("/login"); 
     }
+    },
+    logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+      localStorage.removeItem("userId");
+      this.$router.push("/login");
+    },
   }
 };
 </script>
