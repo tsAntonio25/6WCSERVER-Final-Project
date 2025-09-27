@@ -8,6 +8,10 @@ import Leaderboard from '@/views/Leaderboard.vue';
 import Profile from '@/views/Profile.vue';
 import Password from '@/views/Password.vue';
 import { jwtDecode } from 'jwt-decode';
+import AdminDash from '@/views/Admin/AdminDash.vue';
+import AdminLead from '@/views/Admin/AdminLead.vue';
+import AdminUser from '@/views/Admin/AdminUser.vue';
+
 
 const routes = [
   { 
@@ -55,6 +59,21 @@ const routes = [
     name: 'Password',
     component: Password, // Change Password page
     meta: { requiresAuth: true }
+   },
+   {
+    path: '/admindash',
+    name: 'AdminDash',
+    component: AdminDash, // Admin Dashboard Page
+   },
+   {
+    path: '/adminlead',
+    name: 'AdminLead',
+    component: AdminLead, // Admin Dashboard Page
+   },
+   {
+    path: '/adminuser',
+    name: 'AdminUser',
+    component: AdminUser, // Admin Dashboard Page
    },
 ];
 

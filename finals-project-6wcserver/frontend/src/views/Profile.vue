@@ -10,13 +10,20 @@
       <h1 class="text-2xl font-bold text-center text-gray-800">Profile</h1>
 
       <div class="max-w-md mx-auto bg-white rounded-lg shadow pt-10 pb-6 px-6 space-y-4 relative">
-        <!-- Edit Profile Button -->
-        <div class="flex justify-end">
+        <!-- Edit + Admin Dashboard Buttons -->
+        <div class="flex justify-end gap-3">
         <router-link
             to="/password"
             class="px-4 py-2 bg-sky-600 text-white text-sm rounded-md hover:bg-sky-700 transition"
         >
             Edit
+        </router-link>
+
+        <router-link
+            to="/admindash"
+            class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 transition"
+        >
+            Admin
         </router-link>
         </div>
 
