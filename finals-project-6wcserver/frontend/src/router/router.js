@@ -1,4 +1,3 @@
-// src/router/router.js
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
@@ -8,6 +7,7 @@ import Finance from '@/views/Finance.vue';
 import Leaderboard from '@/views/Leaderboard.vue';
 import Profile from '@/views/Profile.vue';
 import Password from '@/views/Password.vue';
+import { jwtDecode } from 'jwt-decode';
 
 const routes = [
   { 
@@ -74,10 +74,25 @@ router.beforeEach((to, from, next) => {
   }
 
   // if user is logged in, cannot access login or register unless they log out
-  if (token && (to.path === "/login" || to.path === "/register")) {
-    return next("/dashboard");
-  }
+  if (token){
+    try {
+      const decoded = jwtDecode(token);
+      const now = Date.now() / 1000;
 
+      if (decoded.exp && decoded.exp < now){
+        localStorage.clear();
+        return next('/login');
+      }
+
+      if (to.path === "/login" || to.path === "/register") {
+        return next("/dashboard");
+      }
+    } catch (err) {
+      localStorage.clear();
+      return next("/login");
+    }
+  }
+  
   next();
 
 });

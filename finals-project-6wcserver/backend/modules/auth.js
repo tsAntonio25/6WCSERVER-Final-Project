@@ -1,6 +1,6 @@
 // imports
 import jwt from 'jsonwebtoken';
-// added dotenv to get ENV file
+import { User } from '../models/models.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -13,22 +13,31 @@ if (!SECRET_KEY) {
 // exports
 // create token
 export const generateToken = (payload) =>
-  jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
+  jwt.sign(payload, SECRET_KEY, { expiresIn: "15m" });
 
-// verify token
-export const verifyToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
+// verify token middleware
+export const verifyToken = async (req, res, next) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
 
-  if (!token) {
-    return res.status(401).json({ error: "No token provided" });
-  }
-
-  jwt.verify(token, SECRET_KEY, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ error: "Invalid token" });
+    if (!token) {
+      return res.status(401).json({ error: "No token provided" });
     }
-    req.user = decoded;
+
+    // decode and verify token
+    const decoded = jwt.verify(token, SECRET_KEY);
+
+    // check if user still exists
+    const user = await User.findById(decoded.id);
+
+    if(!user) {
+      return res.status(401).json({error: "User not found"});
+    }
+
+    req.user = user;
     next();
-  });
+  } catch (err) {
+    return res.status(403).json({error: "Invalid or expired token"});
+  }
 };
