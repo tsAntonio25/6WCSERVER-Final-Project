@@ -201,7 +201,7 @@ export default {
         await api.put(`/user/${userId}`, {
           currentPassword: this.currentPassword,
           newPassword: this.newPassword,
-          anon_username: this.isAnonymous ? this.generatedUsername : null
+          anon_username: this.isAnonymous ? this.generatedUsername : localStorage.getItem("username")
         });
 
         this.showSuccess = true;
@@ -223,7 +223,7 @@ export default {
         const randomNumber = Math.floor(Math.random() * 1000);
         this.generatedUsername = `${randomAdjective}${randomNoun}${randomNumber}`;
       } else {
-        this.generatedUsername = '';
+        this.generatedUsername = localStorage.getItem("username");
       }
     }
   }

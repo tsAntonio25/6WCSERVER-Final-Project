@@ -11,7 +11,9 @@ const userSchema = new mongoose.Schema({
         streak: {type: Number, default: 0},
         level: {type: Number, default: 1},
         is_admin: {type: Boolean, default: false},
-        anon_username: {type: String, unique: true}
+        anon_username: {type: String, default: function(){
+            return this.username;
+        }}
     },
     // to record created and updateddate automatically
     {
