@@ -10,6 +10,7 @@ Frontend
   - Vue Router
   - Axios
   - JWT Decode
+  - Vue-chart JS
 
 Backend
   - Node.js
@@ -20,7 +21,6 @@ Backend
   - Express-Async-Handler
   - Bcrypt
   - JWT (Json Web Token)
-  - Vue-chart JS
 
 Others
   -  wait
