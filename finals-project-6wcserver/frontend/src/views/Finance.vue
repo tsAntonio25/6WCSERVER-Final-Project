@@ -152,6 +152,9 @@
           />
         </div>
 
+        <!-- error -->
+        <p v-if="error" class="text-red-500 text-sm mt-2 text-center">{{ error }}</p>
+
         <div class="flex justify-between pt-4">
           <button @click="resetExpense" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
             Reset
@@ -165,88 +168,101 @@
   </div>
 </template>
 
-<script>
+<script setup>
 
-// rewrite into script setup 
+// imports
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+import api from '@/api/axios';
+import { ref, watch } from 'vue';
 
-import Header from '../components/Header.vue';
-import Footer from '../components/Footer.vue';
-import api from '@/api/axios.js'
 
-export default {
-  name: 'Finance',
-  components: { Header, Footer },
-  data() {
-    return {
-      showBudgetPopup: false,
-      showExpensePopup: false,
-      xpFill: 0,
-      // form data
-      budgetAmount: null,
-      budgetTimeline: 'monthly',
-      expenseType: 'food',
-      expenseAmount: null
-    };
-  },
-   methods: {
-    async addBudget() {
-      try {
-        const userId = localStorage.getItem('userId');
+// states
+const showBudgetPopup = ref(false)
+const showExpensePopup = ref(false)
+const xpFill = ref(0)
 
-        const res = await api.post('/budget', {
-          userId,
-          allowance_type: this.budgetTimeline,
-          amount: this.budgetAmount
-        });
+// error
+const error = ref("")
 
-        // verify budget
-        console.log('Budget added:', res.data);
+// form data
+const budgetAmount = ref(null)
+const budgetTimeline = ref('monthly')
+const expenseType = ref('food')
+const expenseAmount = ref(null)
 
-        this.resetBudget();
-        this.showBudgetPopup = false;
-      } catch (err) {
-        console.error('Add budget error:', err.response?.data || err.message);
-      }
-    },
-    async addExpense() {
-      try {
-        const userId = localStorage.getItem('userId');
+// methods
+const resetBudget = () => { // reset budget
+  budgetAmount.value = null
+  budgetTimeline.value = 'monthly'
+}
 
-        // fetch total savings
-        const savingsRes = await api.get(`/compute/${userId}`);
-        const totalSavings = savingsRes.data.totalSavings;
+const resetExpense = () => { // reset expense
+  expenseAmount.value = null
+  expenseType.value = 'food'
+}
 
-        // validate the expense
-        if (this.expenseAmount > totalSavings) {
-          // papalit nito ayaw mo alert e || TALAGA LOOK SINO BA NAMAN GUMAGAMIT NG ALERT THIS 2025?!
-          alert('Expense cannot exceed current savings.');
-          return;
-        }
+const addBudget = async () => { // add budget
+  try {
+    // get userid
+    const userId = localStorage.getItem('userId')
 
-        // add expense
-        const res = await api.post('/expense', {
-          userId,
-          type: this.expenseType,
-          expense: this.expenseAmount
-        });
+    // response
+    const res = await api.post('/budget', {
+      userId,
+      allowance_type: budgetTimeline.value,
+      amount: budgetAmount.value
+    })
 
-        // verify expense
-        console.log('Expense added:', res.data);
+    // close pop up
+    resetBudget()
+    showBudgetPopup.value = false
 
-        this.resetExpense();
-        this.showExpensePopup = false;
-      } catch (err) {
-        console.error('Add expense error:', err.response?.data || err.message);
-      }
-    },
-    resetBudget() {
-      this.budgetAmount = null;
-      this.budgetTimeline = 'monthly';
-    },
-    resetExpense() {
-      this.expenseAmount = null;
-      this.expenseType = 'food';
+    // error
+  } catch (err) {
+    console.error('Add budget error:', err.response?.data || err.message)
+  }
+}
+
+const addExpense = async () => { // add expense
+  try {
+    // get userid
+    const userId = localStorage.getItem('userId')
+
+    // get total savings
+    const savingsRes = await api.get(`/compute/${userId}`)
+    const totalSavings = savingsRes.data.totalSavings
+
+    // validate expense
+    if (expenseAmount.value > totalSavings) {
+      error.value = 'Expense cannot exceed current savings.'
+      return 
     }
-   }
-};
+
+    // add expense
+    const res = await api.post('/expense', {
+      userId,
+      type: expenseType.value,
+      expense: expenseAmount.value
+    })
+
+    // close pop up
+    resetExpense()
+    showExpensePopup.value = false
+
+    // error
+  } catch (err) {
+    console.error('Add expense error:', err.response?.data || err.message)
+  }
+}
+
+// check expense pop up
+watch(showExpensePopup, (newVal) => {
+  if (!newVal) {
+    error.value = ""
+    resetExpense()
+  }
+})
+
+
 </script>
