@@ -20,6 +20,7 @@ Backend
   - Express-Async-Handler
   - Bcrypt
   - JWT (Json Web Token)
+  - Vue-chart JS
 
 Others
   -  wait
@@ -31,7 +32,7 @@ Others
 
 Install Dependencies
 ```sh
-npm i tailwindcss @tailwindcss/vite vue-router axios jwt-decode
+npm i tailwindcss @tailwindcss/vite vue-router axios jwt-decode vue-chartjs chart.js
 ```
 
 Run the project
