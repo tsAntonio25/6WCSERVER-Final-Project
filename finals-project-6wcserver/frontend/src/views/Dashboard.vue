@@ -11,33 +11,72 @@
       <section class="bg-indigo-950 text-white rounded-lg p-4 sm:p-6 shadow-md">
         <h2 class="text-lg sm:text-xl font-semibold">Total Savings: {{ totalSavings ? ' ₱' + totalSavings : '₱ 0.00' }}</h2>
       </section>
+      
+      <!-- Expenses Section -->
 
-      <!-- Graph Placeholder with Background Card -->
+        <!-- show this if there is already expenses data-->
+        <div v-if="hasExpenses">
+            <PieChart
+              :food="food"
+              :leisure="leisure"
+              :transportation="transportation"
+              :others="others"
+            />
+          
+          <!-- data || pagawa responsive to -->
+          <div class="flex flex-col items-center text-center">
+            <h1 class="text-2xl font-bold mb-6">Expenses</h1>
+            
+            <div class="space-y-3 w-full max-w-md">
+              <div class="flex justify-between text-lg">
+                <span class="text-green-500 font-semibold">Food</span>
+                <span class="text-green-500">₱ {{ food }}</span>
+              </div>
+
+              <div class="flex justify-between text-lg">
+                <span class="text-blue-500 font-semibold">Transportation</span>
+                <span class="text-blue-500">₱ {{ transportation }}</span>
+              </div>
+
+              <div class="flex justify-between text-lg">
+                <span class="text-yellow-500 font-semibold">Leisure</span>
+                <span class="text-yellow-500">₱ {{ leisure }}</span>
+              </div>
+
+              <div class="flex justify-between text-lg">
+                <span class="text-red-500 font-semibold">Others</span>
+                <span class="text-red-500">₱ {{ others }}</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      <!-- show this if no expense data yet -->
+      <div v-else>
         <section class="bg-gray-100 rounded-lg p-6 shadow-inner w-full sm:max-w-lg mx-auto">
-            <div class="flex justify-center">
-                <div class="h-40 w-40 sm:h-48 sm:w-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm border border-gray-300">
-                Graph Coming Soon
+          <div class="flex justify-center">
+              <div class="h-40 w-40 sm:h-48 sm:w-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm border border-gray-300">
+                No data yet
                 </div>
             </div>
         </section>
 
-      <!-- Expenses Section -->
-      <section class="text-center space-y-4">
-        <h3 class="text-lg font-semibold">Expenses</h3>
-        <p class="text-sm text-gray-600">
-          No records yet.<br />
-          Start tracking your first budget or expense today!
-        </p>
-        
-        
-        <router-link
-            to="/finance"
-            class="hidden sm:inline-block bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-md shadow-sm transition"
-            >
-            Take me there!
-        </router-link>
-        
+        <section class="text-center space-y-4">
+          <h3 class="text-lg font-semibold">Expenses</h3>
+          <p class="text-sm text-gray-600">
+            No records yet.<br />
+            Start tracking your first budget or expense today!
+          </p>
+    
+          <router-link
+              to="/finance"
+              class="hidden sm:inline-block bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-md shadow-sm transition"
+              >
+              Take me there!
+          </router-link>
       </section>
+      </div>
     </div>
 
     <!-- Mobile-only footer fixed at bottom -->
@@ -57,30 +96,39 @@
 </template>
 
 <script>
+// NOTE: rewrite to composition api syntax
 
-// hii sana mapansin. PLEASE COMPOSITION API NA GAMITIN WAG NA YANG MAKALUMA NA YAN ANSAKIT SA MATA PAG TINITIGNAN 
-// SA MOBILE PLEASEEE MAAWA KA SA EYES KO ANG COMPLICATED TIGNAN
-
+// imports
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
+import PieChart from '../components/PieChart.vue'
 import api from '@/api/axios.js';
-
 
 export default {
   name: 'Dashboard',
   components: {
     Header,
-    Footer
+    Footer,
+    PieChart
   },
   data() {
     return {
+      // totals
       totalSavings: null,
       totalBudget: null,
       totalExpenses: null,
+
+      // expenses
+      food: null,
+      leisure: null,
+      transportation: null,
+      others: null
     };
   },
   created() {
+    // call methods
     this.fetchTotalSavings();
+    this.fetchExpenses()
   },
   methods: {
     async fetchTotalSavings() {
@@ -93,7 +141,30 @@ export default {
       } catch (error) {
         console.error('Error fetching total savings:', error.response?.data || error.message);
       }
+    },
+    async fetchExpenses() {
+      const userId = localStorage.getItem('userId');
+      try {
+        const response = await api.get(`/compute/${userId}`);
+        this.food = response.data.food
+        this.leisure = response.data.leisure
+        this.transportation = response.data.transportation
+        this.others = response.data.others
+      } catch (error ){
+        console.error('Error fetching total savings:', error.response?.data || error.message);
+      }
     }
+  },
+
+  computed: {
+  hasExpenses() {
+    return (
+      (this.food ?? 0) > 0 ||
+      (this.leisure ?? 0) > 0 ||
+      (this.transportation ?? 0) > 0 ||
+      (this.others ?? 0) > 0
+    )
   }
+}
 };
 </script>
