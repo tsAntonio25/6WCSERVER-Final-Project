@@ -49,13 +49,13 @@
         <!-- Profile -->
         <router-link
         to="/profile"
-        class="rounded-full border border-white"
+        class="rounded-full border border-white flex-shrink-0 min-w-0"
         :class="$route.path === '/profile' ? 'bg-sky-400 p-1' : 'hover:bg-sky-500 p-1 transition'"
         >
         <img
             src="@/assets/user.png"
             alt="User Icon"
-            class="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 rounded-full"
+            class="rounded-full object-cover h-6 w-6 sm:h-8 sm:w-8 md:h-9 md:w-9 lg:h-10 lg:w-10"
         />
         </router-link>
       </nav>
