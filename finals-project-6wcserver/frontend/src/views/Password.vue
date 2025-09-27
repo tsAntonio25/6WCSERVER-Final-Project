@@ -91,13 +91,13 @@
         </div>
 
         <!-- Back Button -->
-        <div class="pt-6">
-          <router-link
+        <div class="pt-6 pb-16 sm:pb-0">
+        <router-link
             to="/profile"
             class="inline-block px-4 py-2 bg-sky-500 text-white text-sm rounded-md hover:bg-sky-600 transition"
-          >
+        >
             ← Back
-          </router-link>
+        </router-link>
         </div>
       </div>
     </div>
