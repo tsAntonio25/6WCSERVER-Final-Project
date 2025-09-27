@@ -9,6 +9,7 @@ Frontend
   - Tailwind
   - Vue Router
   - Axios
+  - JWT Decode
 
 Backend
   - Node.js
@@ -30,7 +31,7 @@ Others
 
 Install Dependencies
 ```sh
-npm i tailwindcss @tailwindcss/vite vue-router axios
+npm i tailwindcss @tailwindcss/vite vue-router axios jwt-decode
 ```
 
 Run the project
