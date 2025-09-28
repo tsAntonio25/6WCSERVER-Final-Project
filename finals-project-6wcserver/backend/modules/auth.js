@@ -13,7 +13,7 @@ if (!SECRET_KEY) {
 // exports
 // create token
 export const generateToken = (payload) =>
-  jwt.sign(payload, SECRET_KEY, { expiresIn: "15m" });
+  jwt.sign(payload, SECRET_KEY, { expiresIn: "1h" });
 
 // verify token middleware
 export const verifyToken = async (req, res, next) => {
