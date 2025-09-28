@@ -20,6 +20,7 @@
         </router-link>
 
         <router-link
+            v-if="isAdmin"
             to="/admindash"
             class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 transition"
         >
@@ -84,6 +85,7 @@ export default {
     return {
       username: '',
       email: '',
+      isAdmin: false,
     };
   },
   created() {
@@ -93,6 +95,9 @@ export default {
     async fetchUser() {
       try {
         const userId = localStorage.getItem("userId");
+        const adminFlag = localStorage.getItem("is_admin") === "true";
+        this.isAdmin = adminFlag;
+
         console.log("UserId from localStorage:", userId);
 
         if (!userId) {

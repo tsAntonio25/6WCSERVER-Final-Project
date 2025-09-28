@@ -29,7 +29,8 @@ router.post('/', asyncHandler(async (req,res) => {
     const responseData = { 
         message: "Login successful", 
         userId: user._id, 
-        username: user.username, 
+        username: user.username,
+        is_admin: user.is_admin,
         token 
     };
 

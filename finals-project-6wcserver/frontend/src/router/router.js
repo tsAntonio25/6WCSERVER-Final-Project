@@ -60,20 +60,25 @@ const routes = [
     component: Password, // Change Password page
     meta: { requiresAuth: true }
    },
+
+   // admin
    {
     path: '/admindash',
     name: 'AdminDash',
     component: AdminDash, // Admin Dashboard Page
+    meta: { requiresAdmin: true }
    },
    {
     path: '/adminlead',
     name: 'AdminLead',
     component: AdminLead, // Admin Dashboard Page
+    meta: { requiresAdmin: true }
    },
    {
     path: '/adminuser',
     name: 'AdminUser',
     component: AdminUser, // Admin Dashboard Page
+    meta: { requiresAdmin: true }
    },
 ];
 
@@ -103,8 +108,12 @@ router.beforeEach((to, from, next) => {
         return next('/login');
       }
 
-      if (to.path === "/login" || to.path === "/register") {
-        return next("/dashboard");
+      if (to.path === '/login' || to.path === '/register') {
+        return next('/dashboard');
+      }
+
+      if(to.meta.requiresAdmin && !decoded.is_admin) {
+        return next('/dashboard')
       }
     } catch (err) {
       localStorage.clear();
