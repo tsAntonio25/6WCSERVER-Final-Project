@@ -1,6 +1,6 @@
-6WCSERVER-Final-Project
+## 6WCSERVER-Final-Project
 
-Group: 
+### Group: 
 - Antonio, Trishia Mae S.
 - Pascual, Shannen G.
 - Punsalan, Julien Michael P.
