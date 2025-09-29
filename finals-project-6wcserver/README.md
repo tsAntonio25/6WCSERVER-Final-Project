@@ -4,7 +4,7 @@ Main folder of the repository
 
 ## Frameworks/Modules Used:
 
-Frontend
+### Frontend
   - Vue.js
   - Tailwind
   - Vue Router
@@ -12,7 +12,7 @@ Frontend
   - JWT Decode
   - Vue-chart JS
 
-Backend
+### Backend
   - Node.js
   - Express.js
   - Cors
@@ -22,13 +22,13 @@ Backend
   - Bcrypt
   - JWT (Json Web Token)
 
-Others
-  -  wait
-
-## API used:
-  - wait
 
 ## Project Setup For Frontend
+
+Change Directory to Frontend Folder
+```sh
+cd finals-project-6wcserver/frontend
+```
 
 Install Dependencies
 ```sh
@@ -42,6 +42,11 @@ npm run dev
 
 ## Project Setup for Backend
 
+Change Directory to Backend Folder
+```sh
+cd finals-project-6wcserver/backend
+```
+
 Install Dependencies
 ```sh
 npm i express cors mongoose body-parser express-async-handler bcrypt jsonwebtoken
@@ -52,7 +57,7 @@ Run the server
 node server.js
 ```
 
-### Compile and Minify for Production
+## Compile and Minify for Production
 
 ```sh
 npm run build
