@@ -11,20 +11,12 @@ router.get('/:userId', asyncHandler(async (req, res) => {
     const id = req.params.userId;
     const userId = new mongoose.Types.ObjectId(id)
 
-    // console.log('Computing savings for user:', userId);
-
-    let currentSavings = 0;
-    let expenses = 0;
-
     // total budget
     const totalBudget = await Budget.aggregate([
         { $match: { user_id: userId } },
         { $group: { _id: null, total: { $sum: "$amount" } } }
     ]);
     
-    // verify if budget is read
-    // console.log('Total budget:', totalBudget);
-
     // food
     const totalFood = await Expense.aggregate([
         { $match: { user_id: userId, type: "food" } },
@@ -55,25 +47,10 @@ router.get('/:userId', asyncHandler(async (req, res) => {
         { $group: { _id: null, total: { $sum: "$expense" } } }
     ]);
 
-    // verify if expense is read
-    // console.log('Total expense:', totalExpenses);
-    // console.log('Total food:', totalFood);
-    // console.log('Total leisure:', totalLeisure);
-    // console.log('Total transportation:', totalTransportation);
-    // console.log('Total others:', totalOthers);
 
+    let currentSavings = totalBudget.length > 0 ? totalBudget[0].total : 0;
+    let expenses = totalExpenses.length > 0 ? totalExpenses[0].total : 0;
 
-    if (totalBudget.length > 0) {
-        currentSavings = totalBudget[0].total;
-    } else {
-        currentSavings = 0;
-    }   
-
-    if (totalExpenses.length > 0) {
-        expenses = totalExpenses[0].total;
-    } else {
-        expenses = 0;
-    }
 
     // calculate total savings
     const totalSavings = currentSavings - expenses;

@@ -17,7 +17,7 @@
         </div>
         <div class="text-sm text-gray-700 font-medium">
           <p>Streak Counter: <span class="font-semibold">0</span></p>
-          <p>XP Level: <span class="font-semibold">0</span></p>
+          <p>XP Level: <span class="font-semibold">{{ xpLevel }}</span></p>
         </div>
       </div>
 
@@ -71,7 +71,7 @@
         </div>
         <div class="text-xs text-gray-700 font-medium text-center">
           <p>Streak Counter: <span class="font-semibold">0</span></p>
-          <p>XP Level: <span class="font-semibold">0</span></p>
+          <p>XP Level: <span class="font-semibold"> {{ xpLevel }}</span></p>
         </div>
       </div>
     </div>
@@ -174,24 +174,38 @@
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
 import api from '@/api/axios';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
 
 // states
 const showBudgetPopup = ref(false)
 const showExpensePopup = ref(false)
 const xpFill = ref(0)
+const xpLevel = ref(0)
 
 // error
 const error = ref("")
 
 // form data
 const budgetAmount = ref(null)
-const budgetTimeline = ref('monthly')
+const budgetTimeline = ref('daily')
 const expenseType = ref('food')
 const expenseAmount = ref(null)
 
 // methods
+const getProgress = async () => {
+  try {
+    // get userid
+    const userId = localStorage.getItem('userId')
+
+    const res = await api.get(`/user/${userId}/progress`)
+    xpFill.value = res.data.progress
+    xpLevel.value = res.data.level
+  } catch (err){
+    console.error('Get progress error:', err.response?.data || err.message)
+  }
+}
+
 const resetBudget = () => { // reset budget
   budgetAmount.value = null
   budgetTimeline.value = 'monthly'
@@ -214,10 +228,14 @@ const addBudget = async () => { // add budget
       amount: budgetAmount.value
     })
 
+    // dito ba error handling?? actually hindi ko alam bahala ka na boss
+    
     // close pop up
     resetBudget()
     showBudgetPopup.value = false
 
+    // refresh progress
+    await getProgress()
     // error
   } catch (err) {
     console.error('Add budget error:', err.response?.data || err.message)
@@ -250,6 +268,9 @@ const addExpense = async () => { // add expense
     resetExpense()
     showExpensePopup.value = false
 
+    // refresh progress
+    await getProgress()
+
     // error
   } catch (err) {
     console.error('Add expense error:', err.response?.data || err.message)
@@ -263,6 +284,8 @@ watch(showExpensePopup, (newVal) => {
     resetExpense()
   }
 })
-
-
+// load progress immediately
+onMounted(() => {
+  getProgress();
+})
 </script>

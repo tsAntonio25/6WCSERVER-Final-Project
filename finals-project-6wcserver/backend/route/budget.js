@@ -2,6 +2,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler'
 import { Budget, User } from '../models/models.js';
+import { calculateLevel } from '../modules/level.js';
 
 const router = express.Router();
 
@@ -13,12 +14,12 @@ router.post('/', asyncHandler(async (req,res) => {
     if (!user) throw new Error("User not found.");
 
     const now = new Date();
+    let startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // today
+    let endDate;
+
 
     // check if user is admin
     if(!user.is_admin){
-        let startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // today
-        let endDate;
-
         if (allowance_type === 'daily'){
             endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1); // today + 1 day
         } else if (allowance_type === 'weekly'){
@@ -36,7 +37,6 @@ router.post('/', asyncHandler(async (req,res) => {
         if (existing){
             let nextAllowed;
 
-            // for error handling
             if (existing.allowance_type === "daily") {
                 nextAllowed = new Date(existing.createdAt);
                 nextAllowed.setDate(nextAllowed.getDate() + 1);
@@ -55,10 +55,10 @@ router.post('/', asyncHandler(async (req,res) => {
 
         // throw frontend error
         throw new Error(`You already set a ${existing.allowance_type} budget. You may add another on: ${nextAllowed.toDateString()}`);
-
         }
     }
 
+    // save budget
     const budget = new Budget({
         user_id: userId,
         finance_type: "budget",
@@ -67,7 +67,32 @@ router.post('/', asyncHandler(async (req,res) => {
     });
 
     await budget.save();
-    res.json(budget);
+
+    // ---- EXP SECTION -----
+    let expGain = 0;
+
+    if (allowance_type === 'daily') expGain = 25;
+    else if (allowance_type === 'weekly') expGain = 50;
+    else if (allowance_type === 'monthly') expGain = 100;
+
+    // update user exp
+    user.exp += expGain;
+    
+    // recalculate level
+    const levelData = calculateLevel(user.exp)
+    user.level = levelData.level
+
+    await user.save();
+
+    res.json({
+        budget,
+        expGained: expGain,
+        totalExp: user.exp,
+        level: user.level,
+        progress: levelData.progress,
+        expForNext: levelData.expForNext,
+        expInLevel: levelData.expInLevel
+    });
 }
 ));
 

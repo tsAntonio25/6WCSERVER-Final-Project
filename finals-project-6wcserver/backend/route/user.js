@@ -4,6 +4,8 @@ import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcrypt'
 import { User } from '../models/models.js';
 import { verifyToken } from '../modules/auth.js';
+import { calculateLevel } from '../modules/level.js';
+
 
 
 const router = express.Router();
@@ -97,6 +99,24 @@ router.delete('/admin/:id', verifyToken, asyncHandler(async (req, res) => {
 
     res.json({message: "User deleted by admin"})
 }));
+
+// refresh progress bar and level
+router.get('/:id/progress', asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id)
+    if (!user) throw new Error("User not found.")
+
+    // recalc level
+    const levelData = calculateLevel(user.exp)
+
+    res.json({
+        level: levelData.level,
+        progress: levelData.progress,
+        totalExp: levelData.totalExp,
+        expInLevel: levelData.expInLevel,
+        expForNext: levelData.expForNext,
+        streak: user.streak
+    })
+}))
 
 // export
 export default router;

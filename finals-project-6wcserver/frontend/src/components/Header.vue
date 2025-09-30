@@ -12,8 +12,8 @@
       <!-- Center: Streak + XP -->
       <div class="w-1/3 flex justify-end sm:justify-center text-sm text-right sm:text-center">
         <div>
-          <p>Streak Counter: 0</p>
-          <p>XP Level: 0</p>
+          <p>Streak Counter: {{ streak }}</p>
+          <p>XP Level: {{ xpLevel }}</p>
         </div>
       </div>
 
@@ -63,17 +63,29 @@
   </header>
 </template>
 
-<script>
-export default {
-  name: 'Header',
-  data() {
-    return {
-      username: "",
-    };
-  },
-  created() {
-    // get the username
-    this.username = localStorage.getItem("username");
-  },
+<script setup>
+// imports
+import { ref, onMounted } from 'vue';
+import api from '@/api/axios.js'
+
+// state
+const username = ref(localStorage.getItem("username") || "");
+const xpLevel = ref(0);
+const streak = ref(0);
+
+const getProgress = async () => {
+  try {
+    // get userid
+    const userId = localStorage.getItem('userId')
+
+    const res = await api.get(`/user/${userId}/progress`)
+    xpLevel.value = res.data.level
+  } catch (err){
+    console.error('Get progress error:', err.response?.data || err.message)
+  }
 };
+
+onMounted(() => {
+  getProgress();
+})
 </script>
