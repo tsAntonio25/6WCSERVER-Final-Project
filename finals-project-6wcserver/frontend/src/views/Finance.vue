@@ -43,15 +43,6 @@
           <p class="text-xs md:text-sm text-gray-600 leading-tight">Track your expenses.</p>
         </div>
       </div>
-
-      <!-- History Section -->
-      <section class="rounded-lg p-4 text-center space-y-2">
-        <h3 class="text-xl font-semibold text-left sm:text-center">History</h3>
-        <p class="text-base sm:text-lg font-semibold text-gray-700">You're at Level 0!</p>
-        <p class="text-sm text-gray-600">
-          Add your first budget or expense to start earning XP and climbing on the leaderboard.
-        </p>
-      </section>
     </div>
 
     <!-- Mobile-only footer fixed at bottom -->
