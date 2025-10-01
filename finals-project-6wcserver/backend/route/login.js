@@ -4,6 +4,8 @@ import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcrypt';
 import { User } from '../models/models.js';
 import { generateToken } from '../modules/auth.js';
+import { handleStreak } from "../modules/streak.js";
+
 
 const router = express.Router();
 
@@ -23,6 +25,9 @@ router.post('/', asyncHandler(async (req,res) => {
     if (!match) throw new Error("Invalid email or password");
 
 
+    // handle streak
+    const streakResult = await handleStreak(user);
+
     // generate token
     const token = generateToken({ id: user._id, username: user.username, is_admin: user.is_admin })
     
@@ -31,7 +36,10 @@ router.post('/', asyncHandler(async (req,res) => {
         userId: user._id, 
         username: user.username,
         is_admin: user.is_admin,
-        token 
+        token,
+        streak: streakResult.streak,
+        expGained: streakResult.expGained,
+        level: streakResult.level,
     };
 
     // verify data

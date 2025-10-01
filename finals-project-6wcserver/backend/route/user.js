@@ -109,6 +109,7 @@ router.get('/:id/progress', asyncHandler(async (req, res) => {
     const levelData = calculateLevel(user.exp)
 
     res.json({
+        streak: user.streak,
         level: levelData.level,
         progress: levelData.progress,
         totalExp: levelData.totalExp,

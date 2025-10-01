@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
         exp: {type: Number, default: 0},
         streak: {type: Number, default: 0},
         level: {type: Number, default: 1},
+        lastLogin: {type: Date, default: null},
         is_admin: {type: Boolean, default: false},
         anon_username: {type: String, default: function(){
             return this.username;

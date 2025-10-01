@@ -16,7 +16,7 @@
           <div class="h-full bg-orange-500 transition-all duration-300" :style="{ width: xpFill + '%' }"></div>
         </div>
         <div class="text-sm text-gray-700 font-medium">
-          <p>Streak Counter: <span class="font-semibold">0</span></p>
+          <p>Streak Counter: <span class="font-semibold">{{ streak }}</span></p>
           <p>XP Level: <span class="font-semibold">{{ xpLevel }}</span></p>
         </div>
       </div>
@@ -186,6 +186,7 @@ const showBudgetPopup = ref(false)
 const showExpensePopup = ref(false)
 const xpFill = ref(0)
 const xpLevel = ref(0)
+const streak = ref(0)
 
 // error
 const error = ref("")
@@ -207,6 +208,7 @@ const getProgress = async () => {
     const res = await api.get(`/user/${userId}/progress`)
     xpFill.value = res.data.progress
     xpLevel.value = res.data.level
+    streak.value = res.data.streak
   } catch (err){
     console.error('Get progress error:', err.response?.data || err.message)
   }

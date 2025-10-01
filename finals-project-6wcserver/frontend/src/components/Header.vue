@@ -78,8 +78,10 @@ const getProgress = async () => {
     // get userid
     const userId = localStorage.getItem('userId')
 
-    const res = await api.get(`/user/${userId}/progress`)
+    const res = await api.get(`/user/${userId}/progress`);
+
     xpLevel.value = res.data.level
+    streak.value = res.data.streak;
   } catch (err){
     console.error('Get progress error:', err.response?.data || err.message)
   }
