@@ -43,7 +43,17 @@
           <p class="text-xs md:text-sm text-gray-600 leading-tight">Track your expenses.</p>
         </div>
       </div>
+<!-- Educational Tip Section (Below Action Cards) -->
+<section class="w-full flex justify-center mt-6">
+  <div class="bg-white rounded-lg shadow px-6 py-6 max-w-xl w-full text-center space-y-4">
+    <h2 class="text-lg font-semibold text-gray-800">Financial Tip</h2>
+    <p class="text-sm text-gray-700 leading-relaxed">{{ currentTip }}</p>
+  </div>
+</section>
+
     </div>
+
+
 
     <!-- Mobile-only footer fixed at bottom -->
     <div class="sm:hidden fixed bottom-0 left-0 w-full z-10">
@@ -279,4 +289,27 @@ watch(showExpensePopup, (newVal) => {
 onMounted(() => {
   getProgress();
 })
+// tips
+const tips = [
+  "Building an emergency fund is important. Ideally, it should cover at least 6 months of your living expenses so you're ready for unexpected events like medical costs or tuition fees.",
+  "Track your spending weekly to spot patterns and cut unnecessary costs.",
+  "Set a savings goal and automate deposits to make progress without thinking.",
+  "Use the 50/30/20 rule: 50% needs, 30% wants, 20% savings.",
+  "Avoid impulse purchases by waiting 24 hours before buying non-essentials.",
+  "Review subscriptions monthly — cancel what you don’t use.",
+  "Invest early. Even small amounts grow significantly over time."
+]
+
+const currentTip = ref(tips[0])
+let tipIndex = 0
+
+const rotateTips = () => {
+  tipIndex = (tipIndex + 1) % tips.length
+  currentTip.value = tips[tipIndex]
+}
+
+onMounted(() => {
+  setInterval(rotateTips, 15000) // rotates every 15 seconds
+})
+
 </script>
