@@ -18,8 +18,8 @@
         <div v-if="hasExpenses">
             <PieChart
               :food="food"
-              :leisure="leisure"
               :transportation="transportation"
+              :leisure="leisure"
               :others="others"
             />
           

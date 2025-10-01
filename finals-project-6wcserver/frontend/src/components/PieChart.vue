@@ -32,7 +32,7 @@ const chartData = computed(() => ({
     {
       label: 'Expenses',
       backgroundColor: ['#8BC34A', '#3ABEFF', '#FFCF4D', '#FF3C38'],
-      data: [props.food, props.leisure, props.transportation, props.others],
+      data: [props.food, props.transportation, props.leisure, props.others],
     },
   ],
 }))
