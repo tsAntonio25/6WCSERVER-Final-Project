@@ -109,6 +109,9 @@
           </select>
         </div>
 
+        <!-- error -->
+        <p v-if="error" class="text-red-500 text-sm mt-2 text-center">{{ error }}</p>
+
         <div class="flex justify-between pt-4">
           <button @click="resetBudget" class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
             Reset
@@ -186,6 +189,8 @@ const xpLevel = ref(0)
 
 // error
 const error = ref("")
+const nextAllowed = ref("")
+const existing_allowance = ref("")
 
 // form data
 const budgetAmount = ref(null)
@@ -229,7 +234,13 @@ const addBudget = async () => { // add budget
       amount: budgetAmount.value
     })
 
-    // dito ba error handling?? actually hindi ko alam bahala ka na boss
+    // get error
+    nextAllowed.value = res.data.nextAllowed
+    if (nextAllowed) {
+      existing_allowance.value = res.data.existing_allowance
+      error.value = `You already set a ${existing_allowance.value} budget. You may add on ${nextAllowed.value}`
+      return 
+    }
     
     // close pop up
     resetBudget()
@@ -285,6 +296,15 @@ watch(showExpensePopup, (newVal) => {
     resetExpense()
   }
 })
+
+// check budget pop up
+watch(showBudgetPopup, (newVal) => {
+  if (!newVal) {
+    error.value = ""
+    resetBudget()
+  }
+})
+
 // load progress immediately
 onMounted(() => {
   getProgress();

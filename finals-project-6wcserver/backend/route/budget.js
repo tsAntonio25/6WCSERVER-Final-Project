@@ -49,12 +49,8 @@ router.post('/', asyncHandler(async (req,res) => {
                 nextAllowed = new Date(existing.createdAt);
                 nextAllowed.setMonth(nextAllowed.getMonth() + 1);
             }
-        
-        // test log
-        console.log(`Adding Budget blocked. User must wait until: ${nextAllowed.toDateString()}`);
-
-        // throw frontend error
-        throw new Error(`You already set a ${existing.allowance_type} budget. You may add another on: ${nextAllowed.toDateString()}`);
+            
+        return res.json({existing_allowance: existing.allowance_type , nextAllowed: nextAllowed.toDateString()})    
         }
     }
 
