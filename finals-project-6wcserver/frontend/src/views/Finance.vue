@@ -43,13 +43,13 @@
           <p class="text-xs md:text-sm text-gray-600 leading-tight">Track your expenses.</p>
         </div>
       </div>
-<!-- Educational Tip Section (Below Action Cards) -->
-<section class="w-full flex justify-center mt-6">
-  <div class="bg-white rounded-lg shadow px-6 py-6 max-w-xl w-full text-center space-y-4">
-    <h2 class="text-lg font-semibold text-gray-800">Financial Tip</h2>
-    <p class="text-sm text-gray-700 leading-relaxed">{{ currentTip }}</p>
-  </div>
-</section>
+    <!-- Educational Tip Section (Below Action Cards) -->
+    <section class="w-full flex justify-center mt-6">
+      <div class="bg-white rounded-lg shadow px-6 py-6 max-w-xl w-full text-center space-y-4">
+        <h2 class="text-lg font-semibold text-gray-800">Financial Tip</h2>
+        <p class="text-sm text-gray-700 leading-relaxed">{{ currentTip }}</p>
+      </div>
+    </section>
 
     </div>
 
@@ -300,16 +300,12 @@ const tips = [
   "Invest early. Even small amounts grow significantly over time."
 ]
 
-const currentTip = ref(tips[0])
-let tipIndex = 0
-
-const rotateTips = () => {
-  tipIndex = (tipIndex + 1) % tips.length
-  currentTip.value = tips[tipIndex]
-}
+const currentTip = ref("")
 
 onMounted(() => {
-  setInterval(rotateTips, 15000) // rotates every 15 seconds
+  const randomIndex = Math.floor(Math.random() * tips.length)
+  currentTip.value = tips[randomIndex]
 })
+
 
 </script>
