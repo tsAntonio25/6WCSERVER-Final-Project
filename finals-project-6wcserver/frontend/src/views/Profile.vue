@@ -65,12 +65,13 @@
       <!-- History Section -->
       <section class="max-w-md mx-auto rounded-lg p-4 text-center space-y-2">
         <h3 class="text-xl font-semibold text-left sm:text-center">History</h3>
-        <p class="text-base sm:text-lg font-semibold text-gray-700">You're at Level 0!</p>
+        <p class="text-base sm:text-lg font-semibold text-gray-700">You're at Level {{level}}!</p>
         <p class="text-sm text-gray-600">
           Add your first budget or expense to start earning XP and climbing on the leaderboard.
         </p>
       </section>
-            <!-- Transaction History Log -->
+
+      <!-- Transaction History Log -->
       <section class="max-w-md mx-auto space-y-3">
         <div class="bg-green-100 text-green-800 px-4 py-3 rounded-md shadow-sm text-sm">
           Added ₱[amount] on [category] at [date]
@@ -100,6 +101,9 @@ const router = useRouter()
 const username = ref('')
 const email = ref('')
 const isAdmin = ref(false)
+const level = ref(0)
+const history = ref([])
+
 
 const fetchUser = async () => {
   try {
@@ -112,9 +116,19 @@ const fetchUser = async () => {
       return
     }
 
+    // for user info
     const res = await api.get(`/user/${userId}`)
     username.value = res.data.username || res.data.anon_username
     email.value = res.data.email
+
+    // for level
+    const progressRes = await api.get(`/user/${userId}/progress`)
+    level.value = progressRes.data.level
+
+    // for history
+    const historyRes = await api.get(`/user/${userId}/history`)
+    history.value = historyRes.data
+
   } catch (err) {
     console.error('Fetch user error:', err.response ? err.response.data : err.message)
     alert('Fetch user failed: ' + (err.response?.data?.message || err.message))

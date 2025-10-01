@@ -2,7 +2,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcrypt'
-import { User } from '../models/models.js';
+import { Budget, Expense, User } from '../models/models.js';
 import { verifyToken } from '../modules/auth.js';
 import { calculateLevel } from '../modules/level.js';
 
@@ -117,7 +117,43 @@ router.get('/:id/progress', asyncHandler(async (req, res) => {
         expForNext: levelData.expForNext,
         streak: user.streak
     })
-}))
+}));
+
+router.get('/:id/history', asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+
+    // make documents lean (faster query, less memory)
+    const budgets = await Budget.find({ user_id: userId }).lean();
+    const expenses = await Expense.find({ user_id: userId }).lean();
+
+    // map
+    const history = [
+        ...budgets.map(b => ({
+        type: 'budget',
+        amount: b.amount,
+        category: b.allowance_type,
+        date: b.createdAt
+        })),
+        ...expenses.map(e => ({
+        type: 'expense',
+        amount: e.expense,
+        category: e.type,
+        date: e.date
+        }))
+    ];
+
+    // sort newest first
+    history.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // filter out undefined values
+    const cleanHistory = history
+    .filter(item => Object.values(item).every(v => v !== undefined))
+    .slice(0, 10);
+
+    // log output:
+    console.log(cleanHistory);
+    res.json(cleanHistory);
+}));
 
 // export
 export default router;
