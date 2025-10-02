@@ -91,6 +91,12 @@
 </template>
 
 <script setup>
+
+/*
+  Notes:
+  - Show History (Frontend) 
+*/
+
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'

@@ -238,7 +238,7 @@ const addBudget = async () => { // add budget
 
     // get error
     nextAllowed.value = res.data.nextAllowed
-    if (nextAllowed) {
+    if (nextAllowed.value) {
       existing_allowance.value = res.data.existing_allowance
       error.value = `You already set a ${existing_allowance.value} budget. You may add on ${nextAllowed.value}`
       return 

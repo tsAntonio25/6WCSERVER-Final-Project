@@ -81,7 +81,15 @@
 </template>
 
 <script setup>
-// setup na sila wow!!!! 
+/*
+  Notes:
+  - Show leaderboard (Frontend) 
+*/
+
+
+
+
+// setup na sila wow!!!! || good job
 // imports
 import { ref, onMounted } from 'vue';
 import Header from '../components/Header.vue';
