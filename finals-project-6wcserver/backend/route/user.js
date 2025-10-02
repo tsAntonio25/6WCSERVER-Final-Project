@@ -148,7 +148,7 @@ router.get('/:id/history', asyncHandler(async (req, res) => {
     // filter out undefined values
     const cleanHistory = history
     .filter(item => Object.values(item).every(v => v !== undefined))
-    .slice(0, 10);
+    .slice(0, 5);
 
     // log output:
     console.log(cleanHistory);

@@ -58,23 +58,6 @@ const budgetSchema = new mongoose.Schema({
 
 export const Budget = mongoose.model("Budget", budgetSchema);
 
-// ---------------------------------
-
-
-// Leaderboard Model
-const leaderboardSchema = new mongoose.Schema({
-        user_id: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
-        username: {type: String, required: true},
-        level: {type: Number, default: 1},
-        exp: {type: Number, default: 0}
-    },
-    {
-        timestamps: true
-    }
-);
-
-export const Leaderboard = mongoose.model("Leaderboard", leaderboardSchema);
-
 //---------------------------------
 
 

@@ -23,8 +23,8 @@
     <div class="h-full bg-orange-500 transition-all duration-300" :style="{ width: xpFill + '%' }"></div>
   </div>
   <div class="text-sm text-gray-700 font-medium">
-    <p>Streak Counter: <span class="font-semibold">0</span></p>
-    <p>XP Level: <span class="font-semibold">0</span></p>
+    <p>Streak Counter: <span class="font-semibold">{{streak}}</span></p>
+    <p>XP Level: <span class="font-semibold">{{xpLevel}}</span></p>
   </div>
 </div>
       <!-- Leaderboard Title -->
@@ -80,25 +80,66 @@
   </div>
 </template>
 
-<script>
-
-// please nagmamakaawa ako, composition api na gamitin pleaseee
-
+<script setup>
+// setup na sila wow!!!! 
+// imports
+import { ref, onMounted } from 'vue';
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
+import api from '@/api/axios.js';
 
-export default {
-  name: 'Leaderboard',
-  components: {
-    Header,
-    Footer
-  },
-  data() {
-    return {
-      showBudgetPopup: false,
-      showExpensePopup: false,
-      xpFill: 0
-    };
+// states
+const leaderboard = ref([]);
+const userRank = ref(null);
+const xpFill = ref(0)
+const xpLevel = ref(0)
+const streak = ref(0)
+
+
+// methods
+const getProgress = async () => {
+  try {
+    // get userid
+    const userId = localStorage.getItem('userId')
+
+    const res = await api.get(`/user/${userId}/progress`)
+    xpFill.value = res.data.progress
+    xpLevel.value = res.data.level
+    streak.value = res.data.streak
+  } catch (err){
+    console.error('Get progress error:', err.response?.data || err.message)
+  }
+}
+
+const fetchLeaderboard = async () => {
+  try {
+    // get leaderboard (top 10, no admin)
+    const res = await api.get("/leaderboard"); 
+    leaderboard.value = res.data;
+
+  } catch (err) {
+    console.error('Error fetching leaderboard:', err);
   }
 };
+
+const fetchUserRank = async () => {
+  try {
+    // get specific user rank (Current User Rank)
+    const userId = localStorage.getItem('userId');
+    if (!userId) return;
+
+    const res = await api.get(`/leaderboard/rank/${userId}`);
+    userRank.value = res.data;
+
+  } catch (err) {
+    console.error('Error fetching user rank:', err);
+  }
+};
+
+onMounted(() => {
+  getProgress();
+  fetchLeaderboard();
+  fetchUserRank();
+});
+
 </script>

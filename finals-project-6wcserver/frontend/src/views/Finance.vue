@@ -71,7 +71,7 @@
           <div class="h-full bg-orange-500 transition-all duration-300" :style="{ width: xpFill + '%' }"></div>
         </div>
         <div class="text-xs text-gray-700 font-medium text-center">
-          <p>Streak Counter: <span class="font-semibold">0</span></p>
+          <p>Streak Counter: <span class="font-semibold">{{streak}}</span></p>
           <p>XP Level: <span class="font-semibold"> {{ xpLevel }}</span></p>
         </div>
       </div>
