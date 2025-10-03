@@ -15,9 +15,6 @@ router.get("/", asyncHandler(async (req, res) => {
     .limit(10);
 
     res.json(leaderboard);
-
-    //log leaderboard
-    console.log(leaderboard);
 }));
 
 // Read Rank
@@ -49,9 +46,6 @@ router.get("/rank/:id", asyncHandler(async (req, res) => {
             level: user.level
         }
     });
-
-    // log userRank
-    console.log(`User ${user.username}: Rank ${rank}`)
 }));
 // export
 export default router;

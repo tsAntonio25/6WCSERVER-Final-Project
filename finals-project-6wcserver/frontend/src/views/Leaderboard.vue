@@ -5,8 +5,6 @@
       <Header />
     </div>
 
-   
-
     <!-- Main content -->
     <div class="flex-grow px-4 sm:px-8 py-6 space-y-6">
       <!-- Podium Graphic -->
@@ -32,44 +30,48 @@
 
       <!-- Ranked List -->
         <div class="max-w-md mx-auto space-y-2">
-        <!-- 1st Place -->
-        <div class="flex justify-between items-center bg-yellow-100 rounded px-4 py-2 shadow-sm">
-            <span class="font-medium text-gray-700">1. HoneyBanana123</span>
-            <span class="text-sm text-gray-600">4,000 pts</span>
+        <div v-for="(rank, index) in leaderboard" :key="rank.username">
+
+          <!-- 1st Place -->
+          <div v-if="index === 0">
+            <div class="flex justify-between items-center bg-yellow-100 rounded px-4 py-2 shadow-sm">
+                <span class="font-medium text-gray-700">{{index + 1}}. {{ rank.anon_username }}</span>
+                <span class="text-sm text-gray-600">{{ rank.exp }} points</span>
+            </div>
+          </div>
+
+          <!-- 2nd Place -->
+          <div v-else-if="index === 1">
+            <div class="flex justify-between items-center bg-gray-200 rounded px-4 py-2 shadow-sm border border-gray-300">
+              <span class="font-medium text-gray-800">{{ index + 1 }}. {{ rank.anon_username }}</span>
+              <span class="text-sm text-gray-700">{{ rank.exp }} points</span>
+            </div>
+          </div>
+
+          <!-- 3rd Place -->
+           <div v-else-if="index === 2">
+            <div class="flex justify-between items-center bg-orange-100 rounded px-4 py-2 shadow-sm">
+              <span class="font-medium text-gray-700">{{index + 1}}. {{ rank.anon_username }}</span>
+              <span class="text-sm text-gray-600">{{ rank.exp }} points</span>
+            </div>
+           </div>
+
+          <!-- the rest -->
+          <div v-else>
+            <div class="flex justify-between items-center bg-white rounded px-4 py-2 shadow-sm">
+            <span class="font-medium text-gray-700">{{index + 1}}. {{ rank.anon_username }}</span>
+            <span class="text-sm text-gray-500">{{ rank.exp }} points</span>
+          </div>
+          </div>
+        </div>
         </div>
 
-        <!-- 2nd Place -->
-        <div class="flex justify-between items-center bg-gray-100 rounded px-4 py-2 shadow-sm">
-            <span class="font-medium text-gray-700">2. julienpop10</span>
-            <span class="text-sm text-gray-600">3,899 pts</span>
-        </div>
-
-        <!-- 3rd Place -->
-        <div class="flex justify-between items-center bg-orange-100 rounded px-4 py-2 shadow-sm">
-            <span class="font-medium text-gray-700">3. honeyLovs</span>
-            <span class="text-sm text-gray-600">3,000 pts</span>
-        </div>
-
-        <!-- Remaining -->
-        <div class="flex justify-between items-center bg-white rounded px-4 py-2 shadow-sm">
-            <span class="font-medium text-gray-700">4. shanpascul</span>
-            <span class="text-sm text-gray-500">2,500 pts</span>
-        </div>
-        <div class="flex justify-between items-center bg-white rounded px-4 py-2 shadow-sm">
-            <span class="font-medium text-gray-700">5. LavenderHaze</span>
-            <span class="text-sm text-gray-500">2,000 pts</span>
-        </div>
-        <div class="flex justify-between items-center bg-white rounded px-4 py-2 shadow-sm">
-            <span class="font-medium text-gray-700">6. AppleandBanana50</span>
-            <span class="text-sm text-gray-500">1,000 pts</span>
-        </div>
-        </div>
       <!-- Current User Rank -->
         <div class="max-w-md mx-auto bg-white rounded px-4 py-3 shadow-sm text-center space-y-1">
         <p class="text-base font-semibold text-gray-700">
-            Your Current Rank: <span class="text-sky-600">0</span>
+            Your Current Rank: <span class="text-sky-600">{{ userRank?.rank }}</span>
         </p>
-        <p class="text-sm text-gray-500">0 points</p>
+        <p class="text-sm text-gray-500">{{userRank?.user.exp}} points</p>
         </div>
     </div>
 
@@ -81,15 +83,6 @@
 </template>
 
 <script setup>
-/*
-  Notes:
-  - Show leaderboard (Frontend) 
-*/
-
-
-
-
-// setup na sila wow!!!! || good job
 // imports
 import { ref, onMounted } from 'vue';
 import Header from '../components/Header.vue';
@@ -97,12 +90,11 @@ import Footer from '../components/Footer.vue';
 import api from '@/api/axios.js';
 
 // states
-const leaderboard = ref([]);
+const leaderboard = ref([]); // array
 const userRank = ref(null);
 const xpFill = ref(0)
 const xpLevel = ref(0)
 const streak = ref(0)
-
 
 // methods
 const getProgress = async () => {
