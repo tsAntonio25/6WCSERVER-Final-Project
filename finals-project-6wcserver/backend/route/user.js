@@ -143,9 +143,9 @@ router.get('/:id/history', asyncHandler(async (req, res) => {
     ];
 
     // sort newest first
-    history.sort((a, b) => new Date(b.date) - new Date(a.date));
+    history.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    // filter out undefined values
+    // filter out undefined values || <-- fix this
     const cleanHistory = history
     .filter(item => Object.values(item).every(v => v !== undefined))
     .slice(0, 5);

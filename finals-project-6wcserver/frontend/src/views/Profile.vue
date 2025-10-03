@@ -65,21 +65,29 @@
       <!-- History Section -->
       <section class="max-w-md mx-auto rounded-lg p-4 text-center space-y-2">
         <h3 class="text-xl font-semibold text-left sm:text-center">History</h3>
-        <p class="text-base sm:text-lg font-semibold text-gray-700">You're at Level {{level}}!</p>
-        <p class="text-sm text-gray-600">
+       
+        <!-- if no history yet -->
+        <div v-if="!history">
+          <p class="text-sm text-gray-600">
           Add your first budget or expense to start earning XP and climbing on the leaderboard.
-        </p>
-      </section>
-
-      <!-- Transaction History Log -->
-      <section class="max-w-md mx-auto space-y-3">
-        <div class="bg-green-100 text-green-800 px-4 py-3 rounded-md shadow-sm text-sm">
-          Added ₱[amount] on [category] at [date]
+          </p>
         </div>
 
-        <div class="bg-red-100 text-red-800 px-4 py-3 rounded-md shadow-sm text-sm">
-          Spent ₱[amount] on [category] at [date]
-        </div>
+        <!-- Transaction History Log -->
+         <div v-else class="max-w-md mx-auto space-y-3">
+            <div v-for="val in history" :key="val.date">
+              <div v-if="val.type === 'budget'">
+                <div class="bg-green-100 text-green-800 px-4 py-3 rounded-md shadow-sm text-sm">
+                  Added ₱{{ val.amount }} on {{ val.category }} at {{ val.date }}
+                </div>
+              </div>
+              <div v-else>
+                <div class="bg-red-100 text-red-800 px-4 py-3 rounded-md shadow-sm text-sm">
+                  Spent ₱{{ val.amount }} on {{ val.category }} at {{ val.date }}
+                </div>
+              </div>
+            </div>
+          </div>
       </section>
     </div>
 
@@ -91,12 +99,6 @@
 </template>
 
 <script setup>
-
-/*
-  Notes:
-  - Show History (Frontend) 
-*/
-
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import Header from '../components/Header.vue'
