@@ -11,15 +11,20 @@ import { jwtDecode } from 'jwt-decode';
 import AdminDash from '@/views/Admin/AdminDash.vue';
 import AdminLead from '@/views/Admin/AdminLead.vue';
 import AdminUser from '@/views/Admin/AdminUser.vue';
-
+import Landing from '@/views/Landing.vue';
 
 const routes = [
   { 
     path: '/',
+    name: 'Landing',
+    component: Landing // landing page
+   },
+   { 
+    path: '/home',
     name: 'Home',
     component: Home // home page
    },      
-  { 
+   {  
     path: '/login',
     name: 'Login',
     component: Login // login page
