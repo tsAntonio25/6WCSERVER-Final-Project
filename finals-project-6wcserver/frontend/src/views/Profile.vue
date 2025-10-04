@@ -67,7 +67,7 @@
         <h3 class="text-xl font-semibold text-left sm:text-center">History</h3>
        
         <!-- if no history yet -->
-        <div v-if="!history">
+        <div v-if="!history.length">
           <p class="text-sm text-gray-600">
           Add your first budget or expense to start earning XP and climbing on the leaderboard.
           </p>
@@ -76,14 +76,14 @@
         <!-- Transaction History Log -->
          <div v-else class="max-w-md mx-auto space-y-3">
             <div v-for="val in history" :key="val.date">
-              <div v-if="val.type === 'budget'">
+              <div v-if="val.finance_type === 'budget'">
                 <div class="bg-green-100 text-green-800 px-4 py-3 rounded-md shadow-sm text-sm">
-                  Added ₱{{ val.amount }} on {{ val.category }} at {{ val.date }}
+                  Added ₱{{ val.amount }} on {{ val.allowance_type }} at {{ new Date(val.createdAt).toLocaleString() }}
                 </div>
               </div>
               <div v-else>
                 <div class="bg-red-100 text-red-800 px-4 py-3 rounded-md shadow-sm text-sm">
-                  Spent ₱{{ val.amount }} on {{ val.category }} at {{ val.date }}
+                  Spent ₱{{ val.expense }} on {{ val.type }} at {{ new Date(val.date).toLocaleString() }}
                 </div>
               </div>
             </div>

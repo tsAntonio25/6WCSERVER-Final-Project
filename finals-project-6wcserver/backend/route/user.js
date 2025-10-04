@@ -2,6 +2,7 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcrypt'
+import mongoose from 'mongoose';
 import { Budget, Expense, User } from '../models/models.js';
 import { verifyToken } from '../modules/auth.js';
 import { calculateLevel } from '../modules/level.js';
@@ -122,37 +123,19 @@ router.get('/:id/progress', asyncHandler(async (req, res) => {
 router.get('/:id/history', asyncHandler(async (req, res) => {
     const userId = req.params.id;
 
-    // make documents lean (faster query, less memory)
-    const budgets = await Budget.find({ user_id: userId }).lean();
-    const expenses = await Expense.find({ user_id: userId }).lean();
+    // add direct access to whole finance collection
+    const Finance = mongoose.connection.collection('finance');
 
-    // map
-    const history = [
-        ...budgets.map(b => ({
-        type: 'budget',
-        amount: b.amount,
-        category: b.allowance_type,
-        date: b.createdAt
-        })),
-        ...expenses.map(e => ({
-        type: 'expense',
-        amount: e.expense,
-        category: e.type,
-        date: e.date
-        }))
-    ];
+    const history = await Finance.aggregate([
+        { $match: { user_id: new mongoose.Types.ObjectId(userId) } },
+        // combine two fields into timestamps (used for sorting)
+        { $addFields: { timestamp: { $ifNull: ["$date", "$createdAt"] } } },
+        { $sort: { timestamp: -1 } },
+        { $limit: 5 }
+    ]).toArray();
 
-    // sort newest first
-    history.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-    // filter out undefined values || <-- fix this
-    const cleanHistory = history
-    .filter(item => Object.values(item).every(v => v !== undefined))
-    .slice(0, 5);
-
-    // log output:
-    console.log(cleanHistory);
-    res.json(cleanHistory);
+    res.json(history)
+    console.log(history)
 }));
 
 // export
