@@ -95,7 +95,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
 
-  const publicPages = ["/", "/login", "/register"];
+  const publicPages = ["/", "/home", "/login", "/register"];
 
   // if user not authenticated, redirect to login
   if (!publicPages.includes(to.path) && !token) {
@@ -113,7 +113,7 @@ router.beforeEach((to, from, next) => {
         return next('/login');
       }
 
-      if (to.path === '/login' || to.path === '/register') {
+      if (to.path === '/login' || to.path === '/register' || to.path === '/home') {
         return next('/dashboard');
       }
 
