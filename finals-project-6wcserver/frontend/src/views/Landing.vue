@@ -127,7 +127,7 @@
   <h2 class="text-5xl font-bold text-violet-950">Get Started Now</h2>
 
   <router-link
-    to="/signup"
+    to="/register"
     class="inline-block px-8 py-4 bg-blue-500 text-white text-xl rounded-lg hover:bg-blue-600 transition"
   >
     Sign Up
