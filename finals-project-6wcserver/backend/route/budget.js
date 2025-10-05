@@ -13,6 +13,8 @@ router.post('/', asyncHandler(async (req,res) => {
     const user = await User.findById(userId);
     if (!user) throw new Error("User not found.");
 
+    if (amount >= 15000) throw new Error("Amount cannot exceed ₱15,000.")
+
     const now = new Date();
     let startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // today
     let endDate;

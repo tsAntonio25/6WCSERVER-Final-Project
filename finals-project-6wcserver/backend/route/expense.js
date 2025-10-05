@@ -15,6 +15,8 @@ router.post("/", asyncHandler(async (req, res) => {
     const user = await User.findById(userId);
     if (!user) throw new Error("User not found.");
 
+    if (expense < 10) throw new Error("Expense must be atleast ₱10.")
+
     const id = new mongoose.Types.ObjectId(userId);
      
     // compute total savings
