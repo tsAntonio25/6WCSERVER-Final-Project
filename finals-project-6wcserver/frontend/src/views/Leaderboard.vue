@@ -115,7 +115,7 @@ const fetchLeaderboard = async () => {
   try {
     // get leaderboard (top 10, no admin)
     const res = await api.get("/leaderboard"); 
-    leaderboard.value = res.data;
+    leaderboard.value = res.data.users;
 
   } catch (err) {
     console.error('Error fetching leaderboard:', err);

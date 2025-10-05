@@ -12,6 +12,7 @@ import signup from './route/signup.js';
 import login from './route/login.js';
 import computation from './route/computation.js'
 import leaderboard from './route/leaderboard.js'
+import admin from './route/admin.js'
 
 
 const app = express();
@@ -34,6 +35,7 @@ app.use("/budget", budget);
 app.use("/user", user);
 app.use("/compute", computation);
 app.use("/leaderboard", leaderboard);
+app.use("/admin", admin);
 
 
 // error handler

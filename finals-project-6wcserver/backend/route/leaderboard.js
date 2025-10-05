@@ -7,14 +7,29 @@ const router = express.Router();
 
 // Read leaderboard (sorted by exp and lvl)
 router.get("/", asyncHandler(async (req, res) => {
+    // values for pagination (admin) || leaderboard (user)
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 10
+    const skip = (page - 1) * limit
+
+    const total = await User.countDocuments({ is_admin: false })
+
     const leaderboard = await User.find(
         {is_admin: false},
         "username anon_username level exp"
     )
     .sort({ exp: -1 , level: -1})
-    .limit(10);
+    .skip(skip)
+    .limit(limit);
 
-    res.json(leaderboard);
+    res.json({
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total/limit),
+        users: leaderboard
+    })
+    
 }));
 
 // Read Rank
