@@ -82,24 +82,17 @@ router.delete('/self/:id', verifyToken, asyncHandler(async (req, res) => {
     // check if the logged in user matches the account
     if (req.user.id !== target) throw new Error("You can only delete your own account")
 
+    // delete finance first
+    const Finance = mongoose.connection.collection('finance');
+    await Finance.deleteMany({user_id: new mongoose.Types.ObjectId(target)});
+
+    // delete user itself
     const deleted = await User.findByIdAndDelete(target);
     if (!deleted) throw new Error("User not found");
 
-    res.json({message: "Your account has been deleted"})
+    res.json({message: "Your account and all records have been deleted"})
 }));
 
-// Delete (Admin)
-router.delete('/admin/:id', verifyToken, asyncHandler(async (req, res) => {
-    const target = req.params.id;
-
-    // check if the requester is admin
-    if(!req.user.is_admin) throw new Error("Not authorized. Admin only.");
-
-    const deleted = await User.findByIdAndDelete(target);
-    if (!deleted) throw new Error("User not found");
-
-    res.json({message: "User deleted by admin"})
-}));
 
 // refresh progress bar and level
 router.get('/:id/progress', asyncHandler(async (req, res) => {

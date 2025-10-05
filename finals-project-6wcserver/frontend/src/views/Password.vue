@@ -242,83 +242,101 @@
   
 </template>
 
-<script>
+<script setup>
+// imports
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
+import api from '@/api/axios.js'
 
-// rewrite into script setup 
+// router
+const router = useRouter()
 
-import Header from '../components/Header.vue';
-import Footer from '../components/Footer.vue';
-import api from '../api/axios.js';
+// states
+const currentPassword = ref('')
+const newPassword = ref('')
+const showNewPassword = ref(false)
+const showSuccess = ref(false)
+const showError = ref(false)
+const isAnonymous = ref(false)
+const generatedUsername = ref('')
+const showDeleteConfirm = ref(false)
+const showAccountDeleted = ref(false)
 
-export default {
-  name: 'Password',
-  components: { Header, Footer },
-  data() {
-    return {
-      currentPassword: '',
-      newPassword: '',
-      showNewPassword: false,
-      showSuccess: false,
-      showError: false,
-      isAnonymous: false,
-      generatedUsername: '',
-      showDeleteConfirm: false,
-      showAccountDeleted: false
+// methods
+const toggleNewPassword = () => {
+  showNewPassword.value = !showNewPassword.value
+}
 
-    };
-  },
-  
-  methods: {
-    toggleNewPassword() {
-      this.showNewPassword = !this.showNewPassword;
-    },
-    resetFields() {
-      this.currentPassword = '';
-      this.newPassword = '';
-      this.showNewPassword = false;
-      this.isAnonymous = false;
-      this.generatedUsername = '';
-    },
-    async updatePassword() {
-      try {
-        const userId = localStorage.getItem("userId");
-        if (!userId) {
-          this.showError = true;
-          return;
-        }
+const resetFields = () => {
+  currentPassword.value = ''
+  newPassword.value = ''
+  showNewPassword.value = false
+  isAnonymous.value = false
+  generatedUsername.value = ''
+}
 
-        await api.put(`/user/${userId}`, {
-          currentPassword: this.currentPassword,
-          newPassword: this.newPassword,
-          anon_username: this.isAnonymous ? this.generatedUsername : localStorage.getItem("username")
-        });
+const updatePassword = async () => {
+  try {
+    const userId = localStorage.getItem('userId')
+    if (!userId) {
+      showError.value = true
+      return
+    }
 
-        this.showSuccess = true;
-        this.showError = false;
-        this.resetFields();
-      } catch (err) {
-        console.error(err);
-        this.showError = true;
-        this.showSuccess = false;
-      }
-    },
-    handleAnonymousToggle() {
-      this.isAnonymous = !this.isAnonymous;
-      if (this.isAnonymous) {
-        const adjectives = ['Sunny', 'Brave', 'Gentle', 'Swift', 'Clever', 'Bold'];
-        const nouns = ['Tiger', 'Falcon', 'Pine', 'River', 'Moon', 'Echo'];
-        const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-        const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
-        const randomNumber = Math.floor(Math.random() * 1000);
-        this.generatedUsername = `${randomAdjective}${randomNoun}${randomNumber}`;
-      } else {
-        this.generatedUsername = localStorage.getItem("username");
-      }
-    },
-    confirmDelete() {
-    this.showDeleteConfirm = false;
-    this.showAccountDeleted = true;
-    },
+    await api.put(`/user/${userId}`, {
+      currentPassword: currentPassword.value,
+      newPassword: newPassword.value,
+      anon_username: isAnonymous.value
+        ? generatedUsername.value
+        : localStorage.getItem('username')
+    })
+
+    showSuccess.value = true
+    showError.value = false
+    resetFields()
+  } catch (err) {
+    console.error(err)
+    showError.value = true
+    showSuccess.value = false
   }
-};
+}
+
+const handleAnonymousToggle = () => {
+  isAnonymous.value = !isAnonymous.value
+  if (isAnonymous.value) {
+    const adjectives = ['Sunny', 'Brave', 'Gentle', 'Swift', 'Clever', 'Bold']
+    const nouns = ['Tiger', 'Falcon', 'Pine', 'River', 'Moon', 'Echo']
+    const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)]
+    const randomNoun = nouns[Math.floor(Math.random() * nouns.length)]
+    const randomNumber = Math.floor(Math.random() * 1000)
+    generatedUsername.value = `${randomAdjective}${randomNoun}${randomNumber}`
+  } else {
+    generatedUsername.value = localStorage.getItem('username') || ''
+  }
+}
+
+const confirmDelete = async () => {
+  try {
+    const userId = localStorage.getItem('userId')
+    if (!userId) return
+
+    await api.delete(`/user/self/${userId}`)
+
+    showDeleteConfirm.value = false
+    showAccountDeleted.value = true
+
+    // clear local storage
+    localStorage.clear()
+
+    // redirect after 2s
+    setTimeout(() => {
+      router.push('/') 
+    }, 2000)
+  } catch (err) {
+    console.error('Failed to delete account:', err)
+    showError.value = true
+  }
+}
 </script>
