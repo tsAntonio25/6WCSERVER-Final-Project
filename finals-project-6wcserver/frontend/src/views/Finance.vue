@@ -236,9 +236,15 @@ const resetExpense = () => { // reset expense
 
 const addBudget = async () => { // add budget
   try {
+    // check amount first
+    if (budgetAmount.value >= 15000) {
+      error.value = 'Amount cannot exceed ₱15,000.'
+      return
+    }
+
     // get userid
     const userId = localStorage.getItem('userId')
-
+  
     // response
     const res = await api.post('/budget', {
       userId,
@@ -253,7 +259,7 @@ const addBudget = async () => { // add budget
       error.value = `You already set a ${existing_allowance.value} budget. You may add on ${nextAllowed.value}`
       return 
     }
-    
+
     // close pop up
     resetBudget()
     showBudgetPopup.value = false
@@ -268,6 +274,11 @@ const addBudget = async () => { // add budget
 
 const addExpense = async () => { // add expense
   try {
+// check amount first
+    if (expenseAmount.value < 10) {
+      error.value = 'Expense must be atleast ₱10.'
+      return
+    }
     // get userid
     const userId = localStorage.getItem('userId')
 
