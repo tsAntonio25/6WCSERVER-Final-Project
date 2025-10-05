@@ -109,12 +109,12 @@
 
 
 
-<!-- Bottom Blue Tail Image (Right-Aligned, Reaches Middle) -->
-<div class="w-full flex justify-end px-4 pb-10 -mt-6">
+<!-- Tail Image (Flush Right, Reaches Middle) -->
+<div class="w-full pb-6 flex justify-end">
   <img
     src="@/assets/landing6.png"
     alt="Bottom Tail"
-    class="w-[55%] max-w-[700px] object-contain"
+    class="mr-0 w-[55%] max-w-[700px] object-contain"
   />
 </div>
 
