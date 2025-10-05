@@ -90,15 +90,24 @@
           </div>
         </div>
 
-        <!-- Back Button -->
-        <div class="pt-6 pb-16 sm:pb-0">
-        <router-link
+        <!-- Back + Delete Buttons -->
+        <div class="pt-6 pb-16 sm:pb-0 flex justify-between">
+          <router-link
             to="/profile"
             class="inline-block px-4 py-2 bg-sky-500 text-white text-sm rounded-md hover:bg-sky-600 transition"
-        >
+          >
             ← Back
-        </router-link>
+          </router-link>
+
+        <button
+          @click="showDeleteConfirm = true"
+          class="inline-block px-4 py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition"
+        >
+          Delete Account
+        </button>
+
         </div>
+
       </div>
     </div>
 
@@ -150,11 +159,87 @@
       <p class="text-center text-gray-800 font-medium">Something went wrong. Please try again.</p>
     </div>
 
+<!-- Delete Confirmation Popup -->
+<div
+  v-if="showDeleteConfirm"
+  class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-yellow-300 rounded-lg shadow-lg w-96 p-6"
+>
+  <!-- Close Button -->
+  <div class="absolute top-2 right-2">
+    <button @click="showDeleteConfirm = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
+  </div>
+
+  <!-- Warning Image -->
+  <div class="flex justify-center mb-4">
+    <img
+      src="@/assets/warningsign.png"
+      alt="Warning Symbol"
+      class="h-16 w-16 object-contain"
+    />
+  </div>
+
+  <!-- Text -->
+  <h2 class="text-lg font-bold text-center text-gray-800 mb-2">Delete Account?</h2>
+  <p class="text-sm text-center text-gray-600 mb-6">
+    Are you sure you want to delete your account? This action is permanent, and all your data, history, and progress will be lost.
+  </p>
+
+  <!-- Buttons -->
+  <div class="flex justify-between">
+    <button
+      @click="showDeleteConfirm = false"
+      class="px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition"
+    >
+      Cancel
+    </button>
+
+    <button
+      @click="confirmDelete"
+      class="px-4 py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition"
+    >
+      Yes, Delete My Account
+    </button>
+  </div>
+</div>
+
+<!-- Account Deleted Success Popup -->
+<div
+  v-if="showAccountDeleted"
+  class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-green-300 rounded-lg shadow-lg w-80 p-6"
+>
+  <!-- Close Button -->
+  <div class="absolute top-2 right-2">
+    <button @click="showAccountDeleted = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
+  </div>
+
+  <!-- Green Checkmark Icon -->
+  <div class="flex justify-center mb-4">
+    <div class="h-16 w-16 bg-green-500 rounded-full flex items-center justify-center">
+      <svg
+        class="h-8 w-8 text-white"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- Message -->
+  <p class="text-center text-gray-800 font-medium">Account has been deleted.</p>
+</div>
+
+
+
     <!-- Mobile-only footer fixed at bottom -->
     <div class="sm:hidden fixed bottom-0 left-0 w-full z-10">
       <Footer />
     </div>
   </div>
+
+  
 </template>
 
 <script>
@@ -176,9 +261,13 @@ export default {
       showSuccess: false,
       showError: false,
       isAnonymous: false,
-      generatedUsername: ''
+      generatedUsername: '',
+      showDeleteConfirm: false,
+      showAccountDeleted: false
+
     };
   },
+  
   methods: {
     toggleNewPassword() {
       this.showNewPassword = !this.showNewPassword;
@@ -225,7 +314,11 @@ export default {
       } else {
         this.generatedUsername = localStorage.getItem("username");
       }
-    }
+    },
+    confirmDelete() {
+    this.showDeleteConfirm = false;
+    this.showAccountDeleted = true;
+    },
   }
 };
 </script>

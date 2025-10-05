@@ -60,22 +60,30 @@
       <Footer />
     </div>
 
-    <!-- Bottom Illustration + Mobile Streak Block -->
-    <div class="relative px-4">
-      <div class="flex justify-center mb-4 sm:absolute sm:bottom-0 sm:inset-x-0 sm:mb-0">
-        <img src="@/assets/bgadd.png" alt="Savings Illustration" class="h-72 w-auto sm:h-80  lg:h-96" />
-      </div>
+    
+<div class="relative px-4">
+  <!-- Illustration -->
+  <div class="flex justify-center mb-4">
+    <img
+      src="@/assets/bgadd.png"
+      alt="Savings Illustration"
+      class="w-auto h-80 sm:h-96 md:h-[28rem] lg:h-[32rem] object-contain transition-all duration-300 ease-in-out"
+    />
+  </div>
 
-      <div class="sm:hidden flex flex-col items-center space-y-2 mb-[88px]">
-        <div class="w-72 h-3 bg-orange-100 rounded-full overflow-hidden border border-orange-300">
-          <div class="h-full bg-orange-500 transition-all duration-300" :style="{ width: xpFill + '%' }"></div>
-        </div>
-        <div class="text-xs text-gray-700 font-medium text-center">
-          <p>Streak Counter: <span class="font-semibold">{{streak}}</span></p>
-          <p>XP Level: <span class="font-semibold"> {{ xpLevel }}</span></p>
-        </div>
-      </div>
+  <!-- Mobile Streak Block -->
+  <div class="sm:hidden flex flex-col items-center space-y-2 mb-[88px]">
+    <div class="w-72 h-3 bg-orange-100 rounded-full overflow-hidden border border-orange-300">
+      <div class="h-full bg-orange-500 transition-all duration-300" :style="{ width: xpFill + '%' }"></div>
     </div>
+    <div class="text-xs text-gray-700 font-medium text-center">
+      <p>Streak Counter: <span class="font-semibold">{{ streak }}</span></p>
+      <p>XP Level: <span class="font-semibold">{{ xpLevel }}</span></p>
+    </div>
+  </div>
+</div>
+
+
 
     <!-- Budget Popup Modal -->
     <div v-if="showBudgetPopup" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
