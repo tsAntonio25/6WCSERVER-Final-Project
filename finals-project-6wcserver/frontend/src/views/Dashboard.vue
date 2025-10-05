@@ -6,51 +6,56 @@
     </div>
 
     <!-- Main content -->
-    <div class="flex-grow px-4 sm:px-8 py-6 space-y-8">
+    <div class="flex-grow mt-6 sm:mt-0 px-4 sm:px-8 py-6 space-y-8">
+
       <!-- Total Savings -->
-      <section class="bg-indigo-950 text-white rounded-lg p-4 sm:p-6 shadow-md">
-        <h2 class="text-lg sm:text-xl font-semibold">Total Savings: {{ totalSavings ? ' ₱' + totalSavings : '₱ 0.00' }}</h2>
+      <section class="bg-indigo-950 text-white rounded-lg p-4 sm:p-6 pt-6 shadow-md">
+        <h2 class="text-lg sm:text-xl font-semibold">
+          Total Savings: {{ totalSavings ? ' ₱' + totalSavings : '₱ 0.00' }}
+        </h2>
       </section>
+
       
-      <!-- Expenses Section -->
+<!-- Expenses Section -->
+<div v-if="hasExpenses" class="bg-white rounded-lg shadow-md p-4 sm:p-6 mx-4 sm:mx-auto max-w-md">
+  <!-- Pie Chart -->
+  <PieChart
+    :food="food"
+    :transportation="transportation"
+    :leisure="leisure"
+    :others="others"
+  />
 
-        <!-- show this if there is already expenses data-->
-        <div v-if="hasExpenses">
-            <PieChart
-              :food="food"
-              :transportation="transportation"
-              :leisure="leisure"
-              :others="others"
-            />
-          
-          <!-- data || pagawa responsive to -->
-          <div class="flex flex-col items-center text-center">
-            <h1 class="text-2xl font-bold mb-6">Expenses</h1>
-            
-            <div class="space-y-3 w-full max-w-md">
-              <div class="flex justify-between text-lg">
-                <span class="text-green-500 font-semibold">Food</span>
-                <span class="text-green-500">₱ {{ food }}</span>
-              </div>
+  <!-- Expense Breakdown -->
+  <div class="flex flex-col items-center text-center">
+    <h1 class="text-xl sm:text-2xl font-bold mb-6">Expenses</h1>
 
-              <div class="flex justify-between text-lg">
-                <span class="text-blue-500 font-semibold">Transportation</span>
-                <span class="text-blue-500">₱ {{ transportation }}</span>
-              </div>
+    <div class="space-y-3 w-full">
+      <div class="flex justify-between text-base sm:text-lg">
+        <span class="text-green-500 font-semibold">Food</span>
+        <span class="text-green-500">₱ {{ food }}</span>
+      </div>
 
-              <div class="flex justify-between text-lg">
-                <span class="text-yellow-500 font-semibold">Leisure</span>
-                <span class="text-yellow-500">₱ {{ leisure }}</span>
-              </div>
+      <div class="flex justify-between text-base sm:text-lg">
+        <span class="text-blue-500 font-semibold">Transportation</span>
+        <span class="text-blue-500">₱ {{ transportation }}</span>
+      </div>
 
-              <div class="flex justify-between text-lg">
-                <span class="text-red-500 font-semibold">Others</span>
-                <span class="text-red-500">₱ {{ others }}</span>
-              </div>
-            </div>
-          </div>
+      <div class="flex justify-between text-base sm:text-lg">
+        <span class="text-yellow-500 font-semibold">Leisure</span>
+        <span class="text-yellow-500">₱ {{ leisure }}</span>
+      </div>
 
-        </div>
+      <div class="flex justify-between text-base sm:text-lg">
+        <span class="text-red-500 font-semibold">Others</span>
+        <span class="text-red-500">₱ {{ others }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 
       <!-- show this if no expense data yet -->
       <div v-else>
@@ -89,7 +94,7 @@
     <img
         src="@/assets/dashboardbg.png"
         alt="Piggy Bank"
-        class="h-45 w-auto sm:h-32 lg:h-100 lg:w-100"
+        class="h-25 w-auto sm:h-32 lg:h-100 lg:w-100"
     />
     </div>
   </div>

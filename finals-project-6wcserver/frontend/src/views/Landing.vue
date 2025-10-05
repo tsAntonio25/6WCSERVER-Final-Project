@@ -19,104 +19,98 @@
     </router-link>
 
     </section>
-
-    <!-- Tail Image (Flush Left, Reaches Middle) -->
-    <div class="w-full pb-6">
-    <img
-        src="@/assets/landing1.png"
-        alt="Top Tail"
-        class="ml-0 w-[55%] max-w-[700px] object-contain"
-    />
-    </div>
-
-
-
-
-
-
-<!-- How It Works Section with Heading on Top -->
-<section class="px-4 sm:px-8 py-10">
-  <!-- Heading -->
-  <h2 class="text-5xl font-bold text-violet-950 text-center mb-8">
-    How it works
-  </h2>
-
-  <!-- Flex container: reverse column on mobile, row on desktop -->
-  <div class="flex flex-col-reverse lg:flex-row items-center lg:items-center gap-8 max-w-6xl mx-auto">
-    <!-- Illustration (goes last on mobile) -->
-    <div class="flex-shrink-0">
-      <img
-        src="@/assets/landing2.png"
-        alt="Person Illustration"
-        class="h-72 w-auto sm:h-80 lg:h-[22rem]"
-      />
-    </div>
-
-    <!-- Text Content (goes first on mobile) -->
-    <div class="flex flex-col justify-center items-center text-center space-y-4 max-w-xl">
-      <p class="text-lg sm:text-xl text-gray-700 leading-relaxed">
-        Ponly turns saving into a game. Add your budget and expenses, build streaks, and earn XP as you stay consistent.
-        Climb the leaderboard and watch your savings grow with every level.
-      </p>
-    </div>
-  </div>
-</section>
-
-
-
-
-
-
-<!-- Gamified Features Section -->
-<section class="px-4 sm:px-8 pt-0 pb-20">
-  <h2 class="text-5xl font-bold text-center text-violet-950 mb-12">
-    Gamified budgeting for students
-  </h2>
-
-  <div class="flex flex-wrap justify-center gap-16">
-    <!-- Feature 1 -->
-    <div class="flex flex-col items-center space-y-5 text-center max-w-[360px]">
-      <img
-        src="@/assets/landing3.png"
-        alt="Track with ease"
-        class="w-[260px] h-[260px] rounded-full object-contain border-4 border-sky-600"
-      />
-      <p class="text-3xl font-bold text-sky-400 tracking-wide">Track with ease</p>
-    </div>
-
-    <!-- Feature 2 -->
-    <div class="flex flex-col items-center space-y-5 text-center max-w-[360px]">
-      <img
-        src="@/assets/landing4.png"
-        alt="Save & grow"
-        class="w-[260px] h-[260px] rounded-full object-contain border-4 border-sky-600"
-      />
-      <p class="text-3xl font-bold text-sky-400 tracking-wide">Save & grow</p>
-    </div>
-
-    <!-- Feature 3 -->
-    <div class="flex flex-col items-center space-y-5 text-center max-w-[360px]">
-      <img
-        src="@/assets/landing5.png"
-        alt="Compete & win"
-        class="w-[260px] h-[260px] rounded-full object-contain border-4 border-sky-600"
-      />
-      <p class="text-3xl font-bold text-sky-400 tracking-wide">Compete & win</p>
-    </div>
-  </div>
-</section>
-
-
-
-
-<!-- Tail Image (Flush Right, Reaches Middle) -->
-<div class="w-full pb-6 flex justify-end">
+<!-- Layered Tail + How It Works Section -->
+<div class="w-full relative min-h-[48em] pb-32">
+  <!-- Tail Image -->
   <img
-    src="@/assets/landing6.png"
-    alt="Bottom Tail"
-    class="mr-0 w-[55%] max-w-[700px] object-contain"
+    src="@/assets/landing1.png"
+    alt="Top Tail"
+    class="ml-0 w-[85%] max-w-[1000px] object-contain"
   />
+
+  <!-- Layered How It Works Content -->
+  <section class="absolute top-50 left-0 w-full px-4 sm:px-8 z-10">
+
+    <h2 class="text-5xl font-bold text-violet-950 text-center mb-6">
+      How it works
+    </h2>
+
+    <div class="flex flex-col-reverse lg:flex-row items-center gap-8 max-w-6xl mx-auto">
+      <!-- Illustration -->
+      <div class="flex-shrink-0">
+        <img
+          src="@/assets/landing2.png"
+          alt="Person Illustration"
+          class="h-72 w-auto sm:h-80 lg:h-[22rem]"
+        />
+      </div>
+
+      <!-- Text Content -->
+      <div class="flex flex-col justify-center items-center text-center space-y-4 max-w-xl">
+        <p class="text-lg sm:text-xl text-gray-700 leading-relaxed">
+          Ponly turns saving into a game. Add your budget and expenses, build streaks, and earn XP as you stay consistent.
+          Climb the leaderboard and watch your savings grow with every level.
+        </p>
+      </div>
+    </div>
+  </section>
 </div>
+
+
+<!-- Layered Bottom Tail + Gamified Features Section -->
+<div class="w-full relative lg:min-h-[55rem] pb-32">
+  <!-- Gamified Features Section -->
+  <section class="w-full px-4 sm:px-8 pt-28 lg:pt-32 z-10">
+    <h2 class="text-4xl sm:text-5xl font-bold text-center text-violet-950 mb-12">
+      Gamified budgeting for students
+    </h2>
+
+    <div class="flex flex-wrap justify-center gap-12 sm:gap-16">
+      <!-- Feature 1 -->
+      <div class="flex flex-col items-center space-y-5 text-center max-w-[300px] sm:max-w-[360px]">
+        <img
+          src="@/assets/landing3.png"
+          alt="Track with ease"
+          class="w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[220px] md:h-[220px] lg:w-[260px] lg:h-[260px] rounded-full object-contain border-4 border-sky-600"
+        />
+        <p class="text-2xl sm:text-3xl font-bold text-sky-400 tracking-wide">Track with ease</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="flex flex-col items-center space-y-5 text-center max-w-[300px] sm:max-w-[360px]">
+        <img
+          src="@/assets/landing4.png"
+          alt="Save & grow"
+          class="w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[220px] md:h-[220px] lg:w-[260px] lg:h-[260px] rounded-full object-contain border-4 border-sky-600"
+        />
+        <p class="text-2xl sm:text-3xl font-bold text-sky-400 tracking-wide">Save & grow</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="flex flex-col items-center space-y-5 text-center max-w-[300px] sm:max-w-[360px]">
+        <img
+          src="@/assets/landing5.png"
+          alt="Compete & win"
+          class="w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[220px] md:h-[220px] lg:w-[260px] lg:h-[260px] rounded-full object-contain border-4 border-sky-600"
+        />
+        <p class="text-2xl sm:text-3xl font-bold text-sky-400 tracking-wide">Compete & win</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tail Image Container -->
+  <div class="mt-20 lg:mt-0">
+    <img
+      src="@/assets/landing6.png"
+      alt="Bottom Tail"
+      class="w-[85%] max-w-[1000px] object-contain ml-auto lg:absolute lg:right-0 lg:bottom-0"
+    />
+  </div>
+</div>
+
+
+
+
 
 
 

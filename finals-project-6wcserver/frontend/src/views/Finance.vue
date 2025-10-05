@@ -8,7 +8,8 @@
     <!-- Main content -->
     <div class="flex-grow px-4 sm:px-8 py-6 space-y-8">
       <!-- Title -->
-      <h1 class="text-xl font-semibold mb-4">Finances</h1>
+      <h1 class="text-xl font-semibold mt-6 sm:mt-0 mb-4">Finances</h1>
+
 
       <!-- Streak + XP Top Right (Desktop Only) -->
       <div class="hidden sm:block absolute top-24 right-8 z-10 text-right space-y-2">
@@ -61,9 +62,9 @@
     </div>
 
     
-<div class="relative px-4">
+<div class="relative px-4 -mt-23">
   <!-- Illustration -->
-  <div class="flex justify-center mb-4">
+  <div class="flex justify-center mb-2">
     <img
       src="@/assets/bgadd.png"
       alt="Savings Illustration"
@@ -72,7 +73,7 @@
   </div>
 
   <!-- Mobile Streak Block -->
-  <div class="sm:hidden flex flex-col items-center space-y-2 mb-[88px]">
+  <div class="sm:hidden flex flex-col items-center space-y-2 mb-16">
     <div class="w-72 h-3 bg-orange-100 rounded-full overflow-hidden border border-orange-300">
       <div class="h-full bg-orange-500 transition-all duration-300" :style="{ width: xpFill + '%' }"></div>
     </div>
@@ -82,6 +83,7 @@
     </div>
   </div>
 </div>
+
 
 
 

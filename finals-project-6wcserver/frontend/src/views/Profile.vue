@@ -41,15 +41,16 @@
     </router-link>
   </div>
 
-  <!-- Admin Button -->
-  <div v-if="isAdmin" class="flex justify-end">
-    <router-link
-      to="/admindash"
-      class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 transition"
-    >
-      Admin
-    </router-link>
-  </div>
+<!-- Admin Button -->
+<div v-if="isAdmin" class="hidden sm:flex justify-end">
+  <router-link
+    to="/admindash"
+    class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 transition"
+  >
+    Admin
+  </router-link>
+</div>
+
 
   <!-- Log Out Button -->
   <div>

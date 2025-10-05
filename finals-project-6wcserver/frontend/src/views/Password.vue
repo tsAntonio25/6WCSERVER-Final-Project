@@ -111,125 +111,151 @@
       </div>
     </div>
 
-    <!-- Success Popup -->
-    <div
-      v-if="showSuccess"
-      class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-gray-200 rounded-lg shadow-lg w-80 p-6"
-    >
-      <div class="absolute top-2 right-2">
-        <button @click="showSuccess = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
-      </div>
-      <div class="flex justify-center mb-4">
-        <div class="h-16 w-16 bg-green-500 rounded-full flex items-center justify-center">
-          <svg
-            class="h-8 w-8 text-white"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-      </div>
-      <p class="text-center text-gray-800 font-medium">Password changed successfully!</p>
+<!-- Success Popup Overlay -->
+<div
+  v-if="showSuccess"
+  class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20"
+>
+  <!-- Popup Box -->
+  <div class="relative bg-white border border-gray-200 rounded-lg shadow-lg w-80 p-6">
+    <!-- Close Button -->
+    <div class="absolute top-2 right-2">
+      <button @click="showSuccess = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
     </div>
 
-    <!-- Error Popup -->
-    <div
-      v-if="showError"
-      class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-gray-200 rounded-lg shadow-lg w-80 p-6"
-    >
-      <div class="absolute top-2 right-2">
-        <button @click="showError = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
+    <!-- Check Icon -->
+    <div class="flex justify-center mb-4">
+      <div class="h-16 w-16 bg-green-500 rounded-full flex items-center justify-center">
+        <svg
+          class="h-8 w-8 text-white"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
       </div>
-      <div class="flex justify-center mb-4">
-        <div class="h-16 w-16 bg-red-500 rounded-full flex items-center justify-center">
-          <svg
-            class="h-8 w-8 text-white"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            viewBox="0 0 24 24"
-          >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </div>
-      </div>
-      <p class="text-center text-gray-800 font-medium">Something went wrong. Please try again.</p>
     </div>
 
-<!-- Delete Confirmation Popup -->
+    <!-- Message -->
+    <p class="text-center text-gray-800 font-medium">Updated successfully!</p>
+  </div>
+</div>
+
+
+<!-- Error Popup Overlay -->
+<div
+  v-if="showError"
+  class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20"
+>
+  <!-- Popup Box -->
+  <div class="relative bg-white border border-gray-200 rounded-lg shadow-lg w-80 p-6">
+    <!-- Close Button -->
+    <div class="absolute top-2 right-2">
+      <button @click="showError = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
+    </div>
+
+    <!-- Error Icon -->
+    <div class="flex justify-center mb-4">
+      <div class="h-16 w-16 bg-red-500 rounded-full flex items-center justify-center">
+        <svg
+          class="h-8 w-8 text-white"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <p class="text-center text-gray-800 font-medium">Something went wrong. Please try again.</p>
+  </div>
+</div>
+
+
+<!-- Delete Confirmation Popup Overlay -->
 <div
   v-if="showDeleteConfirm"
-  class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-yellow-300 rounded-lg shadow-lg w-96 p-6"
+  class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20"
 >
-  <!-- Close Button -->
-  <div class="absolute top-2 right-2">
-    <button @click="showDeleteConfirm = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
-  </div>
+  <!-- Popup Box -->
+  <div class="relative bg-white border border-yellow-300 rounded-lg shadow-lg w-96 p-6">
+    <!-- Close Button -->
+    <div class="absolute top-2 right-2">
+      <button @click="showDeleteConfirm = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
+    </div>
 
-  <!-- Warning Image -->
-  <div class="flex justify-center mb-4">
-    <img
-      src="@/assets/warningsign.png"
-      alt="Warning Symbol"
-      class="h-16 w-16 object-contain"
-    />
-  </div>
+    <!-- Warning Image -->
+    <div class="flex justify-center mb-4">
+      <img
+        src="@/assets/warningsign.png"
+        alt="Warning Symbol"
+        class="h-16 w-16 object-contain"
+      />
+    </div>
 
-  <!-- Text -->
-  <h2 class="text-lg font-bold text-center text-gray-800 mb-2">Delete Account?</h2>
-  <p class="text-sm text-center text-gray-600 mb-6">
-    Are you sure you want to delete your account? This action is permanent, and all your data, history, and progress will be lost.
-  </p>
+    <!-- Text -->
+    <h2 class="text-lg font-bold text-center text-gray-800 mb-2">Delete Account?</h2>
+    <p class="text-sm text-center text-gray-600 mb-6">
+      Are you sure you want to delete your account? This action is permanent, and all your data, history, and progress will be lost.
+    </p>
 
-  <!-- Buttons -->
-  <div class="flex justify-between">
-    <button
-      @click="showDeleteConfirm = false"
-      class="px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition"
-    >
-      Cancel
-    </button>
-
-    <button
-      @click="confirmDelete"
-      class="px-4 py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition"
-    >
-      Yes, Delete My Account
-    </button>
-  </div>
-</div>
-
-<!-- Account Deleted Success Popup -->
-<div
-  v-if="showAccountDeleted"
-  class="fixed top-24 left-1/2 transform -translate-x-1/2 z-50 bg-white border border-green-300 rounded-lg shadow-lg w-80 p-6"
->
-  <!-- Close Button -->
-  <div class="absolute top-2 right-2">
-    <button @click="showAccountDeleted = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
-  </div>
-
-  <!-- Green Checkmark Icon -->
-  <div class="flex justify-center mb-4">
-    <div class="h-16 w-16 bg-green-500 rounded-full flex items-center justify-center">
-      <svg
-        class="h-8 w-8 text-white"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="3"
-        viewBox="0 0 24 24"
+    <!-- Buttons -->
+    <div class="flex justify-between">
+      <button
+        @click="showDeleteConfirm = false"
+        class="px-4 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 transition"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-      </svg>
+        Cancel
+      </button>
+
+      <button
+        @click="confirmDelete"
+        class="px-4 py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition"
+      >
+        Yes, Delete My Account
+      </button>
     </div>
   </div>
-
-  <!-- Message -->
-  <p class="text-center text-gray-800 font-medium">Account has been deleted.</p>
 </div>
+
+
+<!-- Account Deleted Success Popup Overlay -->
+<div
+  v-if="showAccountDeleted"
+  class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/20"
+>
+  <!-- Popup Box -->
+  <div class="relative bg-white border border-green-300 rounded-lg shadow-lg w-80 p-6">
+    <!-- Close Button -->
+    <div class="absolute top-2 right-2">
+      <button @click="showAccountDeleted = false" class="text-gray-500 hover:text-gray-700 text-lg">×</button>
+    </div>
+
+    <!-- Green Checkmark Icon -->
+    <div class="flex justify-center mb-4">
+      <div class="h-16 w-16 bg-green-500 rounded-full flex items-center justify-center">
+        <svg
+          class="h-8 w-8 text-white"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="3"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <p class="text-center text-gray-800 font-medium">Account has been deleted.</p>
+  </div>
+</div>
+
 
 
 
