@@ -41,6 +41,10 @@
                   v-if="user.username === currentUsername" class="text-blue-400 italic">
                   (You)
                 </div>
+                <div
+                  v-else-if="user.username === mainAdmin" class="text-green-400 italic">
+                  (Main Admin)
+                </div>
                 <label
                   v-else
                   class="inline-flex items-center cursor-pointer">
@@ -102,6 +106,7 @@ const limit = 10
 const total = ref(0)
 const totalPages = ref(1)
 const currentUsername = ref(localStorage.getItem('username') || '');
+const mainAdmin = ref('admin00')
 
 // methods
 const fetchUsers = async () => {
@@ -139,6 +144,11 @@ const prevPage = () => {
 const toggleAdmin = async (user) => {
   if (user.username === currentUsername.value) {
     alert("You cannot change your own admin status.")
+    return
+  }
+
+  if (user.username === mainAdmin.value) {
+    alert("You cannot change main admin's status.")
     return
   }
 
