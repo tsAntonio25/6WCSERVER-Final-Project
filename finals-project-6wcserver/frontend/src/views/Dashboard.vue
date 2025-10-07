@@ -1,139 +1,181 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50">
+  <div class="min-h-screen flex flex-col bg-gradient-to-b from-indigo-100 via-white to-gray-50 relative overflow-hidden">
+
     <!-- Header -->
-    <div class="p-8">
+    <div class="p-6 sm:p-8">
       <Header />
     </div>
 
-    <!-- Main content -->
-    <div class="flex-grow mt-6 sm:mt-0 px-4 sm:px-8 py-6 space-y-8">
+    <!-- Main Content -->
+    <div class="flex-grow mt-4 sm:mt-0 px-4 sm:px-8 py-8 pb-24 sm:pb-8 space-y-10 relative z-10">
 
       <!-- Total Savings -->
-      <section class="bg-indigo-950 text-white rounded-lg p-4 sm:p-6 pt-6 shadow-md">
-        <h2 class="text-lg sm:text-xl font-semibold">
-          Total Savings: {{ totalSavings ? ' ₱' + totalSavings : '₱ 0.00' }}
-        </h2>
+      <section class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-indigo-950 text-white rounded-2xl p-6 shadow-lg text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-wide mb-2">Total Savings</h2>
+        <p class="text-4xl sm:text-5xl font-extrabold">
+          {{ totalSavings ? '₱' + totalSavings : '₱ 0.00' }}
+        </p>
       </section>
 
-      
-<!-- Expenses Section -->
-<div v-if="hasExpenses" class="bg-white rounded-lg shadow-md p-4 sm:p-6 mx-4 sm:mx-auto max-w-md">
-  <!-- Pie Chart -->
-  <PieChart
-    :food="food"
-    :transportation="transportation"
-    :leisure="leisure"
-    :others="others"
-  />
+      <!-- 🧭 XP BAR -->
+      <section
+        class="bg-white border border-orange-200 rounded-2xl shadow-md p-6 sm:p-8 mx-auto max-w-lg text-center 
+        transition-all duration-300 hover:shadow-lg"
+      >
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Progress Tracker</h3>
+        <div class="w-full h-4 bg-orange-100 rounded-full overflow-hidden border border-orange-300 mb-3">
+          <div
+            class="h-full bg-gradient-to-r from-orange-400 to-orange-600 transition-all duration-500 ease-out"
+            :style="{ width: xpFill + '%' }"
+          ></div>
+        </div>
+        <div class="flex justify-between text-sm text-gray-700 font-medium">
+          <p>Streak: <span class="font-semibold">{{ streak }}</span></p>
+          <p>Level: <span class="font-semibold">{{ xpLevel }}</span></p>
+          <p>XP: <span class="font-semibold">{{ xpFill }}%</span></p>
+        </div>
+      </section>
 
-  <!-- Expense Breakdown -->
-  <div class="flex flex-col items-center text-center">
-    <h1 class="text-xl sm:text-2xl font-bold mb-6">Expenses</h1>
-
-    <div class="space-y-3 w-full">
-      <div class="flex justify-between text-base sm:text-lg">
-        <span class="text-green-500 font-semibold">Food</span>
-        <span class="text-green-500">₱ {{ food }}</span>
-      </div>
-
-      <div class="flex justify-between text-base sm:text-lg">
-        <span class="text-blue-500 font-semibold">Transportation</span>
-        <span class="text-blue-500">₱ {{ transportation }}</span>
-      </div>
-
-      <div class="flex justify-between text-base sm:text-lg">
-        <span class="text-yellow-500 font-semibold">Leisure</span>
-        <span class="text-yellow-500">₱ {{ leisure }}</span>
-      </div>
-
-      <div class="flex justify-between text-base sm:text-lg">
-        <span class="text-red-500 font-semibold">Others</span>
-        <span class="text-red-500">₱ {{ others }}</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-      <!-- show this if no expense data yet -->
-      <div v-else>
-        <section class="bg-gray-100 rounded-lg p-6 shadow-inner w-full sm:max-w-lg mx-auto">
-          <div class="flex justify-center">
-              <div class="h-40 w-40 sm:h-48 sm:w-48 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm border border-gray-300">
-                No data yet
-                </div>
+      <!-- 💰 Expenses Section -->
+      <div
+        v-if="hasExpenses"
+        class="flex flex-col sm:flex-row justify-center items-stretch gap-6 
+               mx-4 sm:mx-auto max-w-6xl"
+      >
+        <!-- Left: Pie Chart Card -->
+        <div
+          class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 flex-1
+                 border-2 border-indigo-100 transition-all duration-300 
+                 hover:shadow-2xl hover:border-indigo-200"
+        >
+          <!-- Pie Chart -->
+          <div class="flex justify-center items-center min-h-[360px] sm:min-h-[420px]">
+            <div class="flex flex-col items-center justify-center w-full">
+              <PieChart
+                :food="food"
+                :transportation="transportation"
+                :leisure="leisure"
+                :others="others"
+                class="w-56 h-56 sm:w-64 sm:h-64 lg:w-72 lg:h-72"
+              />
             </div>
+          </div>
+
+          <!-- Expense Breakdown -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            <div class="flex justify-between items-center bg-green-50 border border-green-200 text-green-700 rounded-xl px-4 py-3 shadow-sm hover:shadow-md transition-all duration-200">
+              <span class="font-semibold">Food</span>
+              <span class="font-bold">₱ {{ food }}</span>
+            </div>
+
+            <div class="flex justify-between items-center bg-blue-50 border border-blue-200 text-blue-700 rounded-xl px-4 py-3 shadow-sm hover:shadow-md transition-all duration-200">
+              <span class="font-semibold">Transportation</span>
+              <span class="font-bold">₱ {{ transportation }}</span>
+            </div>
+
+            <div class="flex justify-between items-center bg-yellow-50 border border-yellow-200 text-yellow-700 rounded-xl px-4 py-3 shadow-sm hover:shadow-md transition-all duration-200">
+              <span class="font-semibold">Leisure</span>
+              <span class="font-bold">₱ {{ leisure }}</span>
+            </div>
+
+            <div class="flex justify-between items-center bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 shadow-sm hover:shadow-md transition-all duration-200">
+              <span class="font-semibold">Others</span>
+              <span class="font-bold">₱ {{ others }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Summary Table -->
+        <div
+          class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 flex-1
+                 border-2 border-indigo-100 transition-all duration-300 
+                 hover:shadow-2xl hover:border-indigo-200
+                 h-[520px] sm:h-[520px] mt-4 sm:mt-0 flex flex-col justify-center"
+        >
+        </div>
+      </div>
+
+      <!-- ✅ Placeholder Section (still inside v-if="hasExpenses") -->
+      <section class="w-full flex justify-center mt-6" v-if="hasExpenses">
+        <div class="w-full max-w-3xl mx-auto space-y-3">
+          <div
+            v-for="index in 5"
+            :key="index"
+            class="flex justify-between items-center rounded-2xl px-6 py-3 shadow-sm border border-gray-300 transform hover:scale-105 transition-all duration-300 bg-white"
+          >
+            <span class="font-medium text-gray-700">{{ index }}. Placeholder</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 📉 No Data Section -->
+      <div v-else class="flex flex-col items-center space-y-10 text-center">
+        <section class="bg-gray-100 rounded-2xl p-8 shadow-inner w-full sm:max-w-lg mx-auto border border-gray-200">
+          <div class="flex justify-center">
+            <div
+              class="h-44 w-44 sm:h-52 sm:w-52 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 
+              flex items-center justify-center text-gray-500 text-base border border-gray-300 font-medium"
+            >
+              No data yet
+            </div>
+          </div>
         </section>
 
-        <section class="text-center space-y-4">
-          <h3 class="text-lg font-semibold">Expenses</h3>
-          <p class="text-sm text-gray-600">
+        <section class="space-y-5">
+          <h3 class="text-2xl font-bold text-gray-800">Expenses</h3>
+          <p class="text-sm sm:text-base text-gray-600 leading-relaxed">
             No records yet.<br />
             Start tracking your first budget or expense today!
           </p>
-    
+
           <router-link
-              to="/finance"
-              class="hidden sm:inline-block bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-md shadow-sm transition"
-              >
-              Take me there!
+            to="/finance"
+            class="inline-block bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 
+            text-white font-semibold px-6 py-3 rounded-full shadow-md hover:shadow-lg 
+            transform hover:scale-105 active:scale-95 transition-all duration-300"
+          >
+            Take me there!
           </router-link>
-      </section>
+        </section>
       </div>
     </div>
 
-    <!-- Mobile-only footer fixed at bottom -->
-    <div class="sm:hidden fixed bottom-0 left-0 w-full z-10">
+    <!-- Mobile Footer -->
+    <div class="sm:hidden fixed bottom-0 left-0 w-full z-20 bg-white shadow-inner">
       <Footer />
-    </div>
-
-    <!-- Piggy Bank Image: centered on mobile, bottom-left on desktop -->
-    <div class="fixed bottom-16 sm:bottom-0 left-1/2 -translate-x-1/2 sm:left-0 sm:translate-x-0 z-0">
-    <img
-        src="@/assets/dashboardbg.png"
-        alt="Piggy Bank"
-        class="h-25 w-auto sm:h-32 lg:h-100 lg:w-100"
-    />
     </div>
   </div>
 </template>
 
-<script>
-// NOTE: rewrite to composition api syntax
 
-// imports
+
+<script>
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
-import PieChart from '../components/PieChart.vue'
+import PieChart from '../components/PieChart.vue';
 import api from '@/api/axios.js';
 
 export default {
   name: 'Dashboard',
-  components: {
-    Header,
-    Footer,
-    PieChart
-  },
+  components: { Header, Footer, PieChart },
   data() {
     return {
-      // totals
       totalSavings: null,
       totalBudget: null,
       totalExpenses: null,
-
-      // expenses
       food: null,
       leisure: null,
       transportation: null,
-      others: null
+      others: null,
+      xpFill: 0,
+      xpLevel: 0,
+      streak: 0,
     };
   },
   created() {
-    // call methods
     this.fetchTotalSavings();
-    this.fetchExpenses()
+    this.fetchExpenses();
+    this.getProgress();
   },
   methods: {
     async fetchTotalSavings() {
@@ -144,32 +186,75 @@ export default {
         this.totalExpenses = response.data.totalExpenseAmount;
         this.totalSavings = response.data.totalSavings;
       } catch (error) {
-        console.error('Error fetching total savings:', error.response?.data || error.message);
+        console.error('Error fetching total savings:', error);
       }
     },
     async fetchExpenses() {
       const userId = localStorage.getItem('userId');
       try {
         const response = await api.get(`/compute/${userId}`);
-        this.food = response.data.food
-        this.leisure = response.data.leisure
-        this.transportation = response.data.transportation
-        this.others = response.data.others
-      } catch (error ){
-        console.error('Error fetching total savings:', error.response?.data || error.message);
+        this.food = response.data.food;
+        this.leisure = response.data.leisure;
+        this.transportation = response.data.transportation;
+        this.others = response.data.others;
+      } catch (error) {
+        console.error('Error fetching expenses:', error);
       }
-    }
+    },
+    async getProgress() {
+      try {
+        const userId = localStorage.getItem('userId');
+        const res = await api.get(`/user/${userId}/progress`);
+        this.xpFill = res.data.progress || 0;
+        this.xpLevel = res.data.level || 0;
+        this.streak = res.data.streak || 0;
+      } catch (err) {
+        console.error('Get progress error:', err);
+      }
+    },
   },
-
   computed: {
-  hasExpenses() {
-    return (
-      (this.food ?? 0) > 0 ||
-      (this.leisure ?? 0) > 0 ||
-      (this.transportation ?? 0) > 0 ||
-      (this.others ?? 0) > 0
-    )
-  }
-}
+    hasExpenses() {
+      return (
+        (this.food ?? 0) > 0 ||
+        (this.leisure ?? 0) > 0 ||
+        (this.transportation ?? 0) > 0 ||
+        (this.others ?? 0) > 0
+      );
+    },
+  },
 };
 </script>
+
+<style scoped>
+section,
+div[v-if],
+div[v-else] {
+  transition: all 0.3s ease;
+}
+
+h2,
+h3,
+h1 {
+  letter-spacing: 0.03em;
+}
+
+.bg-gradient-to-b {
+  background-attachment: fixed;
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s ease-in-out infinite;
+}
+</style>

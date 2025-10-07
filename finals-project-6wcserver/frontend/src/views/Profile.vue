@@ -1,95 +1,94 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50 overflow-x-hidden relative">
+  <div class="min-h-screen flex flex-col bg-gradient-to-b from-sky-50 via-white to-sky-100 relative overflow-x-hidden">
+
     <!-- Header -->
-    <div class="pt-20 sm:pt-24 px-4 sm:px-8">
-      <Header />
+    <div class="fixed top-0 left-0 w-full bg-white shadow-lg rounded-b-3xl z-20">
+      <div class="pt-6 sm:pt-8 px-4 sm:px-8">
+        <Header />
+      </div>
     </div>
 
     <!-- Main content -->
-    <div class="flex-grow px-4 sm:px-8 py-6 space-y-6">
-      <h1 class="text-2xl font-bold text-center text-gray-800">Profile</h1>
+    <div class="flex-1 mt-[100px] px-4 sm:px-8 py-6 space-y-6 overflow-y-auto pb-32"> <!-- scrollable with bottom padding -->
+
+      <h1 class="text-2xl sm:text-3xl font-bold text-center text-sky-800 mb-4">Profile</h1>
 
       <!-- Profile Card -->
-<div class="max-w-md mx-auto bg-white rounded-lg shadow pt-8 pb-6 px-6 space-y-6 relative">
-  <!-- Top Row: Avatar + Edit -->
-  <div class="flex items-center justify-between">
-    <div class="flex items-center space-x-4">
-      <div class="h-16 w-16 rounded-full overflow-hidden border-4 border-sky-600 bg-sky-600">
-        <img
-          src="@/assets/user.png"
-          alt="User Icon"
-          class="h-full w-full object-contain"
-        />
-      </div>
-      <div class="space-y-2">
-        <div>
-          <p class="text-sm text-gray-600">Username:</p>
-          <p class="text-base font-semibold text-gray-800">{{ username }}</p>
-        </div>
-        <div>
-          <p class="text-sm text-gray-600">Email:</p>
-          <p class="text-base font-semibold text-gray-800">{{ email }}</p>
-        </div>
-      </div>
-    </div>
+      <div class="max-w-md mx-auto bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl p-6 space-y-6 relative">
 
-    <router-link
-      to="/password"
-      class="px-4 py-2 bg-sky-600 text-white text-sm rounded-md hover:bg-sky-700 transition"
-    >
-      Edit
-    </router-link>
-  </div>
-
-<!-- Admin Button -->
-<div v-if="isAdmin" class="hidden sm:flex justify-end">
-  <router-link
-    to="/admindash"
-    class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 transition"
-  >
-    Admin
-  </router-link>
-</div>
-
-
-  <!-- Log Out Button -->
-  <div>
-    <button
-      @click="logout"
-      class="w-full py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600 transition"
-    >
-      Log Out
-    </button>
-  </div>
-</div>
-
-      <!-- History Section -->
-      <section class="max-w-md mx-auto rounded-lg p-4 text-center space-y-2">
-        <h3 class="text-xl font-semibold text-left sm:text-center">History</h3>
-       
-        <!-- if no history yet -->
-        <div v-if="!history.length">
-          <p class="text-sm text-gray-600">
-          Add your first budget or expense to start earning XP and climbing on the leaderboard.
-          </p>
-        </div>
-
-        <!-- Transaction History Log -->
-         <div v-else class="max-w-md mx-auto space-y-3">
-            <div v-for="val in history" :key="val.date">
-              <div v-if="val.finance_type === 'budget'">
-                <div class="bg-green-100 text-green-800 px-4 py-3 rounded-md shadow-sm text-sm">
-                  Added ₱{{ val.amount }} on {{ val.allowance_type }} at {{ new Date(val.createdAt).toLocaleString() }}
-                </div>
+        <!-- Top Row: Avatar + Edit -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="h-20 w-20 rounded-full overflow-hidden border-4 border-sky-500 bg-sky-500 shadow-lg">
+              <img
+                src="@/assets/user.png"
+                alt="User Icon"
+                class="h-full w-full object-cover"
+              />
+            </div>
+            <div class="space-y-1">
+              <div>
+                <p class="text-sm text-gray-500">Username:</p>
+                <p class="text-base font-semibold text-gray-800">{{ username }}</p>
               </div>
-              <div v-else>
-                <div class="bg-red-100 text-red-800 px-4 py-3 rounded-md shadow-sm text-sm">
-                  Spent ₱{{ val.expense }} on {{ val.type }} at {{ new Date(val.date).toLocaleString() }}
-                </div>
+              <div>
+                <p class="text-sm text-gray-500">Email:</p>
+                <p class="text-base font-semibold text-gray-800">{{ email }}</p>
               </div>
             </div>
           </div>
+
+          <router-link
+            to="/password"
+            class="px-4 py-2 bg-sky-600 text-white text-sm rounded-lg hover:bg-sky-700 transition"
+          >
+            Edit
+          </router-link>
+        </div>
+
+        <!-- Admin Button -->
+        <div v-if="isAdmin" class="hidden sm:flex justify-end">
+          <router-link
+            to="/admindash"
+            class="px-4 py-2 bg-indigo-600 text-white text-sm rounded-lg hover:bg-indigo-700 transition"
+          >
+            Admin
+          </router-link>
+        </div>
+
+        <!-- Log Out Button -->
+        <button
+          @click="logout"
+          class="w-full py-2 bg-red-500 text-white text-sm rounded-lg hover:bg-red-600 transition"
+        >
+          Log Out
+        </button>
+      </div>
+
+      <!-- History Section -->
+      <section class="max-w-md mx-auto rounded-3xl p-4 bg-white/70 backdrop-blur-lg shadow-xl space-y-4 overflow-y-auto">
+        <h3 class="text-xl font-semibold text-sky-700 text-left sm:text-center">History</h3>
+
+        <!-- No history -->
+        <div v-if="!history.length" class="text-center text-gray-500 text-sm">
+          Add your first budget or expense to start earning XP and climbing on the leaderboard.
+        </div>
+
+        <!-- Transaction History Log -->
+        <div v-else class="space-y-3">
+          <div v-for="val in history" :key="val.date" class="transition-transform hover:scale-105">
+            <div v-if="val.finance_type === 'budget'" class="bg-green-100 text-green-800 px-4 py-3 rounded-2xl shadow-sm text-sm flex justify-between items-center">
+              <span>Added ₱{{ val.amount }} ({{ val.allowance_type }})</span>
+              <span class="text-gray-500 text-xs">{{ new Date(val.createdAt).toLocaleString() }}</span>
+            </div>
+            <div v-else class="bg-red-100 text-red-800 px-4 py-3 rounded-2xl shadow-sm text-sm flex justify-between items-center">
+              <span>Spent ₱{{ val.expense }} on {{ val.type }}</span>
+              <span class="text-gray-500 text-xs">{{ new Date(val.date).toLocaleString() }}</span>
+            </div>
+          </div>
+        </div>
       </section>
+
     </div>
 
     <!-- Mobile-only footer fixed at bottom -->
@@ -98,6 +97,16 @@
     </div>
   </div>
 </template>
+
+
+<style>
+/* Optional: subtle hover animation for cards */
+.hover-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  transition: all 0.3s ease-in-out;
+}
+</style>
+
 
 <script setup>
 import { ref, onMounted } from 'vue'
