@@ -37,11 +37,12 @@ router.get("/rank/:id", asyncHandler(async (req, res) => {
     const userId = req.params.id;
 
      // find  user
-    const user = await User.findById(userId, 'username anon_username exp level');
+    const user = await User.findById(userId, 'username anon_username exp level is_admin');
     if (!user) throw new Error('User not found');
 
-    if(user.is_admin) throw new Error('Admins are not ranked.')
-
+    if (user.is_admin) {
+        return res.json({is_admin: true, message: 'Admins are not ranked.'})
+    }
 
     // compute ranking
     const rank = await User.countDocuments({

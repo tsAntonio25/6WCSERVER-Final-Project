@@ -62,10 +62,16 @@
 
       <!-- Current User Rank -->
       <div class="max-w-md mx-auto mt-6 bg-white/70 backdrop-blur-lg rounded-2xl shadow-2xl px-4 py-4 text-center space-y-1 transform hover:-translate-y-1 transition-all duration-300">
-        <p class="text-base font-semibold text-gray-800">
-            Your Current Rank: <span class="text-sky-600">{{ userRank?.rank }}</span>
-        </p>
-        <p class="text-sm text-gray-600 font-medium">{{userRank?.user.exp}} points</p>
+        <template v-if="userRank?.is_admin">
+          <p class="text-base font-semibold text-blue-400 italic">(Admins are not ranked.)</p>
+        </template>
+
+        <template v-else-if="userRank">
+          <p class="text-base font-semibold text-gray-800">
+              Your Current Rank: <span class="text-sky-600">{{ userRank?.rank }}</span>
+          </p>
+          <p class="text-sm text-gray-600 font-medium">{{ userRank?.user.exp }} points</p>
+        </template>
       </div>
 
     </div>
