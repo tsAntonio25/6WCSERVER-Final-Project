@@ -80,6 +80,9 @@ router.post('/', asyncHandler(async (req,res) => {
     const levelData = calculateLevel(user.exp)
     user.level = levelData.level
 
+    budget.exp_gain = expGain
+    await budget.save();
+
     await user.save();
 
     res.json({

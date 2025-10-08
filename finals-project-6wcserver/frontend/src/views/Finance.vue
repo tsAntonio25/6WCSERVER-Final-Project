@@ -123,7 +123,7 @@
   >
     <!-- Header Row -->
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-lg sm:text-xl font-bold text-sky-800">Recent Transaction</h2>
+      <h2 class="text-lg sm:text-xl font-bold text-sky-800">Recent Transaction (Last 1 Hour)</h2>
 
       <!-- 🗑️ Delete Button (Top Right) -->
       <button
@@ -134,13 +134,42 @@
       </button>
     </div>
 
-    <!-- Placeholder List -->
-    <div
-      v-for="(item, index) in placeholders"
-      :key="index"
-      class="flex justify-between items-center rounded-2xl px-6 py-3 shadow-sm border border-gray-300 transform hover:scale-105 transition-all duration-300 bg-white"
-    >
-      <span class="font-medium text-gray-700">{{ index + 1 }}. {{ item }}</span>
+    <!-- Transactions List -->
+    <div v-if="transactions.length > 0">
+      <div
+        v-for="(txn, index) in transactions"
+        :key="txn._id"
+        class="flex justify-between items-center rounded-2xl px-6 py-3 shadow-sm border border-gray-300 transform hover:scale-105 transition-all duration-300 bg-white"
+      >
+        <div>
+          <span class="font-medium text-gray-700">
+            {{ index + 1 }}.
+            {{ txn.finance_type === 'budget' ? 'Budget' : 'Expense' }}
+          </span>
+          <p class="text-xs text-gray-500">
+            {{new Date(txn.timestamp).toLocaleString()}}
+          </p>
+        </div>
+        <div class="text-right">
+          <span
+            v-if="txn.finance_type === 'budget'"
+            class="text-green-600 font-bold"    
+          >
+            +₱{{ txn.amount?.toLocaleString() }}
+          </span>
+          <span 
+            v-else
+            class="text-red-600 font-bold"
+          >
+            -₱ {{ txn.expense?.toLocaleString() }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Transactions -->
+    <div v-else class="text-center text-gray-500 text-sm py-6">
+      No recent transactions.
     </div>
   </div>
 
@@ -153,7 +182,7 @@
       class="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 w-80 max-w-full space-y-4 animate-popup"
     >
       <h2 class="text-lg font-semibold text-center text-red-600">
-        Delete Placeholder
+        Delete Transactions
       </h2>
       <p class="text-sm text-gray-600 text-center">
         Select which placeholders to delete:
@@ -162,17 +191,41 @@
       <!-- ✅ Checkboxes -->
       <div class="space-y-2 max-h-48 overflow-y-auto">
         <label
-          v-for="(item, index) in placeholders"
-          :key="index"
+          v-for="(txn, index) in transactions"
+          :key="txn._id"
           class="flex items-center gap-2 text-gray-700 text-sm bg-gray-50 rounded-lg px-3 py-2 cursor-pointer hover:bg-gray-100 transition-all"
         >
           <input
             type="checkbox"
             v-model="selectedToDelete"
-            :value="index"
+            :value="txn._id"
             class="accent-red-500 w-4 h-4"
           />
-          {{ index + 1 }}. {{ item }}
+          <div class="flex flex-col w-full">
+            <div class="flex justify-between">
+              <span class="font-medium">
+                {{ index + 1 }}.
+                {{ txn.finance_type === 'budget' ? 'Budget' : 'Expense' }}
+              </span>
+              <span v-if="txn.finance_type === 'budget'" class="text-green-600 font-semibold">
+                +₱{{ txn.amount?.toLocaleString() }}
+              </span>
+              <span v-else class="text-red-600 font-semibold">
+                -₱{{ txn.expense?.toLocaleString() }}
+              </span>
+            </div>
+            <div class="text-xs text-gray-500 flex justify-between mt-0.5">
+              <span v-if="txn.finance_type === 'budget'">
+                {{ txn.allowance_type }} allowance
+              </span>
+              <span v-else>
+                {{ txn.type }}
+              </span>
+              <span>
+                {{ new Date(txn.timestamp).toLocaleString() }}
+              </span>
+            </div>
+          </div>       
         </label>
       </div>
 
@@ -350,6 +403,7 @@ const showExpensePopup = ref(false)
 const xpFill = ref(0)
 const xpLevel = ref(0)
 const streak = ref(0)
+const transactions = ref([])
 
 // error
 const error = ref("")
@@ -465,6 +519,17 @@ const addExpense = async () => { // add expense
   }
 }
 
+const fetchRecentTransactions = async () => {
+  try {
+    const userId = localStorage.getItem('userId');
+    const res = await api.get(`/transactions/recent/${userId}`);
+    transactions.value = res.data
+  } catch(err){
+    console.error('Fetch recent transactions error:', err.response?.data || err.message)
+  }
+}
+
+
 // check expense pop up
 watch(showExpensePopup, (newVal) => {
   if (!newVal) {
@@ -481,10 +546,6 @@ watch(showBudgetPopup, (newVal) => {
   }
 })
 
-// load progress immediately
-onMounted(() => {
-  getProgress();
-})
 // 💡 Financial Tips
 const tips = [
   "Building an emergency fund is important. Ideally, it should cover at least 6 months of your living expenses so you're ready for unexpected events like medical costs or tuition fees.",
@@ -498,33 +559,35 @@ const tips = [
 
 const currentTip = ref('')
 
-onMounted(() => {
-  // show a random tip each time the page loads or remounts
-  const randomIndex = Math.floor(Math.random() * tips.length)
-  currentTip.value = tips[randomIndex]
-})
-
-// DELETE FORM 
-const placeholders = ref([
-  "Placeholder 1",
-  "Placeholder 2",
-  "Placeholder 3",
-  "Placeholder 4",
-  "Placeholder 5",
-]);
-
 const showDeletePopup = ref(false);
 const selectedToDelete = ref([]);
 
-function deleteSelected() {
-  if (selectedToDelete.value.length > 0) {
-    placeholders.value = placeholders.value.filter(
-      (_, index) => !selectedToDelete.value.includes(index)
-    );
+const deleteSelected = async () => {
+  try {
+    if (selectedToDelete.value.length === 0) return;
+
+    const userId = localStorage.getItem('userId');
+
+    await api.delete('/transactions/delete', {
+      data: {
+        userId,
+        transactionIds: selectedToDelete.value
+      }
+    });
+
+    // refresh transactions and exp
+    await fetchRecentTransactions();
+    await getProgress();
+
+    // reset
     selectedToDelete.value = [];
     showDeletePopup.value = false;
+  } catch (err){
+    console.error('Delete transactions error:', err.response?.data || err.message)
   }
 }
+
+
 // TOOLTIP!
 // ADD BUDGET
 const showInfo = ref(false)
@@ -535,19 +598,26 @@ function toggleInfo() {
   if (isMobile.value) showInfo.value = !showInfo.value
 }
 
-onMounted(() => {
-  // detect if user is on mobile based on screen width
-  isMobile.value = window.innerWidth <= 768
-  window.addEventListener('resize', () => {
-    isMobile.value = window.innerWidth <= 768
-  })
-})
-
 const showExpenseInfo = ref(false)
 
 function toggleExpenseInfo() {
   if (isMobile.value) showExpenseInfo.value = !showExpenseInfo.value
 }
+
+onMounted(() => {
+  getProgress();
+  fetchRecentTransactions();
+
+  // show a random tip each time the page loads or remounts
+  const randomIndex = Math.floor(Math.random() * tips.length)
+  currentTip.value = tips[randomIndex]
+
+  // detect if user is on mobile based on screen width
+  isMobile.value = window.innerWidth <= 768
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 768
+  })
+});
 
 
 </script>

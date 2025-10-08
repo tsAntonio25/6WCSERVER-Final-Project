@@ -53,8 +53,6 @@ router.post("/", asyncHandler(async (req, res) => {
         expense,
     });
 
-    await newExpense.save();
-
     // update user exp
     user.exp += expGain;
 
@@ -62,6 +60,9 @@ router.post("/", asyncHandler(async (req, res) => {
     const levelData = calculateLevel(user.exp)
     user.level = levelData.level
     
+    newExpense.exp_gain = expGain;
+    
+    await newExpense.save();
     await user.save();
 
     res.json({

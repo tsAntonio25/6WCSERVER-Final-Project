@@ -13,6 +13,7 @@ import login from './route/login.js';
 import computation from './route/computation.js'
 import leaderboard from './route/leaderboard.js'
 import admin from './route/admin.js'
+import transactions from './route/transactions.js'
 
 
 const app = express();
@@ -36,6 +37,7 @@ app.use("/user", user);
 app.use("/compute", computation);
 app.use("/leaderboard", leaderboard);
 app.use("/admin", admin);
+app.use("/transactions", transactions)
 
 
 // error handler

@@ -34,6 +34,7 @@ const expenseSchema = new mongoose.Schema({
         finance_type: {type: String, default: "expense"},
         type: {type: String, enum: ["food","transportation","leisure","others"], required: true},
         expense: {type: Number, required: true},
+        exp_gain: {type: Number, default: 0},
         date: {type: Date, default: Date.now}
     },
     {
@@ -49,6 +50,7 @@ const budgetSchema = new mongoose.Schema({
         finance_type: {type: String, default: "budget"},
         amount: {type: Number, required: true},
         allowance_type: {type: String, enum:["daily","weekly","monthly"]},
+        exp_gain: {type: Number, default: 0},
         createdAt: {type: Date, default: Date.now}
     },
     {
