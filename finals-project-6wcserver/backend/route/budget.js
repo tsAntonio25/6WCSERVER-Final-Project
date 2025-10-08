@@ -97,11 +97,15 @@ router.post('/', asyncHandler(async (req,res) => {
 }
 ));
 
-//Read budget
-router.get('/:userId', asyncHandler(async (req,res) => {
-    const budgets = await Budget.find({ user_id: req.params.userId });
-    res.json(budgets);
-}));
+// get recent budget
+router.get('/recent/:userId', asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+    const budgets = await Budget.find({user_id: userId})
+    .sort({createdAt: -1})
+    .limit(5)
+
+    res.json(budgets)
+}))
 
 // export
 export default router;
