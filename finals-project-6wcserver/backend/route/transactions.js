@@ -44,8 +44,27 @@ router.delete('/delete', asyncHandler(async (req, res) => {
     }).toArray();
 
     let totalExpToSubtract = 0
+    let extraExpenseIdsToDelete = []
 
     for (const txn of transactions) {
+        // if budget -> delete all expenses following the budget
+        if (txn.finance_type === 'budget') {
+            const extraExpenses = await Finance.find({
+                user_id: new mongoose.Types.ObjectId(userId),
+                finance_type: 'expense',
+                date: {$gt: txn.createdAt}
+            }).toArray();
+
+            if(extraExpenses.length > 0) {
+                extraExpenseIdsToDelete.push(...extraExpenses.map(e => e._id))
+
+                for (const expTxn of extraExpenses){
+                    totalExpToSubtract += expTxn.exp_gain || 5
+                }
+            }
+        }
+
+        // calculate exp to subtract for selected transactions
         if(txn.exp_gain) {
             totalExpToSubtract += txn.exp_gain
         } else if (txn.finance_type === 'budget') {
@@ -58,9 +77,15 @@ router.delete('/delete', asyncHandler(async (req, res) => {
         }
     }
 
+    // combine all ids (and extra expenses if any)
+    const allIds = [
+        ...transactionIds.map(id => new mongoose.Types.ObjectId(id)),
+        ...extraExpenseIdsToDelete
+    ];
+
     // delete transactions
     await Finance.deleteMany({
-        _id: { $in: transactionIds.map(id => new mongoose.Types.ObjectId(id)) },
+        _id: { $in: allIds },
         user_id: new mongoose.Types.ObjectId(userId)
     });
 
@@ -77,7 +102,8 @@ router.delete('/delete', asyncHandler(async (req, res) => {
         message: 'Transactions deleted successfully.',
         expSubtracted: totalExpToSubtract,
         newExp: user.exp,
-        newLevel: user.level
+        newLevel: user.level,
+        autoDeletedCount: extraExpenseIdsToDelete.length
     });
 }));
 
