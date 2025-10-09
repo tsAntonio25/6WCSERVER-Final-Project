@@ -149,81 +149,87 @@
 
 
 
-<script>
+<script setup>
+
+// imports
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import PieChart from '../components/PieChart.vue';
 import api from '@/api/axios.js';
+import {ref, computed, onMounted } from 'vue'
 
-export default {
-  name: 'Dashboard',
-  components: { Header, Footer, PieChart },
-  data() {
-    return {
-      totalSavings: null,
-      totalBudget: null,
-      totalExpenses: null,
-      food: null,
-      leisure: null,
-      transportation: null,
-      others: null,
-      xpFill: 0,
-      xpLevel: 0,
-      streak: 0,
-    };
-  },
-  created() {
-    this.fetchTotalSavings();
-    this.fetchExpenses();
-    this.getProgress();
-  },
-  methods: {
-    async fetchTotalSavings() {
-      const userId = localStorage.getItem('userId');
-      try {
-        const response = await api.get(`/compute/${userId}`);
-        this.totalBudget = response.data.totalBudgetAmount;
-        this.totalExpenses = response.data.totalExpenseAmount;
-        this.totalSavings = response.data.totalSavings;
-      } catch (error) {
-        console.error('Error fetching total savings:', error);
-      }
-    },
-    async fetchExpenses() {
-      const userId = localStorage.getItem('userId');
-      try {
-        const response = await api.get(`/compute/${userId}`);
-        this.food = response.data.food;
-        this.leisure = response.data.leisure;
-        this.transportation = response.data.transportation;
-        this.others = response.data.others;
-      } catch (error) {
-        console.error('Error fetching expenses:', error);
-      }
-    },
-    async getProgress() {
-      try {
-        const userId = localStorage.getItem('userId');
-        const res = await api.get(`/user/${userId}/progress`);
-        this.xpFill = res.data.progress || 0;
-        this.xpLevel = res.data.level || 0;
-        this.streak = res.data.streak || 0;
-      } catch (err) {
-        console.error('Get progress error:', err);
-      }
-    },
-  },
-  computed: {
-    hasExpenses() {
-      return (
-        (this.food ?? 0) > 0 ||
-        (this.leisure ?? 0) > 0 ||
-        (this.transportation ?? 0) > 0 ||
-        (this.others ?? 0) > 0
-      );
-    },
-  },
-};
+// states
+const totalSavings = ref(null)
+const totalBudget = ref(null)
+const totalExpenses = ref(null)
+const food = ref(null)
+const leisure = ref(null)
+const transportation = ref(null)
+const others = ref(null)
+const xpFill = ref(0)
+const xpLevel = ref(0)
+const streak = ref(0)
+
+// methods
+// fetch total savings
+const fetchTotalSavings = async () => {
+  const userId = localStorage.getItem('userId')
+
+  try {
+    const res = await api.get(`/compute/${userId}`)
+    totalBudget.value = res.data.totalBudgetAmount
+    totalExpenses.value = res.data.totalExpenseAmount
+    totalSavings.value = res.data.totalSavings
+  } catch (err) {
+    console.error('Error fetching total savings:', err) 
+  }
+}
+
+// fetch expenses
+const fetchExpenses = async () => {
+  const userId = localStorage.getItem('userId')
+
+  try {
+    const res = await api.get(`/compute/${userId}`)
+    food.value = res.data.food
+    leisure.value = res.data.leisure
+    transportation.value = res.data.transportation
+    others.value = res.data.others
+  } catch (err) {
+    console.error('Error fetching expenses:', err)
+  }
+}
+
+// get progress
+const getProgress = async () => {
+  try {
+    const userId = localStorage.getItem('userId')
+    const res = await api.get(`/user/${userId}/progress`);
+    xpFill.value = res.data.progress || 0
+    xpLevel.value = res.data.level || 0
+    streak.value = res.data.streak || 0
+  } catch (err) {
+    console.error('Get progress error:', err)
+  }
+}
+
+// computed
+const hasExpenses = computed(() => {
+  return (
+    (food.value ?? 0) > 0 ||
+    (leisure.value ?? 0) > 0 ||
+    (transportation.value ?? 0) > 0 ||
+    (others.value ?? 0) > 0
+  ) 
+})
+
+// call methods
+onMounted(() => {
+  fetchTotalSavings()
+  fetchExpenses()
+  getProgress()
+})
+
 </script>
 
 <style scoped>
