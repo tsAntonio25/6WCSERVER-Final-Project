@@ -1,7 +1,7 @@
 // imports
 import express from 'express';
 import asyncHandler from 'express-async-handler'
-import { User } from '../models/models.js';
+import { Expense, User } from '../models/models.js';
 import { verifyToken } from '../modules/auth.js';
 
 const router = express.Router();
@@ -71,6 +71,48 @@ router.patch('/users/:id/toggle-admin', verifyToken, asyncHandler(async (req, re
     await user.save();
 
     res.json({ message: `User ${user.username} is now ${user.is_admin? 'an admin' : 'a regular user'}`})
+}))
+
+// get total users
+router.get('/total', asyncHandler(async (req, res) => {
+    const totalUsers = await User.countDocuments({ is_admin: false })
+    
+    console.log(totalUsers)
+    res.json(totalUsers)
+}))
+
+// get expenses percentage
+router.get('/expenses', asyncHandler(async (req, res) => {
+
+    const foodCount = await Expense.countDocuments({ type: 'food' });
+    const transportationCount = await Expense.countDocuments({ type: 'transportation' });
+    const leisureCount = await Expense.countDocuments({ type: 'leisure' });
+    const othersCount = await Expense.countDocuments({ type: 'others' });
+    
+    const totalExpenses = foodCount + transportationCount + leisureCount + othersCount;
+
+    //percent
+    const food = ((foodCount / totalExpenses) * 100).toFixed(2);
+    const transportation = ((transportationCount / totalExpenses) * 100).toFixed(2);
+    const leisure = ((leisureCount / totalExpenses) * 100).toFixed(2);
+    const others = ((othersCount / totalExpenses) * 100).toFixed(2);
+
+    res.json({
+        totalExpenses,
+        food,
+        transportation,
+        leisure,
+        others
+    })
+
+    console.log({
+        totalExpenses,
+        food,
+        transportation,
+        leisure,
+        others
+    })
+
 }))
 
 export default router

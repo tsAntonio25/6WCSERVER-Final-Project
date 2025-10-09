@@ -18,7 +18,7 @@
           <div class="h-full bg-orange-500 transition-all duration-700 ease-in-out" :style="{ width: xpFill + '%' }"></div>
         </div>
         <div class="text-sm text-orange-700 font-semibold mt-1 animate-pulse">
-          Streak: {{ streak }} | XP: {{ xpLevel }}
+          Streak: {{ streak }} | Level: {{ xpLevel }}
         </div>
       </div>
 
@@ -256,7 +256,7 @@
     <div class="h-full bg-orange-500 transition-all duration-700 ease-in-out" :style="{ width: xpFill + '%' }"></div>
   </div>
   <div class="text-xs text-orange-700 font-semibold text-center animate-pulse mt-1">
-    Streak: {{ streak }} | XP: {{ xpLevel }}
+    Streak: {{ streak }} | Level: {{ xpLevel }}
   </div>
 </div>
 
