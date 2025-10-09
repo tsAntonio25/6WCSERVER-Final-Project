@@ -2,7 +2,7 @@
   <div
     class="min-h-screen relative flex items-center justify-center px-6 py-12 overflow-hidden bg-gradient-to-br from-sky-900 via-indigo-800 to-sky-700"
   >
-    <!-- 🌌 Glowing Background -->
+    <!--  Glowing Background -->
     <div class="absolute inset-0 z-0 overflow-hidden">
       <div
         class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(255,255,255,0.15),_transparent_60%)] animate-glow"
@@ -15,11 +15,11 @@
       ></div>
     </div>
 
-    <!-- 🌟 Main Center Container -->
+    <!--  Main Center Container -->
     <div
       class="relative z-10 bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-[0_8px_40px_rgba(0,0,0,0.3)] p-10 md:p-14 flex flex-col-reverse md:flex-row items-center justify-between gap-10 max-w-6xl w-full animate-fade-in"
     >
-      <!-- ✨ Left: Text Content -->
+      <!--  Left: Text Content -->
       <div class="text-center md:text-left md:w-1/2 space-y-6 text-white">
         <h1
           class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight drop-shadow-lg"
@@ -35,7 +35,7 @@
           Save smart, earn XP, and level up your financial journey while having fun!
         </p>
 
-        <!-- 💰 Buttons -->
+        <!--  Buttons -->
         <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4 pt-4">
           <router-link
             to="/login"
@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <!-- 💡 Right: Hero Image -->
+      <!--  Right: Hero Image -->
       <div class="md:w-1/2 flex justify-center">
         <img
           src="@/assets/logo.png"

@@ -4,7 +4,7 @@
     <AdminNav />
 
     <!-- Main Content -->
-    <main class="flex-1 ml-64 px-6 py-8 space-y-8">
+      <main class="flex-1 px-6 py-8 space-y-8">
       <!-- Header -->
       <h1 class="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
 
