@@ -156,7 +156,7 @@ import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import PieChart from '../components/PieChart.vue';
 import api from '@/api/axios.js';
-import {ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 // states
 const totalSavings = ref(null)
@@ -169,6 +169,8 @@ const others = ref(null)
 const xpFill = ref(0)
 const xpLevel = ref(0)
 const streak = ref(0)
+const weeklyExpenses = ref({ labels: [], data: [] })
+const recentBudgets = ref(null)
 
 // methods
 // fetch total savings
@@ -200,6 +202,28 @@ const fetchExpenses = async () => {
   }
 }
 
+// fetch recent budgets
+const fetchRecentBudget = async () => {
+  try {
+    const userId = localStorage.getItem('userId');
+    const res = await api.get(`/user/recent/${userId}`)
+    recentBudget.value = res.data;
+
+  } catch (err) {
+    console.error('Error recent budgets:', err);
+  }
+}
+
+const fetchWeeklyExpenses = async () => {
+  try {
+    const userId = localStorage.getItem('userId');
+    const res = await api.get(`/user/weekly/${userId}`);
+    weeklyExpenses.value = res.data;
+  } catch (err) {
+    console.error('Error fetching weekly expenses:', err);
+  }
+}
+
 // get progress
 const getProgress = async () => {
   try {
@@ -228,6 +252,8 @@ onMounted(() => {
   fetchTotalSavings()
   fetchExpenses()
   getProgress()
+  fetchRecentBudget()
+  fetchWeeklyExpenses()
 })
 
 </script>

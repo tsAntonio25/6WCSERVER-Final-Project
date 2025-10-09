@@ -131,5 +131,67 @@ router.get('/:id/history', asyncHandler(async (req, res) => {
     console.log(history)
 }));
 
+// get recent budget
+router.get('/recent/:userId', asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+    const budgets = await mongoose.connection
+    .collection('finance')
+    .find({
+        user_id: new mongoose.Types.ObjectId(userId),
+        finance_type: 'budget'
+    })
+    .sort({createdAt: -1})
+    .limit(5)
+    .toArray();
+
+    res.json(budgets)
+    // test
+    console.log('Recent Budgets: ', budgets)
+}))
+
+// get users expense per day of the week
+router.get('/weekly/:userId', asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+
+    // get sunday and saturday of current week
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const startOfWeek = new Date(now);
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(now.getDate() - dayOfWeek);
+
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6)
+    endOfWeek.setHours(23, 59, 59, 999);
+
+    // aggregate expenses for the week
+    const expensesPerDay = await Expense.aggregate([
+        { $match: 
+            { 
+                user_id: new mongoose.Types.ObjectId(userId),
+                date: {$gte: startOfWeek, $lte: endOfWeek }
+            } 
+        },
+        { $addFields: { dayOfWeek: { $dayOfWeek: "$date"} } },
+        { $group: { _id: "$dayOfWeek", totalAmount: { $sum: "$expense" } } },
+        // 1 - sunday ... 7 - saturday
+        { $sort: { _id: 1 }}
+    ]);
+
+    // if missing days, 0
+    const labels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const data = Array(7).fill(0);
+
+    expensesPerDay.forEach(item => {
+       if (item._id >= 1 && item._id <= 7){
+        data[item._id - 1] = item.totalAmount
+       }
+    });
+
+    res.json({ labels, data })
+    
+    // test
+    console.log('Weekly expenses: ',{ labels, data })
+}))
 // export
 export default router;
