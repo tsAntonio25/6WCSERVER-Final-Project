@@ -276,7 +276,7 @@ const resetFields = () => {
   currentPassword.value = ''
   newPassword.value = ''
   showNewPassword.value = false
-  isAnonymous.value = false
+  // isAnonymous.value = false
   generatedUsername.value = ''
 }
 
