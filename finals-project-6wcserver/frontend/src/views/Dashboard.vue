@@ -95,15 +95,26 @@
         </div>
       </div>
 
-      <!-- ✅ Placeholder Section (still inside v-if="hasExpenses") -->
-      <section class="w-full flex justify-center mt-6" v-if="hasExpenses">
+      <!-- Recent Budgets Section -->
+      <section class="w-full flex justify-center mt-6" v-if="recentBudgets">
         <div class="w-full max-w-3xl mx-auto space-y-3">
+          <h3 class="text-lg font-bold text-gray-800 mb-2 flex items-center gap-2"> Recent Budgets </h3>
           <div
-            v-for="index in 5"
-            :key="index"
+            v-for="(budget, index) in recentBudgets"
+            :key="budget._id"
             class="flex justify-between items-center rounded-2xl px-6 py-3 shadow-sm border border-gray-300 transform hover:scale-105 transition-all duration-300 bg-white"
           >
-            <span class="font-medium text-gray-700">{{ index }}. Placeholder</span>
+            <div>
+              <p class="font-medium text-gray-700 capitalize">
+                {{ index + 1 }}. {{ budget.allowance_type }} Budget
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ new Date(budget.createdAt).toLocaleString() }}
+              </p>
+            </div>
+            <div class="text-right font-bold text-green-600">
+              ₱{{ budget.amount.toLocaleString() }}
+            </div>
           </div>
         </div>
       </section>
@@ -207,7 +218,7 @@ const fetchRecentBudget = async () => {
   try {
     const userId = localStorage.getItem('userId');
     const res = await api.get(`/user/recent/${userId}`)
-    recentBudget.value = res.data;
+    recentBudgets.value = res.data;
 
   } catch (err) {
     console.error('Error recent budgets:', err);
