@@ -473,6 +473,7 @@ const addBudget = async () => { // add budget
 
     // refresh progress
     await getProgress()
+    await fetchRecentTransactions();
     // error
   } catch (err) {
     console.error('Add budget error:', err.response?.data || err.message)
@@ -512,7 +513,7 @@ const addExpense = async () => { // add expense
 
     // refresh progress
     await getProgress()
-
+    await fetchRecentTransactions();
     // error
   } catch (err) {
     console.error('Add expense error:', err.response?.data || err.message)

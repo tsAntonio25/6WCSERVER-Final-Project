@@ -145,8 +145,6 @@ router.get('/recent/:userId', asyncHandler(async (req, res) => {
     .toArray();
 
     res.json(budgets)
-    // test
-    console.log('Recent Budgets: ', budgets)
 }))
 
 // get users expense per day of the week
