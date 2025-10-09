@@ -1,140 +1,95 @@
 <template>
-  <div class="min-h-screen flex flex-col bg-gray-50">
-    <!-- Landing Header -->
+  <div class="min-h-screen flex flex-col bg-gradient-to-b from-sky-50 via-white to-indigo-50 overflow-hidden">
+    <!-- Header -->
     <LandingHeader />
 
+    <!-- HERO SECTION -->
+    <section class="flex flex-col items-center justify-center text-center px-6 sm:px-10 py-20 relative">
+      <!-- Animated Background Gradient -->
+      <div
+  class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,_rgba(56,189,248,0.15),_transparent_70%)] animate-pulse pointer-events-none"
+></div>
 
 
-    <!-- Hero Section -->
-    <section class="text-center px-4 sm:px-8 py-10 space-y-4 relative z-10">
-    <h1 class="text-3xl sm:text-4xl font-bold text-blue-700">Save Smart, Level Up</h1>
-    <p class="text-base sm:text-lg text-gray-700 max-w-xl mx-auto">
-        Make budgeting fun and rewarding. Record your spending, grow your funds, and see how you rank against friends.
-    </p>
-    <router-link
-    to="/home"
-    class="inline-block px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
-    >
-    Ready, Set, Save!
-    </router-link>
+      <h1 class="text-5xl sm:text-6xl font-extrabold text-sky-900 drop-shadow-md relative z-10">
+        Save Smart, Level Up 🚀
+      </h1>
+      <p class="mt-6 text-lg sm:text-xl text-gray-700 max-w-2xl leading-relaxed relative z-10">
+        Turn your finances into a game — track, save, and compete while building smarter money habits.
+      </p>
 
+      <router-link
+        to="/home"
+        class="mt-10 inline-block bg-gradient-to-r from-sky-700 to-indigo-600 text-white text-lg px-8 py-3 rounded-xl shadow-lg hover:opacity-90 transition transform hover:scale-105"
+      >
+        Start Saving Now
+      </router-link>
+
+      <!-- Background Glow Circles -->
+      <div class="absolute w-72 h-72 bg-sky-200 rounded-full blur-3xl opacity-40 top-[-10%] right-[-10%]"></div>
+      <div class="absolute w-80 h-80 bg-indigo-300 rounded-full blur-3xl opacity-40 bottom-[-10%] left-[-10%]"></div>
     </section>
-<!-- Layered Tail + How It Works Section -->
-<div class="w-full relative min-h-[48em] pb-32">
-  <!-- Tail Image -->
-  <img
-    src="@/assets/landing1.png"
-    alt="Top Tail"
-    class="ml-0 w-[85%] max-w-[1000px] object-contain"
-  />
 
-  <!-- Layered How It Works Content -->
-  <section class="absolute top-50 left-0 w-full px-4 sm:px-8 z-10">
+    <!-- HOW IT WORKS -->
+    <section class="py-24 px-6 sm:px-10 bg-white/60 backdrop-blur-xl shadow-inner">
+      <h2 class="text-4xl sm:text-5xl font-bold text-center text-sky-900 mb-12">How It Works</h2>
 
-    <h2 class="text-5xl font-bold text-violet-950 text-center mb-6">
-      How it works
-    </h2>
-
-    <div class="flex flex-col-reverse lg:flex-row items-center gap-8 max-w-6xl mx-auto">
-      <!-- Illustration -->
-      <div class="flex-shrink-0">
+      <div class="flex flex-col lg:flex-row items-center justify-center gap-16 max-w-6xl mx-auto">
+        <!-- Illustration -->
         <img
-          src="@/assets/landing2.png"
-          alt="Person Illustration"
-          class="h-72 w-auto sm:h-80 lg:h-[22rem]"
+          :src="landing2"
+          alt="How it works"
+          class="w-72 sm:w-96 drop-shadow-xl rounded-3xl hover:scale-105 transition-transform duration-500"
         />
+
+        <!-- Text -->
+        <div class="max-w-xl text-center lg:text-left space-y-5">
+          <p class="text-lg text-gray-700 leading-relaxed">
+            Iponly helps you build healthy financial habits. Add your budget, record expenses, and stay motivated with your progress tracker.
+          </p>
+          <p class="text-lg text-gray-700 leading-relaxed">
+            Each goal you hit earns XP — climb the leaderboard, celebrate milestones, and make saving feel rewarding.
+          </p>
+        </div>
       </div>
+    </section>
 
-      <!-- Text Content -->
-      <div class="flex flex-col justify-center items-center text-center space-y-4 max-w-xl">
-        <p class="text-lg sm:text-xl text-gray-700 leading-relaxed">
-          Ponly turns saving into a game. Add your budget and expenses, build streaks, and earn XP as you stay consistent.
-          Climb the leaderboard and watch your savings grow with every level.
-        </p>
+    <!-- GAMIFIED FEATURES -->
+    <section class="py-24 px-6 sm:px-10 bg-gradient-to-b from-sky-100 via-white to-indigo-50">
+      <h2 class="text-4xl sm:text-5xl font-bold text-center text-sky-900 mb-12">Gamified Budgeting for Students</h2>
+
+      <div class="flex flex-wrap justify-center gap-12">
+        <div
+          v-for="(feature, index) in features"
+          :key="index"
+          class="flex flex-col items-center space-y-5 text-center max-w-[300px] sm:max-w-[360px] animate-fade-in"
+          :style="{ animationDelay: `${index * 0.3}s` }"
+        >
+          <div class="p-5 rounded-full bg-white shadow-xl border-4 border-sky-600 hover:scale-105 transition-transform duration-300">
+            <img :src="feature.image" :alt="feature.title" class="w-32 h-32 sm:w-40 sm:h-40 object-contain" />
+          </div>
+          <p class="text-2xl sm:text-3xl font-bold text-sky-600">{{ feature.title }}</p>
+          <p class="text-gray-600 text-sm sm:text-base max-w-xs">{{ feature.desc }}</p>
+        </div>
       </div>
-    </div>
-  </section>
-</div>
+    </section>
 
+    <!-- CTA -->
+    <section class="text-center px-6 sm:px-10 py-24 bg-white/70 backdrop-blur-xl shadow-inner">
+      <h2 class="text-5xl font-bold text-sky-900 mb-6">Get Started Today</h2>
+      <p class="text-lg text-gray-700 mb-8">
+        Join thousands of students making smarter financial decisions with Iponly.
+      </p>
+      <router-link
+        to="/register"
+        class="inline-block bg-gradient-to-r from-sky-700 to-indigo-600 text-white text-xl px-8 py-4 rounded-xl shadow-lg hover:opacity-90 transition transform hover:scale-105"
+      >
+        Create an Account
+      </router-link>
+      <p class="text-sm text-gray-500 mt-6">Available soon on all devices.</p>
+    </section>
 
-<!-- Layered Bottom Tail + Gamified Features Section -->
-<div class="w-full relative lg:min-h-[55rem] pb-32">
-  <!-- Gamified Features Section -->
-  <section class="w-full px-4 sm:px-8 pt-28 lg:pt-32 z-10">
-    <h2 class="text-4xl sm:text-5xl font-bold text-center text-violet-950 mb-12">
-      Gamified budgeting for students
-    </h2>
-
-    <div class="flex flex-wrap justify-center gap-12 sm:gap-16">
-      <!-- Feature 1 -->
-      <div class="flex flex-col items-center space-y-5 text-center max-w-[300px] sm:max-w-[360px]">
-        <img
-          src="@/assets/landing3.png"
-          alt="Track with ease"
-          class="w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[220px] md:h-[220px] lg:w-[260px] lg:h-[260px] rounded-full object-contain border-4 border-sky-600"
-        />
-        <p class="text-2xl sm:text-3xl font-bold text-sky-400 tracking-wide">Track with ease</p>
-      </div>
-
-      <!-- Feature 2 -->
-      <div class="flex flex-col items-center space-y-5 text-center max-w-[300px] sm:max-w-[360px]">
-        <img
-          src="@/assets/landing4.png"
-          alt="Save & grow"
-          class="w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[220px] md:h-[220px] lg:w-[260px] lg:h-[260px] rounded-full object-contain border-4 border-sky-600"
-        />
-        <p class="text-2xl sm:text-3xl font-bold text-sky-400 tracking-wide">Save & grow</p>
-      </div>
-
-      <!-- Feature 3 -->
-      <div class="flex flex-col items-center space-y-5 text-center max-w-[300px] sm:max-w-[360px]">
-        <img
-          src="@/assets/landing5.png"
-          alt="Compete & win"
-          class="w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[220px] md:h-[220px] lg:w-[260px] lg:h-[260px] rounded-full object-contain border-4 border-sky-600"
-        />
-        <p class="text-2xl sm:text-3xl font-bold text-sky-400 tracking-wide">Compete & win</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Tail Image Container -->
-  <div class="mt-20 lg:mt-0">
-    <img
-      src="@/assets/landing6.png"
-      alt="Bottom Tail"
-      class="w-[85%] max-w-[1000px] object-contain ml-auto lg:absolute lg:right-0 lg:bottom-0"
-    />
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-<!-- Call to Action -->
-<section class="text-center px-4 sm:px-8 py-16 space-y-6">
-  <h2 class="text-5xl font-bold text-violet-950">Get Started Now</h2>
-
-  <router-link
-    to="/register"
-    class="inline-block px-8 py-4 bg-blue-500 text-white text-xl rounded-lg hover:bg-blue-600 transition"
-  >
-    Sign Up
-  </router-link>
-
-  <p class="text-lg text-gray-600 mt-4">Budget tracking app also available on:</p>
-  
-</section>
-
-
-
-
-    <!-- Landing Footer -->
+    <!-- Footer -->
     <LandingFooter />
   </div>
 </template>
@@ -142,4 +97,44 @@
 <script setup>
 import LandingHeader from '@/components/LandingHeader.vue'
 import LandingFooter from '@/components/LandingFooter.vue'
+
+// ✅ Explicitly import images so Vite bundles them
+import landing2 from '@/assets/landing2.png'
+import landing3 from '@/assets/landing3.png'
+import landing4 from '@/assets/landing4.png'
+import landing5 from '@/assets/landing5.png'
+
+const features = [
+  {
+    image: landing3,
+    title: 'Track with Ease',
+    desc: 'Quickly log your income and expenses — simple, intuitive, and visually clear.',
+  },
+  {
+    image: landing4,
+    title: 'Save & Grow',
+    desc: 'Set saving goals and watch your progress grow in real time.',
+  },
+  {
+    image: landing5,
+    title: 'Compete & Win',
+    desc: 'Challenge friends, climb the leaderboard, and celebrate your financial wins.',
+  },
+]
 </script>
+
+<style scoped>
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-in {
+  animation: fade-in 0.8s ease forwards;
+}
+</style>

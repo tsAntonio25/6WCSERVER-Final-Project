@@ -245,6 +245,36 @@
       </div>
     </div>
   </div>
+  <!-- ⚠️ Delete Confirmation Popup -->
+<div
+  v-if="showConfirmPopup"
+  class="fixed inset-0 bg-black/40 flex items-center justify-center z-[60]"
+>
+  <div
+    class="bg-white/10 backdrop-blur-xl border border-white/20 text-white rounded-3xl p-8 max-w-sm w-full text-center shadow-[0_8px_30px_rgba(0,0,0,0.4)] animate-fade-in"
+  >
+    <h2 class="text-xl font-semibold mb-4">Delete Budget?</h2>
+    <p class="text-sm text-indigo-100 mb-6 leading-relaxed">
+      Deleting this budget will also remove all expenses that were added after it.
+      Are you sure you want to continue?
+    </p>
+    <div class="flex justify-center gap-4">
+      <button
+        @click="confirmDeleteBudget"
+        class="bg-gradient-to-r from-sky-700 to-indigo-700 px-6 py-2 rounded-full font-semibold hover:opacity-90 hover:scale-105 transition-all"
+      >
+        Yes, Delete
+      </button>
+      <button
+        @click="cancelDelete"
+        class="border border-indigo-300 px-6 py-2 rounded-full text-indigo-100 hover:bg-indigo-800/40 transition-all"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
 </section>
 
 
@@ -384,6 +414,20 @@
   transform: translateY(-4px);
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
 
 </style>
 
@@ -563,27 +607,60 @@ const currentTip = ref('')
 const showDeletePopup = ref(false);
 const selectedToDelete = ref([]);
 
+const showConfirmPopup = ref(false)
+const selectedBudgetId = ref(null)
+
 const deleteSelected = async () => {
-  try {
-    if (selectedToDelete.value.length === 0) return;
+  for (const id of selectedToDelete.value) {
+    const txn = transactions.value.find(t => t._id === id)
+    const now = new Date()
+    const addedTime = new Date(txn.timestamp)
+    const diffMinutes = (now - addedTime) / (1000 * 60)
 
-    const userId = localStorage.getItem('userId');
+    // 🕐 Prevent deleting older than 1 hour
+    if (diffMinutes > 60) {
+      alert('⏰ You can no longer delete this budget (added more than 1 hour ago).')
+      return
+    }
 
-    await api.delete('/transactions/delete', {
-      data: {
-        userId,
-        transactionIds: selectedToDelete.value
+    // 💰 Check for expenses added after this budget
+    if (txn.finance_type === 'budget') {
+      const hasFollowingExpenses = transactions.value.some(
+        e => e.finance_type === 'expense' && new Date(e.timestamp) > new Date(txn.timestamp)
+      )
+
+      if (hasFollowingExpenses) {
+        selectedBudgetId.value = id
+        showConfirmPopup.value = true
+        return
       }
-    });
+    }
 
-    // refresh transactions and exp
-    await fetchRecentTransactions();
-    await getProgress();
+    // ✅ No related expenses — delete immediately
+    proceedDelete([id])
+  }
+}
 
-    // reset
-    selectedToDelete.value = [];
-    showDeletePopup.value = false;
-  } catch (err){
+const confirmDeleteBudget = async () => {
+  showConfirmPopup.value = false
+  await proceedDelete([selectedBudgetId.value])
+}
+
+const cancelDelete = () => {
+  showConfirmPopup.value = false
+  selectedBudgetId.value = null
+}
+
+const proceedDelete = async (ids) => {
+  try {
+    const userId = localStorage.getItem('userId')
+    await api.delete('/transactions/delete', {
+      data: { userId, transactionIds: ids }
+    })
+    await fetchRecentTransactions()
+    await getProgress()
+    selectedToDelete.value = []
+  } catch (err) {
     console.error('Delete transactions error:', err.response?.data || err.message)
   }
 }

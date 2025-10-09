@@ -31,34 +31,38 @@
       <!-- Leaderboard Title -->
       <h1 class="text-2xl sm:text-3xl font-bold text-center text-sky-800 mt-6 mb-4">Leaderboard</h1>
 
-      <!-- Ranked List -->
-      <div class="max-w-md mx-auto space-y-3">
-        <div v-for="(rank, index) in leaderboard" :key="rank.username">
-          <!-- 1st Place -->
-          <div v-if="index === 0" class="flex justify-between items-center bg-yellow-200 rounded-2xl px-4 py-3 shadow-xl border border-yellow-300 transform hover:scale-105 transition-all duration-300">
-            <span class="font-semibold text-gray-800 text-lg">{{index + 1}}. {{ rank.anon_username }}</span>
-            <span class="text-sm text-gray-700 font-medium">{{ rank.exp }} points</span>
-          </div>
+<!-- Ranked List -->
+<div class="max-w-md mx-auto space-y-3">
+  <div
+    v-for="(rank, index) in leaderboard"
+    :key="rank._id"
+    :class="[
+      'flex justify-between items-center rounded-2xl px-4 py-3 shadow-sm transform hover:scale-105 transition-all duration-300',
+      index === 0
+        ? 'bg-yellow-200 border border-yellow-300 shadow-xl'
+        : index === 1
+        ? 'bg-gray-200 border border-gray-300 shadow-md'
+        : index === 2
+        ? 'bg-orange-100 border border-orange-300 shadow-md'
+        : 'bg-white',
+rank._id === currentUserId
+  ? 'relative ring-4 ring-sky-400 animate-pulse before:content-[\'\'] before:absolute before:inset-0 before:rounded-2xl before:border-2 before:border-sky-300 before:animate-rotate-border before:opacity-70'
+  : ''
 
-          <!-- 2nd Place -->
-          <div v-else-if="index === 1" class="flex justify-between items-center bg-gray-200 rounded-2xl px-4 py-3 shadow-md border border-gray-300 transform hover:scale-105 transition-all duration-300">
-            <span class="font-semibold text-gray-800">{{ index + 1 }}. {{ rank.anon_username }}</span>
-            <span class="text-sm text-gray-700 font-medium">{{ rank.exp }} points</span>
-          </div>
+    ]"
+  >
+    <span
+      :class="[
+        'font-medium',
+        index === 0 ? 'text-gray-800 text-lg font-semibold' : 'text-gray-700'
+      ]"
+    >
+      {{ index + 1 }}. {{ rank.anon_username }}
+    </span>
+    <span class="text-sm text-gray-600 font-medium">{{ rank.exp }} points</span>
+  </div>
+</div>
 
-          <!-- 3rd Place -->
-          <div v-else-if="index === 2" class="flex justify-between items-center bg-orange-100 rounded-2xl px-4 py-3 shadow-md border border-orange-300 transform hover:scale-105 transition-all duration-300">
-            <span class="font-semibold text-gray-800">{{index + 1}}. {{ rank.anon_username }}</span>
-            <span class="text-sm text-gray-700 font-medium">{{ rank.exp }} points</span>
-          </div>
-
-          <!-- the rest -->
-          <div v-else class="flex justify-between items-center bg-white rounded-2xl px-4 py-3 shadow-sm transform hover:scale-105 transition-all duration-300">
-            <span class="font-medium text-gray-700">{{index + 1}}. {{ rank.anon_username }}</span>
-            <span class="text-sm text-gray-500">{{ rank.exp }} points</span>
-          </div>
-        </div>
-      </div>
 
       <!-- Current User Rank -->
       <div class="max-w-md mx-auto mt-6 bg-white/70 backdrop-blur-lg rounded-2xl shadow-2xl px-4 py-4 text-center space-y-1 transform hover:-translate-y-1 transition-all duration-300">
@@ -106,6 +110,7 @@ const userRank = ref(null);
 const xpFill = ref(0)
 const xpLevel = ref(0)
 const streak = ref(0)
+const currentUserId = localStorage.getItem('userId');
 
 // methods
 const getProgress = async () => {
