@@ -262,6 +262,33 @@ const handleResize = () => {
 onMounted(() => {
   window.addEventListener('resize', handleResize)
 })
+
+onMounted(async () => {
+  const localAnon = localStorage.getItem('isAnonymous') === 'true'
+  const localGenerated = localStorage.getItem('generatedUsername') || ''
+  if (localGenerated) {
+    isAnonymous.value = localAnon
+    generatedUsername.value = localGenerated
+  }
+
+  try {
+    const userId = localStorage.getItem('userId')
+    if (!userId) return
+
+    const { data } = await api.get(`/user/${userId}`)
+    const username = data.username
+    const anon = data.anon_username
+
+    isAnonymous.value = !!(anon && anon !== username)
+    generatedUsername.value = isAnonymous.value ? anon : username
+
+    localStorage.setItem('isAnonymous', isAnonymous.value)
+    localStorage.setItem('generatedUsername', generatedUsername.value)
+  } catch (err) {
+    console.error('Failed to load profile:', err)
+  }
+})
+
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
 })
@@ -276,7 +303,6 @@ const resetFields = () => {
   currentPassword.value = ''
   newPassword.value = ''
   showNewPassword.value = false
-  // isAnonymous.value = false
   generatedUsername.value = ''
 }
 

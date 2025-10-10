@@ -191,7 +191,7 @@ router.get('/weekly/:userId', asyncHandler(async (req, res) => {
     res.json({ weeklyExpenses })
     
     // test
-    console.log('Weekly expenses: ',{ weeklyExpenses })
+    // console.log('Weekly expenses: ',{ weeklyExpenses })
 }))
 // export
 export default router;
