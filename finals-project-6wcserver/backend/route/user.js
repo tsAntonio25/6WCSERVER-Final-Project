@@ -186,10 +186,12 @@ router.get('/weekly/:userId', asyncHandler(async (req, res) => {
        }
     });
 
-    res.json({ labels, data })
+    const weeklyExpenses = {labels, data}
+
+    res.json({ weeklyExpenses })
     
     // test
-    console.log('Weekly expenses: ',{ labels, data })
+    console.log('Weekly expenses: ',{ weeklyExpenses })
 }))
 // export
 export default router;

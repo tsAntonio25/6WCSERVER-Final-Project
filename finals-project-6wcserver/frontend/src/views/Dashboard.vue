@@ -85,13 +85,18 @@
           </div>
         </div>
 
-        <!-- Right: Summary Table -->
+        <!-- Weekly Expenses Bar Graph -->
         <div
           class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 flex-1
                  border-2 border-indigo-100 transition-all duration-300 
                  hover:shadow-2xl hover:border-indigo-200
                  h-[520px] sm:h-[520px] mt-4 sm:mt-0 flex flex-col justify-center"
         >
+        <BarGraph
+        v-if="weeklyExpenses"
+        :labels="weeklyExpenses.labels"
+        :data="weeklyExpenses.data"
+        />
         </div>
       </div>
 
@@ -166,6 +171,7 @@
 import Header from '../components/Header.vue';
 import Footer from '../components/Footer.vue';
 import PieChart from '../components/PieChart.vue';
+import BarGraph from '@/components/BarGraph.vue';
 import api from '@/api/axios.js';
 import { ref, computed, onMounted } from 'vue'
 
@@ -180,7 +186,7 @@ const others = ref(null)
 const xpFill = ref(0)
 const xpLevel = ref(0)
 const streak = ref(0)
-const weeklyExpenses = ref({ labels: [], data: [] })
+const weeklyExpenses = ref(null)
 const recentBudgets = ref(null)
 
 // methods
@@ -225,15 +231,17 @@ const fetchRecentBudget = async () => {
   }
 }
 
+// fetch weekly expenses
 const fetchWeeklyExpenses = async () => {
   try {
     const userId = localStorage.getItem('userId');
     const res = await api.get(`/user/weekly/${userId}`);
-    weeklyExpenses.value = res.data;
+    weeklyExpenses.value = res.data.weeklyExpenses || res.data;
   } catch (err) {
     console.error('Error fetching weekly expenses:', err);
   }
 }
+
 
 // get progress
 const getProgress = async () => {
