@@ -68,11 +68,13 @@ cd finals-project-6wcserver/backend
 MONGODB_URI=<Your MongoDB Connection String URL>
 ```
 Replace the placeholder with the copied link
+
 9. In the same .env file, add a SECRET_KEY for handling JWT tokens
 ```sh
 SECRET_KEY=<Generated Secret Key>
 ```
 We recommend using this website to generate secret key: https://jwtsecrets.com/
+
 Or, You can generate a random string using your preferred random key generator or online tool.
 
 ## Install Dependencies
