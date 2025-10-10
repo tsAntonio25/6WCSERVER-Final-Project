@@ -88,16 +88,17 @@
         <!-- Weekly Expenses Bar Graph -->
         <div
           class="bg-white rounded-2xl shadow-xl p-6 sm:p-8 flex-1
-                 border-2 border-indigo-100 transition-all duration-300 
-                 hover:shadow-2xl hover:border-indigo-200
-                 h-[520px] sm:h-[520px] mt-4 sm:mt-0 flex flex-col justify-center"
+                border-2 border-indigo-100 transition-all duration-300 
+                hover:shadow-2xl hover:border-indigo-200
+                mt-4 sm:mt-0 flex flex-col justify-center"
         >
-        <BarGraph
-        v-if="weeklyExpenses"
-        :labels="weeklyExpenses.labels"
-        :data="weeklyExpenses.data"
-        />
+          <BarGraph
+            v-if="weeklyExpenses"
+            :labels="weeklyExpenses.labels"
+            :data="weeklyExpenses.data"
+          />
         </div>
+
       </div>
 
       <!-- Recent Budgets Section -->

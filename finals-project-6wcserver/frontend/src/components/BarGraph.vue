@@ -1,7 +1,9 @@
 <template>
-  <div class="rounded-3xl p-6 sm:p-8 bg-sky-50 flex flex-col justify-center items-center">
-    <h2 class="text-2xl sm:text-3xl font-extrabold text-sky-900 mb-4">Weekly Expenses</h2>
-    <div class="w-full h-[360px]">
+  <div class="rounded-3xl p-4 sm:p-8 bg-sky-50 flex flex-col justify-center items-center">
+    <h2 class="text-xl sm:text-3xl font-extrabold text-sky-900 mb-4 text-center">
+      Weekly Expenses
+    </h2>
+    <div class="w-full h-[250px] sm:h-[360px]">
       <Bar v-if="chartData" :data="chartData" :options="chartOptions" />
     </div>
   </div>
@@ -23,14 +25,8 @@ import { computed } from 'vue'
 ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 const props = defineProps({
-  labels: {
-    type: Array,
-    required: true
-  },
-  data: {
-    type: Array,
-    required: true
-  }
+  labels: { type: Array, required: true },
+  data: { type: Array, required: true }
 })
 
 const chartData = computed(() => ({
@@ -39,9 +35,9 @@ const chartData = computed(() => ({
     {
       label: 'Expenses',
       data: props.data,
-      backgroundColor: 'rgba(37, 99, 235, 0.8)', 
+      backgroundColor: 'rgba(37, 99, 235, 0.8)',
       borderRadius: 12,
-      barThickness: 30,
+      barThickness: 'flex',
       borderSkipped: false
     }
   ]
@@ -52,26 +48,27 @@ const chartOptions = {
   maintainAspectRatio: false,
   scales: {
     x: {
-      grid: {
-        display: false
-      },
+      grid: { display: false },
       ticks: {
-        color: '#0c4a6e', 
-        font: { weight: 'bold' }
+        color: '#0c4a6e',
+        font: {
+          size: window.innerWidth < 640 ? 10 : 12,
+          weight: 'bold'
+        }
       }
     },
     y: {
       beginAtZero: true,
       grid: {
-        color: 'rgba(59, 130, 246, 0.1)', 
+        color: 'rgba(59, 130, 246, 0.1)',
         drawBorder: false
       },
       ticks: {
         color: 'rgba(59, 130, 246, 0.7)',
-        callback: (value) => {
-          if (value >= 1000) return value / 1000 + 'k'
-          return value
-        }
+        font: {
+          size: window.innerWidth < 640 ? 10 : 12
+        },
+        callback: (value) => (value >= 1000 ? value / 1000 + 'k' : value)
       }
     }
   },
