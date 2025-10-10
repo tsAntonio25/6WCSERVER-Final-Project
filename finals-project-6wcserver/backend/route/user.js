@@ -177,7 +177,7 @@ router.get('/weekly/:userId', asyncHandler(async (req, res) => {
     ]);
 
     // if missing days, 0
-    const labels = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+    const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     const data = Array(7).fill(0);
 
     expensesPerDay.forEach(item => {
