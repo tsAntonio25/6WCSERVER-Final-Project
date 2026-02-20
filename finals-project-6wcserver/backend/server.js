@@ -17,6 +17,7 @@ import transactions from './route/transactions.js'
 
 
 const app = express();
+const router = express.Router()
 const PORT = process.env.PORT || 3000;
 
 // middleware
@@ -29,16 +30,17 @@ dotenv.config();
 connectDB();
 
 // API routes
-app.use("/signup", signup);
-app.use("/login", login); 
-app.use("/expense", expense);
-app.use("/budget", budget);
-app.use("/user", user);
-app.use("/compute", computation);
-app.use("/leaderboard", leaderboard);
-app.use("/admin", admin);
-app.use("/transactions", transactions)
+router.use("/signup", signup);
+router.use("/login", login); 
+router.use("/expense", expense);
+router.use("/budget", budget);
+router.use("/user", user);
+router.use("/compute", computation);
+router.use("/leaderboard", leaderboard);
+router.use("/admin", admin);
+router.use("/transactions", transactions)
 
+api.use("/api", router)
 
 // error handler
 app.use((err, req, res, next) => {
