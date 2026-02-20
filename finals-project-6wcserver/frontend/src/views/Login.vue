@@ -129,7 +129,7 @@ const router = useRouter();
 
 const login = async () => {
   try {
-    const res = await api.post("/api/login", {
+    const res = await api.post("/login", {
       email: email.value,
       password: password.value,
     });
