@@ -130,7 +130,7 @@ const fetchUser = async () => {
     isAdmin.value = adminFlag
 
     if (!userId) {
-      router.push('/api/login')
+      router.push('/login')
       return
     }
 

@@ -145,7 +145,7 @@ const submit = async () => {
   }
 
   try {
-    const response = await api.post("/api/signup", {
+    const response = await api.post("/signup", {
       username: username.value,
       email: email.value,
       password: password.value,
@@ -153,7 +153,7 @@ const submit = async () => {
     });
 
     console.log("Signup successful:", response.data);
-    router.push("/api/login");
+    router.push("/login");
   } catch (err) {
     console.error("Signup failed:", err.response ? err.response.data : err);
     error.value = err.response?.data?.message || "An error occurred.";
