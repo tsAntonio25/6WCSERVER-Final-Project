@@ -145,7 +145,7 @@ const submit = async () => {
   }
 
   try {
-    const response = await api.post("/signup", {
+    const response = await api.post("/api/signup", {
       username: username.value,
       email: email.value,
       password: password.value,
