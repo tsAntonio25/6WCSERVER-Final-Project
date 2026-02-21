@@ -19,7 +19,7 @@
       </p>
 
       <router-link
-        to="/login"
+        to="/home"
         class="mt-10 inline-block bg-gradient-to-r from-sky-700 to-indigo-600 text-white text-lg px-8 py-3 rounded-xl shadow-lg hover:opacity-90 transition transform hover:scale-105"
       >
         Start Saving Now
