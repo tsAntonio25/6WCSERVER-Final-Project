@@ -47,7 +47,7 @@ router.use("/leaderboard", leaderboard);
 router.use("/admin", admin);
 router.use("/transactions", transactions)
 
-app.use("/api", router)
+app.use("/", router)
 
 // error handler
 app.use((err, req, res, next) => {
